@@ -1,0 +1,685 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D67BC47316B166FF00E26386 /* Perian_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */; };
+		D67BC47816B166FF00E26386 /* ff_private.c in Sources */ = {isa = PBXBuildFile; fileRef = 11C85ED60A641E6400DF3D73 /* ff_private.c */; };
+		D67BC47A16B166FF00E26386 /* FFusionCodec.c in Sources */ = {isa = PBXBuildFile; fileRef = F560DF0003D61D0101ABA332 /* FFusionCodec.c */; };
+		D67BC47B16B166FF00E26386 /* Codecprintf.c in Sources */ = {isa = PBXBuildFile; fileRef = 113F58990A6B091600509987 /* Codecprintf.c */; };
+		D67BC48216B166FF00E26386 /* CommonUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 61D517720AE0402E00A671E1 /* CommonUtils.c */; };
+		D67BC48E16B166FF00E26386 /* ColorConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D4A7A980B5533BC004C5D6A /* ColorConversions.c */; settings = {COMPILER_FLAGS = "-O3"; }; };
+		D67BC49716B166FF00E26386 /* FFmpegUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DA6322412865F5400AC1962 /* FFmpegUtils.c */; };
+		D67BC49B16B166FF00E26386 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EEFC0A3CE7FA0066D45F /* Carbon.framework */; };
+		D67BC49E16B166FF00E26386 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1156DBD80A3CE9F500963B0E /* libz.dylib */; };
+		D67BC49F16B166FF00E26386 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EED50A3CE7EC0066D45F /* QuickTime.framework */; };
+		D67BC4A216B166FF00E26386 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F539CD110B62BC82005A72C9 /* Foundation.framework */; };
+		D67BC4A416B166FF00E26386 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D95B9000E208965007C8F51 /* libbz2.dylib */; };
+		D67BC4A516B166FF00E26386 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57755F40B51EB1800C7D833 /* CoreFoundation.framework */; };
+		D67BC4D816B1698400E26386 /* FFusionInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */; };
+		D67BC53E16B1911300E26386 /* FrameBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = F57676040BE1A18300B2434B /* FrameBuffer.c */; };
+		D67BC57F16B195AA00E26386 /* FFusionResources.r in Rez */ = {isa = PBXBuildFile; fileRef = D67BC55716B1936B00E26386 /* FFusionResources.r */; };
+		D67BC5C316B19A4300E26386 /* codecID.c in Sources */ = {isa = PBXBuildFile; fileRef = D67BC5C216B19A4300E26386 /* codecID.c */; };
+		D67BC66016B1A40300E26386 /* bitstream_info.c in Sources */ = {isa = PBXBuildFile; fileRef = F52286250B50625E00F8CF7D /* bitstream_info.c */; };
+		D6EF866416B5DC9C0076EBAA /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA20A3CE8C10066D45F /* libavutil.a */; };
+		D6EF866516B5DC9C0076EBAA /* libavcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEFA3F8120560AD0097FE4C /* libavcore.a */; };
+		D6EF866616B5DC9C0076EBAA /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA10A3CE8C10066D45F /* libavcodec.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		D67BC4AC16B166FF00E26386 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.m4";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}",
+			);
+			script = "[ ${INPUT_FILE_PATH} -nt ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE} ] || [ ${SOURCE_ROOT}/codecList.m4 -nt ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE} ] || [ ${SOURCE_ROOT}/defines.m4 -nt ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE} ] || exit 0\nm4 ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}";
+		};
+		D67BC4AD16B166FF00E26386 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.rl";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE)",
+			);
+			script = "RAGEL=${PROJECT_DIR}/Binaries/ragel\nRLCODEGEN=${PROJECT_DIR}/Binaries/rlgen-cd\n[ ${INPUT_FILE_PATH} -nt ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE} ] || exit 0\n${RAGEL} ${INPUT_FILE_PATH} | ${RLCODEGEN} -T0 -o ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		113F58980A6B091600509987 /* Codecprintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Codecprintf.h; sourceTree = "<group>"; };
+		113F58990A6B091600509987 /* Codecprintf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Codecprintf.c; sourceTree = "<group>"; };
+		1156DBD80A3CE9F500963B0E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
+		11629EEA0B51E4F1006591C8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		11629EF30B51E4FB006591C8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1162A0530B51ECE1006591C8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		11C85ED60A641E6400DF3D73 /* ff_private.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ff_private.c; sourceTree = "<group>"; };
+		11C85ED70A641E6400DF3D73 /* ff_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ff_private.h; sourceTree = "<group>"; };
+		11D4EED50A3CE7EC0066D45F /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
+		11D4EEFC0A3CE7FA0066D45F /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		11D4EFA10A3CE8C10066D45F /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = "../Perian-1.2.1/build/Universal/libavcodec.a"; sourceTree = "<group>"; };
+		11D4EFA20A3CE8C10066D45F /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = "../Perian-1.2.1/build/Universal/libavutil.a"; sourceTree = "<group>"; };
+		3D0A039710068CAF0087E580 /* Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.h; sourceTree = "<group>"; };
+		3D4A7A970B5533BC004C5D6A /* ColorConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorConversions.h; sourceTree = "<group>"; };
+		3D4A7A980B5533BC004C5D6A /* ColorConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ColorConversions.c; sourceTree = "<group>"; };
+		3D802F8510336EE90034BF4A /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
+		3D95B9000E208965007C8F51 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = /usr/lib/libbz2.dylib; sourceTree = "<absolute>"; };
+		3DA6322312865F5400AC1962 /* FFmpegUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFmpegUtils.h; sourceTree = "<group>"; };
+		3DA6322412865F5400AC1962 /* FFmpegUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FFmpegUtils.c; sourceTree = "<group>"; };
+		3DAD08570FBF80D8001E156F /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = /usr/lib/libobjc.dylib; sourceTree = "<absolute>"; };
+		3DAD0A110FBFB145001E156F /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "/usr/lib/libstdc++.6.dylib"; sourceTree = "<absolute>"; };
+		3DE8D9C810444E680007C7E7 /* AppleScriptKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptKit.framework; path = /System/Library/Frameworks/AppleScriptKit.framework; sourceTree = "<absolute>"; };
+		3DEFA3F8120560AD0097FE4C /* libavcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcore.a; path = "../Perian-1.2.1/build/Universal/libavcore.a"; sourceTree = "<group>"; };
+		6116E74E0B4738CE0020F1CE /* CodecIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodecIDs.h; sourceTree = "<group>"; };
+		61D517710AE0402E00A671E1 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
+		61D517720AE0402E00A671E1 /* CommonUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CommonUtils.c; sourceTree = "<group>"; };
+		83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Perian_icon.icns; path = Resources/Perian_icon.icns; sourceTree = "<group>"; };
+		D63B227915890273003014C0 /* codecResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = codecResources.r; path = "build/Perian-RJVB.build/Development/Perian.build/DerivedSources/codecResources.r"; sourceTree = "<group>"; };
+		D63B227A15890273003014C0 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = codecID.c; path = "build/Perian-RJVB.build/Development/Perian.build/DerivedSources/codecID.c"; sourceTree = "<group>"; };
+		D63B227B15890273003014C0 /* PerianResourceIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PerianResourceIDs.h; path = "build/Perian-RJVB.build/Development/Perian.build/DerivedSources/PerianResourceIDs.h"; sourceTree = "<group>"; };
+		D63B2286158903F9003014C0 /* codecResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = codecResources.r; path = "build/Perian-RJVB.build/Deployment+Debug/Perian.build/DerivedSources/codecResources.r"; sourceTree = "<group>"; };
+		D63B2287158903F9003014C0 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = codecID.c; path = "build/Perian-RJVB.build/Deployment+Debug/Perian.build/DerivedSources/codecID.c"; sourceTree = "<group>"; };
+		D63B2288158903F9003014C0 /* PerianResourceIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PerianResourceIDs.h; path = "build/Perian-RJVB.build/Deployment+Debug/Perian.build/DerivedSources/PerianResourceIDs.h"; sourceTree = "<group>"; };
+		D67BC4B216B166FF00E26386 /* FFusion.component */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFusion.component; sourceTree = BUILT_PRODUCTS_DIR; };
+		D67BC4D516B1698400E26386 /* FFusion-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FFusion-Info.plist"; path = "Plists/FFusion-Info.plist"; sourceTree = "<group>"; };
+		D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = FFusionInfoPlist.strings; path = Plists/FFusionInfoPlist.strings; sourceTree = "<group>"; };
+		D67BC55716B1936B00E26386 /* FFusionResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionResources.r; path = Resources/FFusionResources.r; sourceTree = "<group>"; };
+		D67BC58D16B1963E00E26386 /* FFusionResourceInc.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionResourceInc.r; path = Resources/FFusionResourceInc.r; sourceTree = "<group>"; };
+		D67BC5AA16B1981D00E26386 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = /usr/local/FFmpeg/trunk/lib/libavcodec.a; sourceTree = "<absolute>"; };
+		D67BC5AC16B1981D00E26386 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = /usr/local/FFmpeg/trunk/lib/libavformat.a; sourceTree = "<absolute>"; };
+		D67BC5AE16B1981D00E26386 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = /usr/local/FFmpeg/trunk/lib/libavutil.a; sourceTree = "<absolute>"; };
+		D67BC5C216B19A4300E26386 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = codecID.c; sourceTree = "<group>"; };
+		D6EF863A16B5B5BB0076EBAA /* avconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avconfig.h; sourceTree = "<group>"; };
+		F52286240B50625E00F8CF7D /* bitstream_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream_info.h; sourceTree = "<group>"; };
+		F52286250B50625E00F8CF7D /* bitstream_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream_info.c; sourceTree = "<group>"; };
+		F539CD110B62BC82005A72C9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		F53E18E40B4F483C003A0471 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
+		F560DECD03D61B6101ABA332 /* Components.k.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Components.k.h; sourceTree = "<group>"; };
+		F560DEFE03D61C4601ABA332 /* FFusionCodecDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFusionCodecDispatch.h; sourceTree = "<group>"; };
+		F560DF0003D61D0101ABA332 /* FFusionCodec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FFusionCodec.c; sourceTree = "<group>"; };
+		F57676040BE1A18300B2434B /* FrameBuffer.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = FrameBuffer.c; sourceTree = "<group>"; };
+		F57676050BE1A18300B2434B /* FrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FrameBuffer.h; sourceTree = "<group>"; };
+		F57755F40B51EB1800C7D833 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D67BC49816B166FF00E26386 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67BC49B16B166FF00E26386 /* Carbon.framework in Frameworks */,
+				D67BC49E16B166FF00E26386 /* libz.dylib in Frameworks */,
+				D67BC49F16B166FF00E26386 /* QuickTime.framework in Frameworks */,
+				D67BC4A216B166FF00E26386 /* Foundation.framework in Frameworks */,
+				D67BC4A416B166FF00E26386 /* libbz2.dylib in Frameworks */,
+				D67BC4A516B166FF00E26386 /* CoreFoundation.framework in Frameworks */,
+				D6EF866416B5DC9C0076EBAA /* libavutil.a in Frameworks */,
+				D6EF866516B5DC9C0076EBAA /* libavcore.a in Frameworks */,
+				D6EF866616B5DC9C0076EBAA /* libavcodec.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* ffmpeg DivX */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77ADFE841716C02AAC07 /* Source */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
+				19C28FB4FE9D528D11CA2CBB /* Products */,
+			);
+			name = "ffmpeg DivX";
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D67BC5AA16B1981D00E26386 /* libavcodec.a */,
+				D67BC5AC16B1981D00E26386 /* libavformat.a */,
+				D67BC5AE16B1981D00E26386 /* libavutil.a */,
+				3DE8D9C810444E680007C7E7 /* AppleScriptKit.framework */,
+				3D802F8510336EE90034BF4A /* ApplicationServices.framework */,
+				3DAD0A110FBFB145001E156F /* libstdc++.6.dylib */,
+				3DAD08570FBF80D8001E156F /* libobjc.dylib */,
+				3D95B9000E208965007C8F51 /* libbz2.dylib */,
+				F539CD110B62BC82005A72C9 /* Foundation.framework */,
+				1162A0530B51ECE1006591C8 /* WebKit.framework */,
+				11629EEA0B51E4F1006591C8 /* Cocoa.framework */,
+				11629EF30B51E4FB006591C8 /* AppKit.framework */,
+				F57755F40B51EB1800C7D833 /* CoreFoundation.framework */,
+				1156DBD80A3CE9F500963B0E /* libz.dylib */,
+				11D4EFA10A3CE8C10066D45F /* libavcodec.a */,
+				3DEFA3F8120560AD0097FE4C /* libavcore.a */,
+				11D4EFA20A3CE8C10066D45F /* libavutil.a */,
+				11D4EEFC0A3CE7FA0066D45F /* Carbon.framework */,
+				11D4EED50A3CE7EC0066D45F /* QuickTime.framework */,
+				F53E18E40B4F483C003A0471 /* Security.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D67BC58D16B1963E00E26386 /* FFusionResourceInc.r */,
+				D67BC55716B1936B00E26386 /* FFusionResources.r */,
+				D67BC4D516B1698400E26386 /* FFusion-Info.plist */,
+				D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */,
+				D63B2289158903FE003014C0 /* Derived-deploy */,
+				D63B227C15890278003014C0 /* Derived-develop */,
+				83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77ADFE841716C02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				F53AD5E20B2A4EC000D93AC9 /* FFMPEG */,
+				F560DECD03D61B6101ABA332 /* Components.k.h */,
+				113F58980A6B091600509987 /* Codecprintf.h */,
+				113F58990A6B091600509987 /* Codecprintf.c */,
+				61D517710AE0402E00A671E1 /* CommonUtils.h */,
+				61D517720AE0402E00A671E1 /* CommonUtils.c */,
+				6116E74E0B4738CE0020F1CE /* CodecIDs.h */,
+				D67BC5C216B19A4300E26386 /* codecID.c */,
+				3D0A039710068CAF0087E580 /* Prefix.h */,
+			);
+			indentWidth = 4;
+			name = Source;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
+		};
+		19C28FB4FE9D528D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D67BC4B216B166FF00E26386 /* FFusion.component */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D63B227C15890278003014C0 /* Derived-develop */ = {
+			isa = PBXGroup;
+			children = (
+				D63B227915890273003014C0 /* codecResources.r */,
+				D63B227A15890273003014C0 /* codecID.c */,
+				D63B227B15890273003014C0 /* PerianResourceIDs.h */,
+			);
+			name = "Derived-develop";
+			sourceTree = "<group>";
+		};
+		D63B2289158903FE003014C0 /* Derived-deploy */ = {
+			isa = PBXGroup;
+			children = (
+				D63B2286158903F9003014C0 /* codecResources.r */,
+				D63B2287158903F9003014C0 /* codecID.c */,
+				D63B2288158903F9003014C0 /* PerianResourceIDs.h */,
+			);
+			name = "Derived-deploy";
+			sourceTree = "<group>";
+		};
+		D6EF863916B5B5BB0076EBAA /* libavutil */ = {
+			isa = PBXGroup;
+			children = (
+				D6EF863A16B5B5BB0076EBAA /* avconfig.h */,
+			);
+			path = libavutil;
+			sourceTree = "<group>";
+		};
+		F53AD5E20B2A4EC000D93AC9 /* FFMPEG */ = {
+			isa = PBXGroup;
+			children = (
+				D6EF863916B5B5BB0076EBAA /* libavutil */,
+				F53AD5E70B2A4EFA00D93AC9 /* Video Codec */,
+				F53AD5E30B2A4EE100D93AC9 /* File Import */,
+				3DA6322312865F5400AC1962 /* FFmpegUtils.h */,
+				3DA6322412865F5400AC1962 /* FFmpegUtils.c */,
+			);
+			name = FFMPEG;
+			sourceTree = "<group>";
+		};
+		F53AD5E30B2A4EE100D93AC9 /* File Import */ = {
+			isa = PBXGroup;
+			children = (
+				11C85ED60A641E6400DF3D73 /* ff_private.c */,
+				11C85ED70A641E6400DF3D73 /* ff_private.h */,
+				F52286240B50625E00F8CF7D /* bitstream_info.h */,
+				F52286250B50625E00F8CF7D /* bitstream_info.c */,
+			);
+			name = "File Import";
+			sourceTree = "<group>";
+		};
+		F53AD5E70B2A4EFA00D93AC9 /* Video Codec */ = {
+			isa = PBXGroup;
+			children = (
+				F560DEFE03D61C4601ABA332 /* FFusionCodecDispatch.h */,
+				F560DF0003D61D0101ABA332 /* FFusionCodec.c */,
+				3D4A7A970B5533BC004C5D6A /* ColorConversions.h */,
+				3D4A7A980B5533BC004C5D6A /* ColorConversions.c */,
+				F57676040BE1A18300B2434B /* FrameBuffer.c */,
+				F57676050BE1A18300B2434B /* FrameBuffer.h */,
+			);
+			name = "Video Codec";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D67BC46416B166FF00E26386 /* FFusion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D67BC4AE16B166FF00E26386 /* Build configuration list for PBXNativeTarget "FFusion" */;
+			buildPhases = (
+				D67BC47016B166FF00E26386 /* Resources */,
+				D67BC47416B166FF00E26386 /* Sources */,
+				D67BC49816B166FF00E26386 /* Frameworks */,
+				D67BC58016B195C900E26386 /* Rez */,
+			);
+			buildRules = (
+				D67BC4AC16B166FF00E26386 /* PBXBuildRule */,
+				D67BC4AD16B166FF00E26386 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = FFusion;
+			productName = Perian;
+			productReference = D67BC4B216B166FF00E26386 /* FFusion.component */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				ORGANIZATIONNAME = RJVB;
+			};
+			buildConfigurationList = 11D4ED470A3CE59A0066D45F /* Build configuration list for PBXProject "FFusion-RJVB" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* ffmpeg DivX */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D67BC46416B166FF00E26386 /* FFusion */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D67BC47016B166FF00E26386 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67BC47316B166FF00E26386 /* Perian_icon.icns in Resources */,
+				D67BC4D816B1698400E26386 /* FFusionInfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		D67BC58016B195C900E26386 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67BC57F16B195AA00E26386 /* FFusionResources.r in Rez */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D67BC47416B166FF00E26386 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67BC47816B166FF00E26386 /* ff_private.c in Sources */,
+				D67BC47A16B166FF00E26386 /* FFusionCodec.c in Sources */,
+				D67BC47B16B166FF00E26386 /* Codecprintf.c in Sources */,
+				D67BC48216B166FF00E26386 /* CommonUtils.c in Sources */,
+				D67BC48E16B166FF00E26386 /* ColorConversions.c in Sources */,
+				D67BC49716B166FF00E26386 /* FFmpegUtils.c in Sources */,
+				D67BC53E16B1911300E26386 /* FrameBuffer.c in Sources */,
+				D67BC5C316B19A4300E26386 /* codecID.c in Sources */,
+				D67BC66016B1A40300E26386 /* bitstream_info.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		11D4ED480A3CE59A0066D45F /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG_BUILD;
+				GCC_STRICT_ALIASING = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					libmatroska,
+					libebml,
+					"ffmpeg/**",
+					"\"$(BUILT_PRODUCTS_DIR)\"",
+				);
+				LIBRARY_SEARCH_PATHS = $SYMROOT/Universal;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-D_GLIBCXX_DEBUG",
+					"$(OTHER_CFLAGS)",
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SDKROOT = macosx10.6;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				WARNING_CFLAGS = "-Wimplicit";
+			};
+			name = Development;
+		};
+		11D4ED490A3CE59A0066D45F /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_STRICT_ALIASING = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					libmatroska,
+					libebml,
+					"ffmpeg/**",
+					"\"$(BUILT_PRODUCTS_DIR)\"",
+				);
+				LIBRARY_SEARCH_PATHS = $SYMROOT/Universal;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				OTHER_CFLAGS_i386 = "-march=pentium-m -frerun-cse-after-loop $(OTHER_CFLAGS)";
+				OTHER_CFLAGS_ppc = "-mcpu=G3 -mmultiple $(OTHER_CFLAGS)";
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SDKROOT = macosx10.6;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = debugging;
+				WARNING_CFLAGS = "-Wimplicit";
+			};
+			name = Deployment;
+		};
+		3D4BBE510B59EE0A000EDE04 /* Deployment+Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_MODEL_TUNING = "";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG_BUILD;
+				GCC_STRICT_ALIASING = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				OTHER_CFLAGS_i386 = "-march=pentium-m -frerun-cse-after-loop $(OTHER_CFLAGS)";
+				OTHER_CFLAGS_ppc = "-mcpu=G3 -mmultiple $(OTHER_CFLAGS)";
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SDKROOT = macosx10.6;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				WARNING_CFLAGS = "-Wimplicit";
+			};
+			name = "Deployment+Debug";
+		};
+		D67BC4AF16B166FF00E26386 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				EXPORTED_SYMBOLS_FILE = "";
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG_BUILD,
+					FFUSION_CODEC_ONLY,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\\\"$(BUILT_PRODUCTS_DIR)\\\"/$(arch)",
+					libmatroska,
+					libebml,
+					"ffmpeg/**",
+					"\\\"$(BUILT_PRODUCTS_DIR)\\\"",
+				);
+				INFOPLIST_FILE = "Plists/FFusion-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-C";
+				INFOPLIST_PREFIX_HEADER = "";
+				INFOPLIST_PREPROCESS = YES;
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/Library/QuickTime";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)/build/Universal\\\"",
+					/usr/local/FFmpeg/trunk/lib,
+					"\"$(SRCROOT)/build/Universal\"",
+					"\"$(SRCROOT)/../Perian-1.2.1/build/Universal\"",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-read_only_relocs",
+					suppress,
+				);
+				OTHER_REZFLAGS = "-rd -d ppc_$(ppc) -d i386_$(i386) -d TARGET_REZ_CARBON_MACHO=1 -i \"$(SRCROOT)\" -i \"$(DERIVED_FILE_DIR)\"";
+				PRODUCT_NAME = FFusion;
+				REZ_PREPROCESSOR_DEFINITIONS = "";
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "ppc i386";
+				WRAPPER_EXTENSION = component;
+			};
+			name = Development;
+		};
+		D67BC4B016B166FF00E26386 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				EXPORTED_SYMBOLS_FILE = "";
+				GCC_ALTIVEC_EXTENSIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_PREPROCESSOR_DEFINITIONS = FFUSION_CODEC_ONLY;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"../Perian-1.2.1/ffmpeg/**",
+					"$(BUILT_PRODUCTS_DIR)/$(arch)",
+					"$(BUILT_PRODUCTS_DIR)",
+				);
+				INFOPLIST_FILE = "Plists/FFusion-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-C";
+				INFOPLIST_PREFIX_HEADER = "";
+				INFOPLIST_PREPROCESS = YES;
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/Library/QuickTime";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)/build/Universal\\\"",
+					"\"$(SRCROOT)/build/Universal\"",
+					"\"$(SRCROOT)/../Perian-1.2.1/build/Universal\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"-read_only_relocs",
+					suppress,
+				);
+				OTHER_REZFLAGS = "-rd -d ppc_$(ppc) -d i386_$(i386) -d TARGET_REZ_CARBON_MACHO=1 -i \"$(SRCROOT)\" -i \"$(DERIVED_FILE_DIR)\"";
+				PRODUCT_NAME = FFusion;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "ppc i386";
+				WRAPPER_EXTENSION = component;
+			};
+			name = Deployment;
+		};
+		D67BC4B116B166FF00E26386 /* Deployment+Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				EXPORTED_SYMBOLS_FILE = "";
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG_BUILD,
+					FFUSION_CODEC_ONLY,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\\\"$(BUILT_PRODUCTS_DIR)\\\"/$(arch)",
+					libmatroska,
+					libebml,
+					"ffmpeg/**",
+					"\\\"$(BUILT_PRODUCTS_DIR)\\\"",
+				);
+				INFOPLIST_FILE = "Plists/FFusion-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-C";
+				INFOPLIST_PREFIX_HEADER = "";
+				INFOPLIST_PREPROCESS = YES;
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/Library/QuickTime";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)/build/Universal\\\"",
+					/usr/local/FFmpeg/trunk/lib,
+					"\"$(SRCROOT)/build/Universal\"",
+					"\"$(SRCROOT)/../Perian-1.2.1/build/Universal\"",
+				);
+				OTHER_LDFLAGS = (
+					"-read_only_relocs",
+					suppress,
+				);
+				OTHER_REZFLAGS = "-rd -d ppc_$(ppc) -d i386_$(i386) -d TARGET_REZ_CARBON_MACHO=1 -i \"$(SRCROOT)\" -i \"$(DERIVED_FILE_DIR)\"";
+				PRODUCT_NAME = FFusion;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "ppc i386";
+				WRAPPER_EXTENSION = component;
+			};
+			name = "Deployment+Debug";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11D4ED470A3CE59A0066D45F /* Build configuration list for PBXProject "FFusion-RJVB" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11D4ED480A3CE59A0066D45F /* Development */,
+				11D4ED490A3CE59A0066D45F /* Deployment */,
+				3D4BBE510B59EE0A000EDE04 /* Deployment+Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Deployment+Debug";
+		};
+		D67BC4AE16B166FF00E26386 /* Build configuration list for PBXNativeTarget "FFusion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D67BC4AF16B166FF00E26386 /* Development */,
+				D67BC4B016B166FF00E26386 /* Deployment */,
+				D67BC4B116B166FF00E26386 /* Deployment+Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Deployment+Debug";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}
