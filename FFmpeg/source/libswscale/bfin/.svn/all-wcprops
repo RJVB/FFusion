@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/!svn/ver/1435/ffmpeg/libswscale/bfin
+END
+yuv2rgb_bfin.c
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/1435/ffmpeg/libswscale/bfin/yuv2rgb_bfin.c
+END
+swscale_bfin.c
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/1435/ffmpeg/libswscale/bfin/swscale_bfin.c
+END
+internal_bfin.S
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/!svn/ver/1435/ffmpeg/libswscale/bfin/internal_bfin.S
+END

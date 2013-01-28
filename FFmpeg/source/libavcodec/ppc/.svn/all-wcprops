@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/libavcodec/ppc
+END
+dsputil_altivec.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/dsputil_altivec.h
+END
+asm.S
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/asm.S
+END
+int_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/int_altivec.c
+END
+regs.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/regs.h
+END
+vc1dsp_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/vc1dsp_altivec.c
+END
+float_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/float_altivec.c
+END
+gmc_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/gmc_altivec.c
+END
+mathops.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/mathops.h
+END
+types_altivec.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/types_altivec.h
+END
+h264_template_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/h264_template_altivec.c
+END
+fft_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/fft_altivec.c
+END
+dsputil_ppc.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/dsputil_ppc.c
+END
+mpegvideo_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/mpegvideo_altivec.c
+END
+vp3dsp_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/vp3dsp_altivec.c
+END
+fdct_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/fdct_altivec.c
+END
+fft_altivec_s.S
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/fft_altivec_s.S
+END
+util_altivec.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/util_altivec.h
+END
+idct_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/idct_altivec.c
+END
+h264_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/h264_altivec.c
+END
+dsputil_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/dsputil_altivec.c
+END
+vp8dsp_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/vp8dsp_altivec.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/Makefile
+END
+mpegaudiodec_altivec.c
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/!svn/ver/1435/ffmpeg/libavcodec/ppc/mpegaudiodec_altivec.c
+END

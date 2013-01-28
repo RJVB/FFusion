@@ -1,0 +1,227 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/tests/ref/lavf
+END
+avi
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/avi
+END
+dv_fmt
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/dv_fmt
+END
+jpg
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/jpg
+END
+mpg
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mpg
+END
+png
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/png
+END
+gxf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/gxf
+END
+mxf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mxf
+END
+ppm
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/ppm
+END
+pgmpipe
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/pgmpipe
+END
+gif
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/gif
+END
+asf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/asf
+END
+tga
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/tga
+END
+ogg
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/ogg
+END
+rm
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/rm
+END
+bmp
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/bmp
+END
+mmf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mmf
+END
+yuv4mpeg
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/yuv4mpeg
+END
+sgi
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/sgi
+END
+pgm
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/pgm
+END
+alaw
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/alaw
+END
+mulaw
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mulaw
+END
+ts
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/ts
+END
+voc
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/voc
+END
+tiff
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/tiff
+END
+pcx
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/pcx
+END
+pbmpipe
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/pbmpipe
+END
+flv_fmt
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/flv_fmt
+END
+mkv
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mkv
+END
+wav
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/wav
+END
+swf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/swf
+END
+mov
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/mov
+END
+aiff
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/aiff
+END
+au
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/au
+END
+nut
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/nut
+END
+pixfmt
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/pixfmt
+END
+ffm
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/ffm
+END
+ppmpipe
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/tests/ref/lavf/ppmpipe
+END

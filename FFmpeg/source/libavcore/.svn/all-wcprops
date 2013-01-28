@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/1435/ffmpeg/libavcore
+END
+parseutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/libavcore/parseutils.h
+END
+utils.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/libavcore/utils.c
+END
+internal.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libavcore/internal.h
+END
+audioconvert.c
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1435/ffmpeg/libavcore/audioconvert.c
+END
+imgutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libavcore/imgutils.h
+END
+avcore.h
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/libavcore/avcore.h
+END
+audioconvert.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1435/ffmpeg/libavcore/audioconvert.h
+END
+samplefmt.c
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavcore/samplefmt.c
+END
+libavcore.v
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavcore/libavcore.v
+END
+parseutils.c
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/libavcore/parseutils.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/libavcore/Makefile
+END
+imgutils.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libavcore/imgutils.c
+END
+samplefmt.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavcore/samplefmt.h
+END
