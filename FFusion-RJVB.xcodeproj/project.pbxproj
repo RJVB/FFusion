@@ -66,8 +66,8 @@
 		11C85ED70A641E6400DF3D73 /* ff_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ff_private.h; sourceTree = "<group>"; };
 		11D4EED50A3CE7EC0066D45F /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		11D4EEFC0A3CE7FA0066D45F /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		11D4EFA10A3CE8C10066D45F /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = "../Perian-1.2.1/build/Universal/libavcodec.a"; sourceTree = "<group>"; };
-		11D4EFA20A3CE8C10066D45F /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = "../Perian-1.2.1/build/Universal/libavutil.a"; sourceTree = "<group>"; };
+		11D4EFA10A3CE8C10066D45F /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = FFmpeg/osx86/lib/libavcodec.a; sourceTree = "<group>"; };
+		11D4EFA20A3CE8C10066D45F /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = FFmpeg/osx86/lib/libavutil.a; sourceTree = "<group>"; };
 		3D0A039710068CAF0087E580 /* Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.h; sourceTree = "<group>"; };
 		3D4A7A970B5533BC004C5D6A /* ColorConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorConversions.h; sourceTree = "<group>"; };
 		3D4A7A980B5533BC004C5D6A /* ColorConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ColorConversions.c; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		3DAD08570FBF80D8001E156F /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = /usr/lib/libobjc.dylib; sourceTree = "<absolute>"; };
 		3DAD0A110FBFB145001E156F /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "/usr/lib/libstdc++.6.dylib"; sourceTree = "<absolute>"; };
 		3DE8D9C810444E680007C7E7 /* AppleScriptKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptKit.framework; path = /System/Library/Frameworks/AppleScriptKit.framework; sourceTree = "<absolute>"; };
-		3DEFA3F8120560AD0097FE4C /* libavcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcore.a; path = "../Perian-1.2.1/build/Universal/libavcore.a"; sourceTree = "<group>"; };
+		3DEFA3F8120560AD0097FE4C /* libavcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcore.a; path = FFmpeg/osx86/lib/libavcore.a; sourceTree = "<group>"; };
 		6116E74E0B4738CE0020F1CE /* CodecIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodecIDs.h; sourceTree = "<group>"; };
 		61D517710AE0402E00A671E1 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
 		61D517720AE0402E00A671E1 /* CommonUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CommonUtils.c; sourceTree = "<group>"; };
@@ -98,7 +98,6 @@
 		D67BC5AC16B1981D00E26386 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = /usr/local/FFmpeg/trunk/lib/libavformat.a; sourceTree = "<absolute>"; };
 		D67BC5AE16B1981D00E26386 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = /usr/local/FFmpeg/trunk/lib/libavutil.a; sourceTree = "<absolute>"; };
 		D67BC5C216B19A4300E26386 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = codecID.c; sourceTree = "<group>"; };
-		D6EF863A16B5B5BB0076EBAA /* avconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avconfig.h; sourceTree = "<group>"; };
 		F52286240B50625E00F8CF7D /* bitstream_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream_info.h; sourceTree = "<group>"; };
 		F52286250B50625E00F8CF7D /* bitstream_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream_info.c; sourceTree = "<group>"; };
 		F539CD110B62BC82005A72C9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -230,18 +229,9 @@
 			name = "Derived-deploy";
 			sourceTree = "<group>";
 		};
-		D6EF863916B5B5BB0076EBAA /* libavutil */ = {
-			isa = PBXGroup;
-			children = (
-				D6EF863A16B5B5BB0076EBAA /* avconfig.h */,
-			);
-			path = libavutil;
-			sourceTree = "<group>";
-		};
 		F53AD5E20B2A4EC000D93AC9 /* FFMPEG */ = {
 			isa = PBXGroup;
 			children = (
-				D6EF863916B5B5BB0076EBAA /* libavutil */,
 				F53AD5E70B2A4EFA00D93AC9 /* Video Codec */,
 				F53AD5E30B2A4EE100D93AC9 /* File Import */,
 				3DA6322312865F5400AC1962 /* FFmpegUtils.h */,
@@ -581,7 +571,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FFUSION_CODEC_ONLY;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
-					"../Perian-1.2.1/ffmpeg/**",
+					"FFmpeg/osx86/include/**",
+					"FFmpeg/source/**",
 					"$(BUILT_PRODUCTS_DIR)/$(arch)",
 					"$(BUILT_PRODUCTS_DIR)",
 				);
@@ -595,7 +586,7 @@
 					"$(inherited)",
 					"\\\"$(SRCROOT)/build/Universal\\\"",
 					"\"$(SRCROOT)/build/Universal\"",
-					"\"$(SRCROOT)/../Perian-1.2.1/build/Universal\"",
+					"\"$(SRCROOT)/FFmpeg/osx86/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (

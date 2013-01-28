@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/!svn/ver/1435/ffmpeg/libavutil/x86
+END
+bswap.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavutil/x86/bswap.h
+END
+timer.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1435/ffmpeg/libavutil/x86/timer.h
+END
+intreadwrite.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libavutil/x86/intreadwrite.h
+END
+cpu.c
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/libavutil/x86/cpu.c
+END
+intmath.h
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1435/ffmpeg/libavutil/x86/intmath.h
+END

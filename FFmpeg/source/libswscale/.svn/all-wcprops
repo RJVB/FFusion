@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/libswscale
+END
+swscale-test.c
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1435/ffmpeg/libswscale/swscale-test.c
+END
+yuv2rgb.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/yuv2rgb.c
+END
+utils.c
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1435/ffmpeg/libswscale/utils.c
+END
+swscale.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/swscale.c
+END
+swscale_internal.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libswscale/swscale_internal.h
+END
+rgb2rgb_template.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libswscale/rgb2rgb_template.c
+END
+swscale.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/swscale.h
+END
+colorspace-test.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/libswscale/colorspace-test.c
+END
+rgb2rgb.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/rgb2rgb.c
+END
+libswscale.v
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1435/ffmpeg/libswscale/libswscale.v
+END
+options.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/options.c
+END
+swscale_template.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/libswscale/swscale_template.c
+END
+rgb2rgb.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/libswscale/rgb2rgb.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/libswscale/Makefile
+END

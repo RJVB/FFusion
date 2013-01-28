@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 21
+/!svn/ver/1435/ffmpeg
+END
+configure
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/1435/ffmpeg/configure
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/!svn/ver/1435/ffmpeg/LICENSE
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/1435/ffmpeg/Doxyfile
+END
+ffmpeg.c
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/1435/ffmpeg/ffmpeg.c
+END
+cmdutils_common_opts.h
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1435/ffmpeg/cmdutils_common_opts.h
+END
+Changelog
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/1435/ffmpeg/Changelog
+END
+CREDITS
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/!svn/ver/1435/ffmpeg/CREDITS
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/!svn/ver/1435/ffmpeg/README
+END
+version.sh
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/version.sh
+END
+subdir.mak
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/subdir.mak
+END
+common.mak
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/common.mak
+END
+COPYING.GPLv2
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/!svn/ver/1435/ffmpeg/COPYING.GPLv2
+END
+COPYING.GPLv3
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/!svn/ver/1435/ffmpeg/COPYING.GPLv3
+END
+ffplay.c
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/1435/ffmpeg/ffplay.c
+END
+ffserver.c
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/ffserver.c
+END
+ffprobe.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/1435/ffmpeg/ffprobe.c
+END
+cmdutils.c
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/cmdutils.c
+END
+INSTALL
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/!svn/ver/1435/ffmpeg/INSTALL
+END
+ffserver.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/ffserver.h
+END
+cmdutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/1435/ffmpeg/cmdutils.h
+END
+MAINTAINERS
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/!svn/ver/1435/ffmpeg/MAINTAINERS
+END
+COPYING.LGPLv2.1
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/1435/ffmpeg/COPYING.LGPLv2.1
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/1435/ffmpeg/Makefile
+END
+COPYING.LGPLv3
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/COPYING.LGPLv3
+END

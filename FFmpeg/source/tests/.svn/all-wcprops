@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/!svn/ver/1435/ffmpeg/tests
+END
+lavf-regression.sh
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1435/ffmpeg/tests/lavf-regression.sh
+END
+videogen.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/1435/ffmpeg/tests/videogen.c
+END
+fate.mak
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/tests/fate.mak
+END
+copycooker.sh
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/tests/copycooker.sh
+END
+lavfi-regression.sh
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1435/ffmpeg/tests/lavfi-regression.sh
+END
+fate.sh
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/!svn/ver/1435/ffmpeg/tests/fate.sh
+END
+fate-run.sh
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/fate-run.sh
+END
+md5.sh
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/!svn/ver/1435/ffmpeg/tests/md5.sh
+END
+copy.regression.ref
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1435/ffmpeg/tests/copy.regression.ref
+END
+codec-regression.sh
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1435/ffmpeg/tests/codec-regression.sh
+END
+base64.c
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/tests/base64.c
+END
+regression-funcs.sh
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1435/ffmpeg/tests/regression-funcs.sh
+END
+ffserver.conf
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1435/ffmpeg/tests/ffserver.conf
+END
+tiny_psnr.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/tiny_psnr.c
+END
+seek_test.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1435/ffmpeg/tests/seek_test.c
+END
+fate2.mak
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/!svn/ver/1435/ffmpeg/tests/fate2.mak
+END
+fate-update.sh
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1435/ffmpeg/tests/fate-update.sh
+END
+lena.pnm
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/1435/ffmpeg/tests/lena.pnm
+END
+ffserver-regression.sh
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1435/ffmpeg/tests/ffserver-regression.sh
+END
+rotozoom.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/1435/ffmpeg/tests/rotozoom.c
+END
+ffserver.regression.ref
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1435/ffmpeg/tests/ffserver.regression.ref
+END
+audiogen.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/1435/ffmpeg/tests/audiogen.c
+END
