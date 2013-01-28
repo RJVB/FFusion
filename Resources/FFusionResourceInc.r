@@ -1,6 +1,6 @@
 /*
  *  FFusionResourceInf.r
- *  Perian
+ *  FFusion
  *
  *  Created by RJVB 20130124
  *  Copyright 2013 RJVB. All rights reserved.

@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>FFusion</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.2.3 (SVNREVISION ffmpeg: FFMPEGREVISION), copyright 2011 the Perian team</string>
+	<string>1.2.4, copyright 2011 the Perian team, 2013 RJVB</string>
 	<key>CFBundleIconFile</key>
 	<string>Perian_icon</string>
 	<key>CFBundleIdentifier</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>Peri</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.3rjvb</string>
+	<string>1.2.4</string>
 	<key>CSResourcesFileMapped</key>
 	<string>yes</string>
 </dict>

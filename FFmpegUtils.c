@@ -2,7 +2,7 @@
  * FFmpegUtils.c
  * Created by Alexander Strange on 11/7/10.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ void FFASBDToAVCodecContext(AudioStreamBasicDescription *asbd, AVCodecContext *a
 	avctx->bits_per_coded_sample = asbd->mBitsPerChannel;
 }
 
-static int PerianLockMgrCallback(void **mutex, enum AVLockOp op)
+static int FFusionLockMgrCallback(void **mutex, enum AVLockOp op)
 {
 	pthread_mutex_t **m = (pthread_mutex_t **)mutex;
 	int ret = 0;
@@ -107,7 +107,7 @@ void FFInitFFmpeg()
 	* the libavformat only once or we get an endlos loop when registering the same
 	* element twice!! */
 	static Boolean inited = FALSE;
-	int unlock = PerianInitEnter(&inited);
+	int unlock = FFusionInitEnter(&inited);
 	
 	/* Register the Parser of ffmpeg, needed because we do no proper setup of the libraries */
 	if(!inited) {
@@ -115,7 +115,7 @@ void FFInitFFmpeg()
 #ifndef FFUSION_CODEC_ONLY
 		avcodec_init();
 #endif
-		av_lockmgr_register(PerianLockMgrCallback);
+		av_lockmgr_register(FFusionLockMgrCallback);
 
 // RJVB
 #ifndef FFUSION_CODEC_ONLY
@@ -173,7 +173,7 @@ void FFInitFFmpeg()
 		av_log_set_callback(FFMpegCodecprintf);
 	}
 	
-	PerianInitExit(unlock);
+	FFusionInitExit(unlock);
 }
 
 // List of codec IDs we know about and that map to audio fourccs

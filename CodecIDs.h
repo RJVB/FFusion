@@ -118,7 +118,7 @@ enum {
 
 #ifndef REZ
 int getCodecID(OSType componentType);
-pascal ComponentResult getPerianCodecInfo(ComponentInstance self, OSType componentType, void *info);
+pascal ComponentResult getFFusionCodecInfo(ComponentInstance self, OSType componentType, void *info);
 #endif
 
 #endif

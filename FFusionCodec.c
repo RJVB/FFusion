@@ -35,11 +35,7 @@
 #include <pthread.h>
 
 //RJVB
-#ifndef FFUSION_CODEC_ONLY
-#	include "PerianResourceIDs.h"
-#else
-#	include "FFusionResourceIDs.h"
-#endif
+#include "FFusionResourceIDs.h"
 #include "avcodec.h"
 #include "Codecprintf.h"
 #include "ColorConversions.h"
@@ -188,63 +184,6 @@ extern CFMutableStringRef CopyHomeDirectory();
 #include <QuickTime/ImageCodec.k.h>
 #include <QuickTime/ComponentDispatchHelper.c>
 
-// RJVB
-#ifndef FFUSION_CODEC_ONLY
-static void *launchUpdateChecker(void *args)
-{
-	FSRef *ref = (FSRef *)args;
-    LSOpenFSRef(ref, NULL);
-	free(ref);
-	return NULL;
-}
-
-Boolean FFusionAlreadyRanUpdateCheck = 0;
-
-void FFusionRunUpdateCheck()
-{
-	if (FFusionAlreadyRanUpdateCheck) return;
-
-    CFDateRef lastRunDate = CopyPreferencesValueTyped(CFSTR("NextRunDate"), CFDateGetTypeID());
-    CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
-    
-	FFusionAlreadyRanUpdateCheck = 1;
-	
-	if (lastRunDate) {
-		Boolean exit = CFDateGetAbsoluteTime(lastRunDate) > now;
-		CFRelease(lastRunDate);
-		if (exit) return;
-	}
-    
-    //Two places to check, home dir and /
-    
-    CFMutableStringRef location = CopyHomeDirectory();
-    CFStringAppend(location, CFSTR("/Library/PreferencePanes/Perian.prefPane/Contents/Resources/PerianUpdateChecker.app"));
-    
-    char fileRep[1024];
-    FSRef *updateCheckRef = malloc(sizeof(FSRef));
-    Boolean doCheck = FALSE;
-    
-    if(CFStringGetFileSystemRepresentation(location, fileRep, 1024))
-        if(FSPathMakeRef((UInt8 *)fileRep, updateCheckRef, NULL) == noErr)
-            doCheck = TRUE;
-    
-    CFRelease(location);
-    if(doCheck == FALSE)
-    {
-        CFStringRef absLocation = CFSTR("/Library/PreferencePanes/Perian.prefPane/Contents/Resources/PerianUpdateChecker.app");
-        if(CFStringGetFileSystemRepresentation(absLocation, fileRep, 1024))
-            if(FSPathMakeRef((UInt8 *)fileRep, updateCheckRef, NULL) != noErr)
-                goto err;  //We have failed
-    }
-	pthread_t thread;
-	pthread_create(&thread, NULL, launchUpdateChecker, updateCheckRef);
-	
-	return;
-err:
-	free(updateCheckRef);
-}
-#endif
-
 static void RecomputeMaxCounts(FFusionGlobals glob)
 {
 	int i;
@@ -325,17 +264,17 @@ static void SetupMultithreadedDecoding(AVCodecContext *s, enum CodecID codecID)
 	if (sysctlbyname("hw.activecpu", &nthreads, &len, NULL, 0) == -1) nthreads = 1;
 	else nthreads = FFMIN(nthreads, 2);
 
-//#if LIBAVCODEC_VERSION_MAJOR > 52
+#if LIBAVCODEC_VERSION_MAJOR > 52
 	s->thread_count = nthreads;
-//#else
-//	avcodec_thread_init(s, nthreads);
-//#endif
+#else
+	avcodec_thread_init(s, nthreads);
+#endif
 }
 
 static void SetSkipLoopFilter(FFusionGlobals glob, AVCodecContext *avctx)
 {
 	Boolean keyExists = FALSE;
-	int loopFilterSkip = CFPreferencesGetAppIntegerValue(CFSTR("SkipLoopFilter"), PERIAN_PREF_DOMAIN, &keyExists);
+	int loopFilterSkip = CFPreferencesGetAppIntegerValue(CFSTR("SkipLoopFilter"), FFUSION_PREF_DOMAIN, &keyExists);
 	if(keyExists)
 	{
 		enum AVDiscard loopFilterValue = AVDISCARD_DEFAULT;
@@ -455,10 +394,6 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
 		// we allocate some space for copying the frame data since we need some padding at the end
 		// for ffmpeg's optimized bitstream readers. Size doesn't really matter, it'll grow if need be
 		FFusionDataSetup(&(glob->data), 256, 1024*1024);
-// RJVB
-#ifndef FFUSION_CODEC_ONLY
-        FFusionRunUpdateCheck();
-#endif
     }
     
     FFusionDebugPrint("%p opened for '%s'\n", glob, FourCCString(glob->componentType));
@@ -577,7 +512,7 @@ pascal ComponentResult FFusionCodecGetMPWorkFunction(FFusionGlobals glob, Compon
 
 pascal ComponentResult FFusionCodecInitialize(FFusionGlobals glob, ImageSubCodecDecompressCapabilities *cap)
 {
-	Boolean doExperimentalFlags = CFPreferencesGetAppBooleanValue(CFSTR("ExperimentalQTFlags"), PERIAN_PREF_DOMAIN, NULL);
+	Boolean doExperimentalFlags = CFPreferencesGetAppBooleanValue(CFSTR("ExperimentalQTFlags"), FFUSION_PREF_DOMAIN, NULL);
 	
     // Secifies the size of the ImageSubCodecDecompressRecord structure
     // and say we can support asyncronous decompression
@@ -605,14 +540,20 @@ pascal ComponentResult FFusionCodecInitialize(FFusionGlobals glob, ImageSubCodec
 static inline int shouldDecode(FFusionGlobals glob, enum CodecID codecID)
 {
 	FFusionDecodeAbilities decode = FFUSION_PREFER_DECODE;
-	if (glob->componentType == 'avc1')
+	if (glob->componentType == 'avc1'){
 		decode = ffusionIsParsedVideoDecodable(glob->begin.parser);
+	}
 	if(decode > FFUSION_CANNOT_DECODE && 
-	   (codecID == CODEC_ID_H264 || codecID == CODEC_ID_MPEG4) && CFPreferencesGetAppBooleanValue(CFSTR("PreferAppleCodecs"), PERIAN_PREF_DOMAIN, NULL))
+	   (codecID == CODEC_ID_H264 || codecID == CODEC_ID_MPEG4) &&
+	   CFPreferencesGetAppBooleanValue(CFSTR("PreferAppleCodecs"), FFUSION_PREF_DOMAIN, NULL)
+	){
 		decode = FFUSION_PREFER_NOT_DECODE;
-	if(decode > FFUSION_CANNOT_DECODE)
-		if(IsForcedDecodeEnabled())
+	}
+	if(decode > FFUSION_CANNOT_DECODE){
+		if(IsForcedDecodeEnabled()){
 			decode = FFUSION_PREFER_DECODE;
+		}
+	}
 	return decode > FFUSION_PREFER_NOT_DECODE;
 }
 
@@ -748,8 +689,9 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 		
 		FFusionDebugPrint("%p preflighted for %dx%d '%s'. (%d bytes of extradata)\n", glob, (**p->imageDescription).width, (**p->imageDescription).height, FourCCString(glob->componentType), glob->avContext->extradata_size);
         
-		if(glob->avContext->extradata_size != 0 && glob->begin.parser != NULL)
+		if(glob->avContext->extradata_size != 0 && glob->begin.parser != NULL){
 			ffusionParseExtraData(glob->begin.parser, glob->avContext->extradata, glob->avContext->extradata_size);
+		}
 		
 		if (glob->fileLog)
 			ffusionLogDebugInfo(glob->begin.parser, glob->fileLog);
@@ -769,9 +711,10 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 		// deblock skipping for h264
 		SetSkipLoopFilter(glob, glob->avContext);
 		
-		//fast flag
-		if (CFPreferencesGetAppBooleanValue(CFSTR("UseFastDecode"), PERIAN_PREF_DOMAIN, NULL))
+		// fast flag or not:
+		if( !CFPreferencesGetAppBooleanValue(CFSTR("UseBestDecode"), FFUSION_PREF_DOMAIN, NULL) ){
 			glob->avContext->flags2 |= CODEC_FLAG2_FAST;
+		}
 		
         // Finally we open the avcodec 
         
@@ -910,7 +853,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 	FFusionDebugPrint("%p BeginBand #%ld. (%sdecoded, packed %d)\n", glob, p->frameNumber, not(myDrp->decoded), glob->packedType);
 	
 	if (!glob->avContext) {
-		Codecprintf(glob->fileLog, "Perian: QT tried to call BeginBand without preflighting!\n");
+		Codecprintf(glob->fileLog, "FFusion: QT tried to call BeginBand without preflighting!\n");
 		return internalComponentErr;
 	}
 	
@@ -1381,7 +1324,7 @@ ComponentResult FFusionCodecGetSourceDataGammaLevel(FFusionGlobals glob, Fixed *
 
 pascal ComponentResult FFusionCodecGetCodecInfo(FFusionGlobals glob, CodecInfo *info)
 {
-	return getPerianCodecInfo(glob->self, glob->componentType, info);
+	return getFFusionCodecInfo(glob->self, glob->componentType, info);
 }
 
 static int FFusionGetBuffer(AVCodecContext *s, AVFrame *pic)

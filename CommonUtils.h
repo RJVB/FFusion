@@ -2,7 +2,7 @@
  * CommonUtils.h
  * Created by David Conrad on 10/13/06.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -72,8 +72,8 @@ CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type);
 
 // critical region for initializing stuff
 // component/ffmpeg initialization should be the only thing that really needs a mutex
-int PerianInitEnter(volatile Boolean *inited);
-void PerianInitExit(int unlock);
+int FFusionInitEnter(volatile Boolean *inited);
+void FFusionInitExit(int unlock);
 
 void *fast_realloc_with_padding(void *ptr, unsigned int *size, unsigned int min_size);
 
@@ -83,7 +83,7 @@ CGColorSpaceRef GetSRGBColorSpace();
 // postprocess RGBA+8-bit to not look terrible when displayed with 'transparent' blend mode
 void ConvertImageToQDTransparent(Ptr baseAddr, OSType pixelFormat, int rowBytes, int width, int height);
 	
-#define PERIAN_PREF_DOMAIN CFSTR("org.perian.Perian")
+#define FFUSION_PREF_DOMAIN CFSTR("org.perian.FFusion")
 
 #ifdef __cplusplus
 }

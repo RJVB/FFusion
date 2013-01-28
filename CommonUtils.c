@@ -2,7 +2,7 @@
  * CommonUtils.h
  * Created by David Conrad on 10/13/06.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -407,7 +407,7 @@ int IsForcedDecodeEnabled()
 	static int forced = -1;
 	
 	if(forced == -1)
-		forced = isApplicationNameInList(CFSTR("ForcePerianAppList"),
+		forced = isApplicationNameInList(CFSTR("ForceFFusionAppList"),
 										 defaultForcedAppList,
 										 sizeof(defaultForcedAppList)/sizeof(defaultForcedAppList[0]));
 	return forced;
@@ -488,7 +488,7 @@ int ShouldPlayHighFreqSBR()
 
 CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type)
 {
-	CFPropertyListRef val = CFPreferencesCopyAppValue(key, PERIAN_PREF_DOMAIN);
+	CFPropertyListRef val = CFPreferencesCopyAppValue(key, FFUSION_PREF_DOMAIN);
 	
 	if (val && CFGetTypeID(val) != type) {
 		CFRelease(val);
@@ -500,7 +500,7 @@ CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type)
 
 static pthread_mutex_t init_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-int PerianInitEnter(volatile Boolean *inited)
+int FFusionInitEnter(volatile Boolean *inited)
 {
 	if (*inited)
 		return FALSE;
@@ -509,7 +509,7 @@ int PerianInitEnter(volatile Boolean *inited)
 	return TRUE;
 }
 
-void PerianInitExit(int unlock)
+void FFusionInitExit(int unlock)
 {
 	if (unlock)
 		pthread_mutex_unlock(&init_mutex);
@@ -587,7 +587,7 @@ CGColorSpaceRef GetSRGBColorSpace()
 {
 	static Boolean loaded = FALSE;
 	static CGColorSpaceRef sRGBColorSpace;
-	int unlock = PerianInitEnter(&loaded);
+	int unlock = FFusionInitEnter(&loaded);
 
 	if (!loaded) {
 		loaded = TRUE;
@@ -601,7 +601,7 @@ CGColorSpaceRef GetSRGBColorSpace()
 		CGColorSpaceRetain(sRGBColorSpace);
 	}
 	
-	PerianInitExit(unlock);
+	FFusionInitExit(unlock);
 	
 	return sRGBColorSpace;
 }

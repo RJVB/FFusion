@@ -2,7 +2,7 @@
  * bitstream_info.h
  * Created by Graham Booker on 1/6/07.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -902,7 +902,7 @@ void registerFFusionParsers(FFusionParser *parser)
 void initFFusionParsers()
 {
 	static Boolean inited = FALSE;
-	int unlock = PerianInitEnter(&inited);
+	int unlock = FFusionInitEnter(&inited);
 	
 	if(!inited)
 	{
@@ -912,7 +912,7 @@ void initFFusionParsers()
 		registerFFusionParsers(&ffusionMpeg12VideoParser);
 	}
 	
-	PerianInitExit(unlock);
+	FFusionInitExit(unlock);
 }
 
 void ffusionParserFree(FFusionParserContext *parser)
@@ -1039,7 +1039,7 @@ FFusionDecodeAbilities ffusionIsParsedVideoDecodable(FFusionParserContext *parse
 		//QT is bad at high profile
 		//and x264 B-pyramid (sps.vui.num_reorder_frames > 1)
 		if(h264parser->profile_idc < 100 && h264parser->num_reorder_frames < 2 && 
-		   !CFPreferencesGetAppBooleanValue(CFSTR("DecodeAllProfiles"), PERIAN_PREF_DOMAIN, NULL))
+		   !CFPreferencesGetAppBooleanValue(CFSTR("DecodeAllProfiles"), FFUSION_PREF_DOMAIN, NULL))
 			ret = FFUSION_PREFER_NOT_DECODE;
 		
 		//PAFF/MBAFF
@@ -1057,6 +1057,7 @@ FFusionDecodeAbilities ffusionIsParsedVideoDecodable(FFusionParserContext *parse
 	
 	return FFUSION_PREFER_DECODE;
 }
+
 #ifdef DEBUG_BUILD
 //FFMPEG doesn't configure properly (their fault), so define their idoticly undefined symbols.
 int ff_epzs_motion_search(MpegEncContext * s, int *mx_ptr, int *my_ptr, int P[10][2], int src_index, int ref_index, int16_t (*last_mv)[2], int ref_mv_scale, int size, int h){return 0;}

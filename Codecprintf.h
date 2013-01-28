@@ -2,7 +2,7 @@
  * Codecprintf.h
  * Created by Augie Fackler on 7/16/06.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

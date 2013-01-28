@@ -2,7 +2,7 @@
  * Codecprintf.c
  * Created by Augie Fackler on 7/16/06.
  *
- * This file is part of Perian.
+ * This file was part of Perian.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@
 #include <stdarg.h>
 #include "log.h"
 
-#define CODEC_HEADER			"Perian: "
+#define CODEC_HEADER			"FFusion: "
 
 static int Codecvprintf(FILE *fileLog, const char *format, va_list va, int print_header)
 {
