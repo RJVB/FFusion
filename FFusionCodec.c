@@ -1094,6 +1094,8 @@ static OSErr PrereqDecompress(FFusionGlobals glob, FrameData *prereq, AVCodecCon
 	unsigned char *dataPtr = (unsigned char *)prereq->buffer;
 	int dataSize = prereq->dataSize;
 	
+	// RJVB
+	// (UInt8 *)drp->baseAddr, rowJump = drp->rowBytes - (width * sizeof(MoviePixel)), width, height
 	OSErr err = FFusionDecompress(glob, context, dataPtr, width, height, picture, dataSize);
 	
 	return err;
@@ -1163,6 +1165,60 @@ pascal ComponentResult FFusionCodecDecodeBand(FFusionGlobals glob, ImageSubCodec
 		dataPtr = FFusionCreateEntireDataBuffer(&(glob->data), (uint8_t *)drp->codecData, dataSize);
 	}
 		
+	// RJVB: decoding principle gleaned from Apple's ElectricImageComponent: the destination is a simple
+	// contiguous pixmap that of size drp->height * drp->rowBytes and that should receive each line's
+	// pixels without any inter-pixel (or inter-line) padding.
+//	destinationPtr=(UInt8 *)drp->baseAddr;
+//	switch( myDrp->depth ){
+//		case 1:
+//			movieLineByteWidth = ((myDrp->width + 7) / 8);
+//			endOfScanLine = destinationPtr + ((myDrp->width + 7) / 8);
+//			pixelWidth = sizeof(UInt8);
+//			break;
+//		case 8:
+//			movieLineByteWidth = (myDrp->width * 1);
+//			endOfScanLine = destinationPtr + (myDrp->width * 1);
+//			pixelWidth = sizeof(UInt8);
+//			break;
+//		case 16:
+//			movieLineByteWidth = (myDrp->width * 2);
+//			endOfScanLine = destinationPtr + (myDrp->width * 2);
+//			pixelWidth = sizeof(UInt16);
+//			break;
+//		case 24:
+//		case 32:
+//			movieLineByteWidth = (myDrp->width * 4):
+//			endOfScanLine = destinationPtr + (myDrp->width * 4);
+//			pixelWidth = sizeof(UInt32);
+//			break;
+//	}
+//	rowJump = drp->rowBytes - movieLineByteWidth;
+//	height = myDrp->height;
+//	while( decoding ){
+//		switch( myDrp->depth ){
+//			case 1:
+//			case 8:
+//				*(UInt8 *)destinationPtr = decodedPixel;
+//				destinationPtr += sizeof(UInt8);
+//				break;
+//			case 16:
+//				*(UInt16 *)destinationPtr = decodedPixel;
+//				destinationPtr += sizeof(UInt8);
+//				break;
+//				break;
+//			case 24:
+//			case 32:
+//				*(UInt32 *)destinationPtr = decodedPixel;
+//				destinationPtr += sizeof(UInt8);
+//				break;
+//				break;
+//		}
+//		if( baseAddr == endOfScanLine ){
+//			destinationPtr += rowJump;
+//			endOfScanLine += rowJump;
+//			height--;
+//		}
+//	}
 	err = FFusionDecompress(glob, glob->avContext, dataPtr, myDrp->width, myDrp->height, &tempFrame, dataSize);
 			
 	if (glob->packedType == PACKED_QUICKTIME_KNOWS_ORDER) {
@@ -1390,7 +1446,6 @@ static void releaseBuffer(AVCodecContext *s, AVFrame *pic)
 //-----------------------------------------------------------------
 // This function calls libavcodec to decompress one frame.
 //-----------------------------------------------------------------
-
 OSErr FFusionDecompress(FFusionGlobals glob, AVCodecContext *context, UInt8 *dataPtr, int width, int height, AVFrame *picture, int length)
 {
     OSErr err = noErr;
