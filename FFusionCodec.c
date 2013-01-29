@@ -159,8 +159,6 @@ pascal OSStatus HandlePPDialogWindowEvent(EventHandlerCallRef  nextHandler, Even
 pascal OSStatus HandlePPDialogControlEvent(EventHandlerCallRef  nextHandler, EventRef theEvent, void* userData);
 void ChangeHintText(int value, ControlRef staticTextField);
 
-extern CFMutableStringRef CopyHomeDirectory();
-
 //#define FFusionDebugPrint(x...) if (glob->fileLog) Codecprintf(glob->fileLog, x);
 #define FFusionDebugPrint(x...) Codecprintf(glob->fileLog, x)
 #define not(x) ((x) ? "" : "not ")

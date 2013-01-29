@@ -1,6 +1,7 @@
 call "c:\Program Files (x86)\VS2010\VC\bin\vcvars32.bat"
 
 echo Correcting import .lib libraries
+cd FFmpeg\win32\lib
 
 lib.exe /verbose /machine:i386 /def:avcodec-52.def /out:avcodec-52.lib
 lib.exe /verbose /machine:i386 /def:avformat-52.def /out:avformat-52.lib

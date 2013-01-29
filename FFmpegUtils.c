@@ -75,29 +75,29 @@ static int FFusionLockMgrCallback(void **mutex, enum AVLockOp op)
 }
 
 #define REGISTER_MUXER(x) { \
-	extern AVOutputFormat x##_muxer; \
+	extern DLLIMPORT AVOutputFormat x##_muxer; \
 		av_register_output_format(&x##_muxer); }
 #define REGISTER_DEMUXER(x) { \
-	extern AVInputFormat x##_demuxer; \
+	extern DLLIMPORT AVInputFormat x##_demuxer; \
 		av_register_input_format(&x##_demuxer); }
 #define REGISTER_MUXDEMUX(x)  REGISTER_MUXER(x); REGISTER_DEMUXER(x)
 #define REGISTER_PROTOCOL(x) { \
-	extern URLProtocol x##_protocol; \
+	extern DLLIMPORT URLProtocol x##_protocol; \
 		register_protocol(&x##_protocol); }
 
 #define REGISTER_ENCODER(x) { \
-	extern AVCodec x##_encoder; \
+	extern DLLIMPORT AVCodec x##_encoder; \
 		register_avcodec(&x##_encoder); }
 #define REGISTER_DECODER(x) { \
-	extern AVCodec x##_decoder; \
+	extern DLLIMPORT AVCodec x##_decoder; \
 		avcodec_register(&x##_decoder); }
 #define REGISTER_ENCDEC(x)  REGISTER_ENCODER(x); REGISTER_DECODER(x)
 
 #define REGISTER_PARSER(x) { \
-	extern AVCodecParser x##_parser; \
+	extern DLLIMPORT AVCodecParser x##_parser; \
 		av_register_codec_parser(&x##_parser); }
 #define REGISTER_BSF(x) { \
-	extern AVBitStreamFilter x##_bsf; \
+	extern DLLIMPORT AVBitStreamFilter x##_bsf; \
 		av_register_bitstream_filter(&x##_bsf); }
 
 void FFInitFFmpeg()
