@@ -263,10 +263,10 @@ static int parse_mpeg12_stream(FFusionParserContext *ffparser, const uint8_t *bu
 }
 
 #if LIBAVCODEC_VERSION_MAJOR > 52 
-	extern AVCodecParser ff_mpeg4video_parser;
+	extern DLLIMPORT AVCodecParser ff_mpeg4video_parser;
 #	define mpeg4video_parser	ff_mpeg4video_parser
 #else
-	extern AVCodecParser mpeg4video_parser;
+	extern DLLIMPORT AVCodecParser mpeg4video_parser;
 #endif
 
 static FFusionParser ffusionMpeg4VideoParser = {
@@ -278,10 +278,10 @@ static FFusionParser ffusionMpeg4VideoParser = {
 };
 
 #if LIBAVCODEC_VERSION_MAJOR > 52 
-	extern AVCodecParser ff_mpegvideo_parser;
+	extern DLLIMPORT AVCodecParser ff_mpegvideo_parser;
 #	define mpegvideo_parser	ff_mpegvideo_parser
 #else
-	extern AVCodecParser mpegvideo_parser;
+	extern DLLIMPORT AVCodecParser mpegvideo_parser;
 #endif
 
 static FFusionParser ffusionMpeg12VideoParser = {
@@ -877,10 +877,10 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 }
 
 #if LIBAVCODEC_VERSION_MAJOR > 52 
-	extern AVCodecParser ff_h264_parser;
+	extern DLLIMPORT AVCodecParser ff_h264_parser;
 #	define h264_parser	ff_h264_parser
 #else
-	extern AVCodecParser h264_parser;
+	extern DLLIMPORT AVCodecParser h264_parser;
 #endif
 
 static FFusionParser ffusionH264Parser = {

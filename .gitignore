@@ -3,3 +3,10 @@ FFusion-RJVB.xcodeproj/bertin.mode1
 build/Deployment/FFusion.component.dSYM
 build/FFusion-RJVB.build
 build/winx86
+Debug
+Release
+version_check.dSYM
+version_check
+version_check.suo
+version_check.vcxproj.filters
+version_check.vcxproj.user

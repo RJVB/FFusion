@@ -17,10 +17,24 @@
 #include <libavutil/avutil.h>
 #include <libavcore/avcore.h>
 
+#ifdef _MSC_VER
+#	define DLLIMPORT	__declspec(dllimport)
+#else
+#	define DLLIMPORT	/**/
+#endif
+
+#if LIBAVCODEC_VERSION_MAJOR > 52 
+	extern DLLIMPORT AVCodecParser ff_mpeg4video_parser;
+#	define mpeg4video_parser	ff_mpeg4video_parser
+#else
+	extern DLLIMPORT AVCodecParser mpeg4video_parser;
+#endif
+
 int main( int argc, char *argv[] )
 { const char *license, *configuration;
   unsigned version;
   int cpuFlags;
+  AVCodecParser *pp = &mpeg4video_parser;
 	fprintf( stderr, "avcodec,avcore,avutil version functions at %p,%p,%p\n",
 		avcodec_version, avcore_version, avutil_version );
 
@@ -29,6 +43,7 @@ int main( int argc, char *argv[] )
 	configuration = avcodec_configuration();
 	fprintf( stdout, "libavcodec, version %u / \"%s\"\n", version, configuration );
 	fprintf( stderr, "            license \"%s\"\n", license );
+	fprintf( stderr, "mpeg4video_parser @ %p\n", pp );
 	fflush(stderr), fflush(stdout);
 
 	version = avcore_version();

@@ -85,6 +85,12 @@ void ConvertImageToQDTransparent(Ptr baseAddr, OSType pixelFormat, int rowBytes,
 	
 #define FFUSION_PREF_DOMAIN CFSTR("org.perian.FFusion")
 
+#ifdef _MSC_VER
+#	define DLLIMPORT	__declspec(dllimport)
+#else
+#	define DLLIMPORT	/**/
+#endif
+	
 #ifdef __cplusplus
 }
 #endif
