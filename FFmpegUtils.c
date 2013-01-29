@@ -108,11 +108,13 @@ void FFInitFFmpeg()
 	* element twice!! */
 	static Boolean inited = FALSE;
 	int unlock = FFusionInitEnter(&inited);
+	int cpuFlags;
+	char cpuFlagString[1024];
 	
 	/* Register the Parser of ffmpeg, needed because we do no proper setup of the libraries */
 	if(!inited) {
 		inited = TRUE;
-#ifndef FFUSION_CODEC_ONLY
+#if LIBAVCODEC_VERSION_MAJOR <= 52
 		avcodec_init();
 #endif
 		av_lockmgr_register(FFusionLockMgrCallback);
@@ -171,6 +173,49 @@ void FFInitFFmpeg()
 #endif
 		
 		av_log_set_callback(FFMpegCodecprintf);
+		Codecprintf( stderr, "FFusion decoded using libavcodec, version %u / \"%s\"\n", avcodec_version(), avcodec_configuration() );
+		cpuFlags = av_get_cpu_flags();
+		cpuFlagString[0] = '\0';
+		if( cpuFlags & AV_CPU_FLAG_MMX ){
+			strncat( cpuFlagString, " MMX", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_MMX2 ){
+			strncat( cpuFlagString, " MMX2", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_3DNOW ){
+			strncat( cpuFlagString, " 3DNOW", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE ){
+			strncat( cpuFlagString, " SSE", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE2 ){
+			strncat( cpuFlagString, " SSE2", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE2SLOW ){
+			strncat( cpuFlagString, " SSE2SLOW", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_3DNOWEXT ){
+			strncat( cpuFlagString, " 3DNOWEXT", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE3 ){
+			strncat( cpuFlagString, " SSE3", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE3SLOW ){
+			strncat( cpuFlagString, " SSE3SLOW", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSSE3 ){
+			strncat( cpuFlagString, " SSSE3", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE4 ){
+			strncat( cpuFlagString, " SSE4", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_SSE42 ){
+			strncat( cpuFlagString, " SSE42", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		if( cpuFlags & AV_CPU_FLAG_IWMMXT ){
+			strncat( cpuFlagString, " IWMMXT", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
+		}
+		Codecprintf( stderr, "Extensions supported by the current CPU: %s\n", cpuFlagString );
 	}
 	
 	FFusionInitExit(unlock);
