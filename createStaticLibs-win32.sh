@@ -20,7 +20,7 @@ configureflags="--disable-doc --disable-pthreads --enable-w32threads --enable-ru
      --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network \
      --disable-swscale --disable-avfilter --target-os=mingw32 --enable-memalign-hack --arch=x86 \
 	--enable-cross-compile --cross-prefix=/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc- \
-	--enable-shared --disable-static"
+	--enable-shared --disable-static --disable-stripping"
 
 cflags="-g -msse2 -msse3 -arch i386 -Dattribute_deprecated= -w"
 
@@ -45,6 +45,8 @@ fi
 if [ "${DESTDIR}" = "" ] ;then
 	DESTDIR="${SRCROOT}/FFmpeg/win32"
 fi
+
+PATH="${PATH}:${DESTDIR}" ; export PATH
 
 BUILD_ID_FILE="${DESTDIR}/buildid"
 
@@ -120,6 +122,7 @@ else
 	cd "${SRCROOT}"
 	gcp -p "${BUILDDIR}/config.h" "${DESTDIR}/include/config.h"
 	gcp -puv "${BUILDDIR}"/*/*.def "${DESTDIR}/lib"
+	gcp -puv "${BUILDDIR}"/*/*.lib "${DESTDIR}/lib"
 	rm -rf "${DESTDIR}"/lib/*.dll.a "${DESTDIR}/lib/pkgconfig"
 	cd "${DESTDIR}/bin"
 	find . -type l | xargs rm
@@ -129,5 +132,6 @@ else
 	mv avformat-52.*.dll avformat-52.dll
 	mv avcore-0.*.dll avcore-0.dll
 	echo "Now run correctDotLibFiles.bat to use MSVC's lib.exe on the .def export files to regenerate the .lib export libraries properly!"
+	echo "or do NOT use linker references when building optimised code with MSVC (/OPT:NOREF)"
 fi
 
