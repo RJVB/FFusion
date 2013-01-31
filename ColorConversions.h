@@ -22,13 +22,17 @@
 #ifndef __COLORCONVERSIONS_H__
 #define __COLORCONVERSIONS_H__
 
-#include <Carbon/Carbon.h>
+#if TARGET_OS_MAC
+#	include <Carbon/Carbon.h>
+#endif
 #include "libavcodec/avcodec.h"
 
-#if defined(__i386__) && !defined(__llvm__)
-#define FASTCALL __attribute__((fastcall))
+#ifdef _MSCVER
+#	define FASTCALL	__fastcall
+#elif defined(__i386__) && !defined(__llvm__) && !defined(_MSC_VER)
+#	define FASTCALL	__attribute__((fastcall))
 #else
-#define FASTCALL
+#	define FASTCALL
 #endif
 
 typedef void ColorConversionFunc(AVPicture *inPicture, UInt8 *outBaseAddr, int outRowBytes, int outWidth, int outHeight) FASTCALL;
