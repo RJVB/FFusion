@@ -19,10 +19,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include <stdio.h>
+#include <stddef.h>
+#include <stdint.h>
+#ifdef _MSC_VER
+	// prevent the GNU compatibility stdint.h header included with the QuickTime SDK from being included:
+#	define _STDINT_H
+#	define restrict	/**/
+	// FIXMERJVB
+#	define FASTDIV(a,b)	(a)/(b)
+#endif
+
 #include "bitstream_info.h"
 
-#include <AudioToolbox/AudioToolbox.h>
-#include <QuickTime/QuickTime.h>
+//#include <AudioToolbox/AudioToolbox.h>
+//#include <QuickTime/QuickTime.h>
 
 #ifndef FFUSION_CODEC_ONLY
 #	include "ac3tab.h"
@@ -31,16 +42,18 @@
 //ffmpeg's struct Picture conflicts with QuickDraw's
 #define Picture MPEGPICTURE
 
-#include "avcodec.h"
+#include "libavcodec/avcodec.h"
 
-#include "bswap.h"
-#include "libavutil/intmath.h"
-#include "libavutil/internal.h"
-#include "mpegvideo.h"
-#include "parser.h"
-#include "golomb.h"
-#include "mpeg4video.h"
-#include "mpeg4video_parser.h"
+#ifndef _MSC_VER
+#	include "libavutil/bswap.h"
+#	include "libavutil/intmath.h"
+#	include "libavutil/internal.h"
+#endif
+#include "libavcodec/mpegvideo.h"
+#include "libavcodec/parser.h"
+#include "libavcodec/golomb.h"
+#include "libavcodec/mpeg4video.h"
+#include "libavcodec/mpeg4video_parser.h"
 #include "Codecprintf.h"
 
 #include "CodecIDs.h"
@@ -162,14 +175,14 @@ int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *a
 static int parse_mpeg4_extra(FFusionParserContext *parser, const uint8_t *buf, int buf_size)
 {
 	ParseContext1 *pc1 = (ParseContext1 *)parser->pc->priv_data;
-	pc1->pc.frame_start_found = 0;
-	
 	MpegEncContext *s = pc1->enc;
 	GetBitContext gb1, *gb = &gb1;
+
+	pc1->pc.frame_start_found = 0;
 	
 	s->avctx = parser->avctx;
 	s->current_picture_ptr = &s->current_picture;
-	
+
 	init_get_bits(gb, buf, 8 * buf_size);
 	ff_mpeg4_decode_picture_header(s, gb);
 	return 1;
@@ -189,55 +202,34 @@ static int parse_mpeg4_extra(FFusionParserContext *parser, const uint8_t *buf, i
 static int parse_mpeg4_stream(FFusionParserContext *parser, const uint8_t *buf, int buf_size, int *out_buf_size, int *type, int *skippable, int *skipped)
 {
 	ParseContext1 *pc1 = (ParseContext1 *)parser->pc->priv_data;
-	pc1->pc.frame_start_found = 0;
-	
-	int endOfFrame = ff_mpeg4_find_frame_end(&(pc1->pc), buf, buf_size);
-	
-	MpegEncContext *s = pc1->enc;
+	int endOfFrame;
 	GetBitContext gb1, *gb = &gb1;
+	MpegEncContext *s;
+
+	pc1->pc.frame_start_found = 0;
+
+	endOfFrame = ff_mpeg4_find_frame_end(&(pc1->pc), buf, buf_size);
+
+	s = pc1->enc;
 	
 	s->avctx = parser->avctx;
 	s->current_picture_ptr = &s->current_picture;
 	
 	init_get_bits(gb, buf, 8 * buf_size);
-	int parse_res = ff_mpeg4_decode_picture_header(s, gb);
-	if(parse_res == FRAME_SKIPPED) {
-		*out_buf_size = buf_size;
-		*type = FF_P_TYPE;
-		*skippable = 1;
-		*skipped = 1;
+	{ int parse_res = ff_mpeg4_decode_picture_header(s, gb);
+		if(parse_res == FRAME_SKIPPED) {
+			*out_buf_size = buf_size;
+			*type = FF_P_TYPE;
+			*skippable = 1;
+			*skipped = 1;
+		}
+		if(parse_res != 0)
+			return 0;
 	}
-	if(parse_res != 0)
-		return 0;
 	
 	*type = s->pict_type;
 	*skippable = (*type == FF_B_TYPE);
 	*skipped = 0;
-#if 0 /*this was an attempt to figure out the PTS information and detect an out of order P frame before we hit its B frame */
-	int64_t *lastPtsPtr = (int64_t *)parser->internalContext;
-	int64_t lastPts = *lastPtsPtr;
-	int64_t currentPts = s->current_picture.pts;
-	
-	switch(s->pict_type)
-	{
-		case FF_I_TYPE:
-			*lastPtsPtr = currentPts;
-			*precedesAPastFrame = 0;
-			break;
-		case FF_P_TYPE:
-			if(currentPts > lastPts + 1)
-				*precedesAPastFrame = 1;
-			else
-				*precedesAPastFrame = 0;
-			*lastPtsPtr = currentPts;
-			break;
-		case FF_B_TYPE:
-			*precedesAPastFrame = 0;
-			break;
-		default:
-			break;
-	}
-#endif
 	
 	if(endOfFrame == END_NOT_FOUND)
 		*out_buf_size = buf_size;
@@ -270,7 +262,7 @@ static int parse_mpeg12_stream(FFusionParserContext *ffparser, const uint8_t *bu
 #endif
 
 static FFusionParser ffusionMpeg4VideoParser = {
-	&mpeg4video_parser,
+	NULL,
 	0,
 	NULL,
 	parse_mpeg4_extra,
@@ -285,7 +277,7 @@ static FFusionParser ffusionMpeg4VideoParser = {
 #endif
 
 static FFusionParser ffusionMpeg12VideoParser = {
-	&mpegvideo_parser,
+	NULL,
 	0,
 	NULL,
 	NULL,
@@ -388,10 +380,10 @@ static void skip_scaling_matrices(GetBitContext *gb){
 
 static void skip_hrd_parameters(GetBitContext *gb)
 {
-	int cpb_cnt_minus1 = get_ue_golomb(gb);
+	int i, cpb_cnt_minus1 = get_ue_golomb(gb);
 	get_bits(gb, 4);	//bit_rate_scale
 	get_bits(gb, 4);	//cpb_size_scale
-	int i;
+
 	for(i=0; i<=cpb_cnt_minus1; i++)
 	{
 		get_ue_golomb(gb);	//bit_rate_value_minus1[i]
@@ -407,6 +399,7 @@ static void skip_hrd_parameters(GetBitContext *gb)
 static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_size)
 {
 	GetBitContext getbit, *gb = &getbit;
+	int mbs_only, nal_hrd_parameters_present_flag, vcl_hrd_parameters_present_flag;
 	
 	init_get_bits(gb, buf, 8 * buf_size);
     context->profile_idc= get_bits(gb, 8);
@@ -448,7 +441,7 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 	context->gaps_in_frame_num_value_allowed_flag = get_bits1(gb);		//gaps_in_frame_num_value_allowed_flag
 	get_ue_golomb(gb);	//pic_width_in_mbs_minus1
 	get_ue_golomb(gb);	//pic_height_in_map_units_minus1
-	int mbs_only = get_bits1(gb);
+	mbs_only = get_bits1(gb);
 	context->frame_mbs_only_flag = mbs_only;
 #if 1		//This is a test to get num_reorder_frames
 	if(!mbs_only)
@@ -495,12 +488,12 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 			get_bits(gb, 32);	//time_scale
 			get_bits1(gb);	//fixed_frame_rate_flag
 		}
-		int nal_hrd_parameters_present_flag = get_bits1(gb);
+		nal_hrd_parameters_present_flag = get_bits1(gb);
 		if(nal_hrd_parameters_present_flag)
 		{
 			skip_hrd_parameters(gb);
 		}
-		int vcl_hrd_parameters_present_flag = get_bits1(gb);
+		vcl_hrd_parameters_present_flag = get_bits1(gb);
 		if(vcl_hrd_parameters_present_flag)
 		{
 			skip_hrd_parameters(gb);
@@ -594,23 +587,24 @@ static int inline decode_slice_header(H264ParserContext *context, const uint8_t 
 	}
 	else if(context->poc_type == 1 && !context->delta_pic_order_always_zero_flag)
 	{
-		int delta_pic_order_cnt[2] = {0, 0};
+		int delta_pic_order_cnt[2] = {0, 0, }, frame_num_offset, abs_frame_num, num_ref_frames_in_pic_order_cnt_cycle,
+			expected_delta_per_poc_cycle, expectedpoc;
 		delta_pic_order_cnt[0] = get_se_golomb(gb);
 		if(context->pic_order_present_flag && !field_pic_flag)
 			delta_pic_order_cnt[1] = get_se_golomb(gb);
 		
-		int frame_num_offset = 0;  //I think this is wrong, but the pts code isn't used anywhere, so no harm yet and this removes a warning.
+		frame_num_offset = 0;  //I think this is wrong, but the pts code isn't used anywhere, so no harm yet and this removes a warning.
 		
-		int abs_frame_num = 0;
-		int num_ref_frames_in_pic_order_cnt_cycle = context->num_ref_frames_in_pic_order_cnt_cycle;
+		abs_frame_num = 0;
+		num_ref_frames_in_pic_order_cnt_cycle = context->num_ref_frames_in_pic_order_cnt_cycle;
 		if(num_ref_frames_in_pic_order_cnt_cycle != 0)
 			abs_frame_num = frame_num_offset + frame_number;
 		
 		if(nal_ref_idc == 0 && abs_frame_num > 0)
 			abs_frame_num--;
 		
-		int expected_delta_per_poc_cycle = context->sum_of_offset_for_ref_frames;
-		int expectedpoc = 0;
+		expected_delta_per_poc_cycle = context->sum_of_offset_for_ref_frames;
+		expectedpoc = 0;
 		if(abs_frame_num > 0)
 		{
 			int poc_cycle_cnt = (abs_frame_num - 1) / num_ref_frames_in_pic_order_cnt_cycle;
@@ -635,7 +629,11 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 	int ret = 0;
 	int pts_decoded = 0;
 	int lowestType = 20;
-	
+	uint8_t partOfNal[NAL_PEEK_SIZE];
+	int decodedNalSize, nalType;
+	int nal_ref_idc;
+	int slice_type = 0;
+
 	*skippable = 1;
 	
 #if 0 /*this was an attempt to figure out the PTS information and detect an out of order P frame before we hit its B frame */
@@ -689,6 +687,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 		{
 			int num_nuls = 0;
 			int start_offset = 0;
+
 			//do start code prefix search
 			for(; buf_index < buf_size; buf_index++)
 			{
@@ -729,10 +728,6 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 			buf_index = start_offset;
 		}
 
-		uint8_t partOfNal[NAL_PEEK_SIZE];
-		int decodedNalSize, nalType;
-		int nal_ref_idc;
-		int slice_type = 0;
 		
 		if(decode_nal(buf + buf_index, FFMIN(nalsize, NAL_PEEK_SIZE), partOfNal, &decodedNalSize, &nalType, &nal_ref_idc))
 		{
@@ -884,7 +879,7 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 #endif
 
 static FFusionParser ffusionH264Parser = {
-	&h264_parser,
+	NULL,
 	sizeof(H264ParserContext),
 	init_h264_parser,
 	parse_extra_data_h264,
@@ -907,8 +902,11 @@ void initFFusionParsers()
 	if(!inited)
 	{
 		inited = TRUE;
+		ffusionMpeg4VideoParser.avparse = &mpeg4video_parser;
 		registerFFusionParsers(&ffusionMpeg4VideoParser);
+		ffusionH264Parser.avparse = &h264_parser;
 		registerFFusionParsers(&ffusionH264Parser);
+		ffusionMpeg12VideoParser.avparse = &mpegvideo_parser;
 		registerFFusionParsers(&ffusionMpeg12VideoParser);
 	}
 	
@@ -936,6 +934,7 @@ FFusionParserContext *ffusionParserInit(int codec_id)
     AVCodecParserContext *s;
     AVCodecParser *parser;
 	FFusionParser *ffParser;
+	FFusionParserContext *parserContext = NULL;
     int ret, i;
 	
     if(codec_id == CODEC_ID_NONE)
@@ -972,7 +971,7 @@ found:
     s->fetch_timestamp=1;
 	s->flags |= PARSER_FLAG_COMPLETE_FRAMES;
 	
-	FFusionParserContext *parserContext = malloc(sizeof(FFusionParserContext));
+	parserContext = malloc(sizeof(FFusionParserContext));
 	parserContext->avctx = avcodec_alloc_context();
 	parserContext->pc = s;
 	parserContext->parserStructure = ffParser;
@@ -1038,9 +1037,13 @@ FFusionDecodeAbilities ffusionIsParsedVideoDecodable(FFusionParserContext *parse
 		
 		//QT is bad at high profile
 		//and x264 B-pyramid (sps.vui.num_reorder_frames > 1)
-		if(h264parser->profile_idc < 100 && h264parser->num_reorder_frames < 2 && 
-		   !CFPreferencesGetAppBooleanValue(CFSTR("DecodeAllProfiles"), FFUSION_PREF_DOMAIN, NULL))
+		if(h264parser->profile_idc < 100 && h264parser->num_reorder_frames < 2
+#if TARGET_OS_MAC
+		   && !CFPreferencesGetAppBooleanValue(CFSTR("DecodeAllProfiles"), FFUSION_PREF_DOMAIN, NULL)
+#endif
+		){
 			ret = FFUSION_PREFER_NOT_DECODE;
+		}
 		
 		//PAFF/MBAFF
 		//ffmpeg is ok at this now but we can't test it (not enough AVCHD samples)

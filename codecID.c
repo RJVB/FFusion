@@ -1,7 +1,20 @@
+#include <stdio.h>
+#include <stddef.h>
+#include <stdint.h>
+#ifdef _MSC_VER
+	// prevent the GNU compatibility stdint.h header included with the QuickTime SDK from being included:
+#	define _STDINT_H
+#endif
 
-#include "avcodec.h"
+#include "libavcodec/avcodec.h"
+#ifdef __MACH__
+#	include <QuickTime/QuickTime.h>
+#else
+#	include <ConditionalMacros.h>
+#	include <Endian.h>
+#	include <ImageCodec.h>
+#endif
 #include "CodecIDs.h"
-#include <QuickTime/QuickTime.h>
 #include "FFusionResourceIDs.h"
 
 int getCodecID(OSType componentType)

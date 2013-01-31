@@ -22,7 +22,7 @@
 #include "Codecprintf.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include "log.h"
+#include "libavutil/log.h"
 
 #define CODEC_HEADER			"FFusion: "
 
@@ -67,7 +67,11 @@ const char *FourCCString(FourCharCode c)
     
 	//not a fourcc or twocc
 	if (c < '\0\0AA') {
+#ifdef _MSC_VER
+		_snprintf(fourcc, sizeof(fourcc), "%#x", (unsigned)c);
+#else
 		snprintf(fourcc, sizeof(fourcc), "%#x", (unsigned)c);
+#endif
 	} else {
 		for (i = 0; i < 4; i++) fourcc[i] = c >> 8*(3-i);
 		fourcc[4] = '\0';

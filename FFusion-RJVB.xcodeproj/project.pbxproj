@@ -22,9 +22,9 @@
 		D67BC4A516B166FF00E26386 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57755F40B51EB1800C7D833 /* CoreFoundation.framework */; };
 		D67BC4D816B1698400E26386 /* FFusionInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */; };
 		D67BC53E16B1911300E26386 /* FrameBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = F57676040BE1A18300B2434B /* FrameBuffer.c */; };
-		D67BC57F16B195AA00E26386 /* FFusionResources.r in Rez */ = {isa = PBXBuildFile; fileRef = D67BC55716B1936B00E26386 /* FFusionResources.r */; };
 		D67BC5C316B19A4300E26386 /* codecID.c in Sources */ = {isa = PBXBuildFile; fileRef = D67BC5C216B19A4300E26386 /* codecID.c */; };
 		D67BC66016B1A40300E26386 /* bitstream_info.c in Sources */ = {isa = PBXBuildFile; fileRef = F52286250B50625E00F8CF7D /* bitstream_info.c */; };
+		D6ACC46716BAC60E001EDE3F /* FFusionMacOSXResources.r in Rez */ = {isa = PBXBuildFile; fileRef = D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */; };
 		D6EF866416B5DC9C0076EBAA /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA20A3CE8C10066D45F /* libavutil.a */; };
 		D6EF866516B5DC9C0076EBAA /* libavcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEFA3F8120560AD0097FE4C /* libavcore.a */; };
 		D6EF866616B5DC9C0076EBAA /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA10A3CE8C10066D45F /* libavcodec.a */; };
@@ -2215,6 +2215,7 @@
 		D67BC5AC16B1981D00E26386 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = /usr/local/FFmpeg/trunk/lib/libavformat.a; sourceTree = "<absolute>"; };
 		D67BC5AE16B1981D00E26386 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = /usr/local/FFmpeg/trunk/lib/libavutil.a; sourceTree = "<absolute>"; };
 		D67BC5C216B19A4300E26386 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = codecID.c; sourceTree = "<group>"; };
+		D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionMacOSXResources.r; path = Resources/FFusionMacOSXResources.r; sourceTree = "<group>"; };
 		F52286240B50625E00F8CF7D /* bitstream_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream_info.h; sourceTree = "<group>"; };
 		F52286250B50625E00F8CF7D /* bitstream_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream_info.c; sourceTree = "<group>"; };
 		F539CD110B62BC82005A72C9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -2288,6 +2289,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */,
 				D67BC58D16B1963E00E26386 /* FFusionResourceInc.r */,
 				D67BC55716B1936B00E26386 /* FFusionResources.r */,
 				D67BC4D516B1698400E26386 /* FFusion-Info.plist */,
@@ -4928,7 +4930,7 @@
 			isa = PBXRezBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D67BC57F16B195AA00E26386 /* FFusionResources.r in Rez */,
+				D6ACC46716BAC60E001EDE3F /* FFusionMacOSXResources.r in Rez */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

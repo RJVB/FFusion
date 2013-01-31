@@ -179,8 +179,15 @@ void ChangeHintText(int value, ControlRef staticTextField);
 
 #define	GET_DELEGATE_COMPONENT()	(storage->delegateComponent)
 
-#include <QuickTime/ImageCodec.k.h>
-#include <QuickTime/ComponentDispatchHelper.c>
+#if __MACH__
+#	include <CoreServices/Components.k.h>
+#	include <QuickTime/ImageCodec.k.h>
+#	include <QuickTime/ComponentDispatchHelper.c>
+#else
+#	include <Components.k.h>
+#	include <ImageCodec.k.h>
+#	include <ComponentDispatchHelper.c>
+#endif
 
 static void RecomputeMaxCounts(FFusionGlobals glob)
 {
@@ -272,7 +279,11 @@ static void SetupMultithreadedDecoding(AVCodecContext *s, enum CodecID codecID)
 static void SetSkipLoopFilter(FFusionGlobals glob, AVCodecContext *avctx)
 {
 	Boolean keyExists = FALSE;
+#if TARGET_OS_MAC
 	int loopFilterSkip = CFPreferencesGetAppIntegerValue(CFSTR("SkipLoopFilter"), FFUSION_PREF_DOMAIN, &keyExists);
+#else
+	int loopFilterSkip = 0;
+#endif
 	if(keyExists)
 	{
 		enum AVDiscard loopFilterValue = AVDISCARD_DEFAULT;
@@ -510,7 +521,11 @@ pascal ComponentResult FFusionCodecGetMPWorkFunction(FFusionGlobals glob, Compon
 
 pascal ComponentResult FFusionCodecInitialize(FFusionGlobals glob, ImageSubCodecDecompressCapabilities *cap)
 {
+#if TARGET_OS_MAC
 	Boolean doExperimentalFlags = CFPreferencesGetAppBooleanValue(CFSTR("ExperimentalQTFlags"), FFUSION_PREF_DOMAIN, NULL);
+#else
+	Boolean doExperimentalFlags = FALSE;
+#endif
 	
     // Secifies the size of the ImageSubCodecDecompressRecord structure
     // and say we can support asyncronous decompression
@@ -542,8 +557,10 @@ static inline int shouldDecode(FFusionGlobals glob, enum CodecID codecID)
 		decode = ffusionIsParsedVideoDecodable(glob->begin.parser);
 	}
 	if(decode > FFUSION_CANNOT_DECODE && 
-	   (codecID == CODEC_ID_H264 || codecID == CODEC_ID_MPEG4) &&
-	   CFPreferencesGetAppBooleanValue(CFSTR("PreferAppleCodecs"), FFUSION_PREF_DOMAIN, NULL)
+	   (codecID == CODEC_ID_H264 || codecID == CODEC_ID_MPEG4)
+#if TARGET_OS_MAC
+	   && CFPreferencesGetAppBooleanValue(CFSTR("PreferAppleCodecs"), FFUSION_PREF_DOMAIN, NULL)
+#endif
 	){
 		decode = FFUSION_PREFER_NOT_DECODE;
 	}
@@ -710,9 +727,14 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 		SetSkipLoopFilter(glob, glob->avContext);
 		
 		// fast flag or not:
+#if TARGET_OS_MAC
 		if( !CFPreferencesGetAppBooleanValue(CFSTR("UseBestDecode"), FFUSION_PREF_DOMAIN, NULL) ){
 			glob->avContext->flags2 |= CODEC_FLAG2_FAST;
 		}
+#else
+		// FIXMERJVB
+		glob->avContext->flags2 |= CODEC_FLAG2_FAST;
+#endif
 		
         // Finally we open the avcodec 
         
