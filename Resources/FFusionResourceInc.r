@@ -94,6 +94,7 @@ resource 'thng' (kCurrentTHNGResID, kCodecName) {
 	componentDoAutoVersion,			// Registration Flags
 	0,								// Resource ID of Icon Family
 	{
+#if TARGET_REZ_CARBON_MACHO
 		kDecompressionFlags, 
 		'dlle',						// Entry point found by symbol name 'dlle' resource
 		kEntryPointID,				// ID of 'dlle' resource
@@ -102,6 +103,12 @@ resource 'thng' (kCurrentTHNGResID, kCodecName) {
 		'dlle',
 		kEntryPointID,
 		platformIA32NativeEntryPoint,
+#else
+		kDecompressionFlags,
+		'dlle',
+		kEntryPointID,
+		platformWin32,
+#endif
 	};
 };
 

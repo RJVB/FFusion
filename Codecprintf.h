@@ -22,14 +22,30 @@
 #ifndef CODECPRINTF_H
 #define CODECPRINTF_H
 #include <stdio.h>
-#include <QuickTime/QuickTime.h>
+#include <stddef.h>
+#include <stdint.h>
+#ifdef _MSC_VER
+	// prevent the GNU compatibility stdint.h header included with the QuickTime SDK from being included:
+#	define _STDINT_H
+#endif
+#ifdef __MACH__
+#	include <QuickTime/QuickTime.h>
+#else
+#	include <ConditionalMacros.h>
+#	include <Endian.h>
+#	include <ImageCodec.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #undef printf
-int Codecprintf(FILE *, const char *format, ...) __attribute__((format (printf, 2, 3)));
+#ifdef _MSC_VER
+	extern int Codecprintf(FILE *, const char *format, ...);
+#else
+	int Codecprintf(FILE *, const char *format, ...) __attribute__((format (printf, 2, 3)));
+#endif
 void FourCCprintf(const char *string, FourCharCode a);
 const char *FourCCString(FourCharCode c);
 
