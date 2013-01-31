@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "avcodec.h"
+#include "libavcodec/avcodec.h"
 #include "CommonUtils.h"
-#import <Carbon/Carbon.h>
-#import <pthread.h>
-#import <dlfcn.h>
-#import <fnmatch.h>
+//#import <Carbon/Carbon.h>
+#include <pthread.h>
+#include <dlfcn.h>
+#include <fnmatch.h>
 
 typedef struct LanguageTriplet {
 	char twoChar[3];
@@ -488,6 +488,9 @@ int ShouldPlayHighFreqSBR()
 
 CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type)
 {
+#if !TARGET_OS_MAC
+	return NULL;
+#else
 	CFPropertyListRef val = CFPreferencesCopyAppValue(key, FFUSION_PREF_DOMAIN);
 	
 	if (val && CFGetTypeID(val) != type) {
@@ -496,6 +499,7 @@ CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type)
 	}
 	
 	return val;
+#endif
 }
 
 static pthread_mutex_t init_mutex = PTHREAD_MUTEX_INITIALIZER;

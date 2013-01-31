@@ -19,14 +19,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <AudioToolbox/AudioToolbox.h>
-#include <QuickTime/QuickTime.h>
+#ifndef FFUSION_CODEC_ONLY
+#	include <AudioToolbox/AudioToolbox.h>
+#endif
+#ifdef __MACH__
+#	include <QuickTime/QuickTime.h>
+#else
+#	include <ConditionalMacros.h>
+#	include <Endian.h>
+#	include <ImageCodec.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *acl, uint8_t *buffer, int buff_size);
+#ifndef FFUSION_CODEC_ONLY
+	int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *acl, uint8_t *buffer, int buff_size);
+#endif
 
 typedef struct FFusionParserContext
 {

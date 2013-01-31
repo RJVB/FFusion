@@ -24,6 +24,9 @@
  * as well as yet to be parsed data. It is intented to minimize memcpys
  */
 
+#include <stddef.h>
+#include <stdint.h>
+
 typedef struct FrameData_s FrameData;
 typedef struct FFusionData_s FFusionData;
 
@@ -39,9 +42,6 @@ struct FrameData_s
 	FrameData		*nextFrame;		/*!< @brief The next frame to decode if this one is already decoded.  This is for predictive decoding */
 	FFusionData		*data;			/*!< @brief Pointer to the data set*/
 };
-
-typedef struct DataRingBuffer_s {
-} DataRingBuffer;
 
 struct FFusionData_s
 {

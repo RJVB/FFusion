@@ -20,9 +20,12 @@
  */
 
 #include "FrameBuffer.h"
-#include "avcodec.h"
+#include "libavcodec/avcodec.h"
 #include "CommonUtils.h"
-#include <sys/param.h>
+
+#ifndef MAX
+#	define	MAX(a,b) (((a)>(b))?(a):(b))
+#endif	/* MAX */
 
 void FFusionDataSetup(FFusionData *data, int dataSize, int bufferSize)
 {

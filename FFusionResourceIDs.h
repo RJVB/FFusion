@@ -1,6 +1,6 @@
 
 
-#import "CodecIDs.h"
+#include "CodecIDs.h"
 
 #define kPerianManufacturer		'Peri'
 

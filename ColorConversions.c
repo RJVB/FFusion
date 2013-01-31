@@ -19,10 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <QuickTime/QuickTime.h>
-#include <Accelerate/Accelerate.h>
-#include "ColorConversions.h"
 #include "Codecprintf.h"
+#ifdef __MACH__
+#	include <QuickTime/QuickTime.h>
+#	include <Accelerate/Accelerate.h>
+#else
+#	include <ConditionalMacros.h>
+#	include <Endian.h>
+#	include <ImageCodec.h>
+#endif
+#include "ColorConversions.h"
 #include "CommonUtils.h"
 
 /*
@@ -172,7 +178,7 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
 		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
 		
-#ifdef __i386__
+#if defined(__i386__) && !defined(_MSC_VER) //FIXMERJVB
 		int vWidth_ = vWidth;
 
 		asm volatile(
