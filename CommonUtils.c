@@ -22,9 +22,13 @@
 #include "libavcodec/avcodec.h"
 #include "CommonUtils.h"
 //#import <Carbon/Carbon.h>
-#include <pthread.h>
-#include <dlfcn.h>
-#include <fnmatch.h>
+#if TARGET_OS_MAC
+#	include <pthread.h>
+#	include <dlfcn.h>
+#	include <fnmatch.h>
+#else
+#	include <windows.h>
+#endif
 
 typedef struct LanguageTriplet {
 	char twoChar[3];
@@ -32,7 +36,8 @@ typedef struct LanguageTriplet {
 	short qtLang;
 } LanguageTriplet;
 
-// don't think there's a function already to do ISO 639-1/2 -> language code 
+#ifndef FFUSION_CODEC_ONLY
+// don't think there's a function already to do ISO 639-1/2 -> language code
 // that SetMediaLanguage() accepts
 static const LanguageTriplet ISO_QTLanguages[] = {
 	{ "",   "und", langUnspecified },
@@ -43,7 +48,7 @@ static const LanguageTriplet ISO_QTLanguages[] = {
 	{ "ar", "ara", langArabic },
 	{ "hy", "arm", langArmenian },
 	{ "hy", "hye", langArmenian },
-	{ "as", "asm", langAssamese }, 
+	{ "as", "asm", langAssamese },
 	{ "ay", "aym", langAymara },
 	{ "az", "aze", langAzerbaijani },
 	{ "eu", "baq", langBasque },
@@ -174,32 +179,33 @@ static const LanguageTriplet ISO_QTLanguages[] = {
 short ISO639_1ToQTLangCode(const char *lang)
 {
 	int i;
-	
+
 	if (strlen(lang) != 2)
 		return langUnspecified;
-	
+
 	for (i = 0; i < sizeof(ISO_QTLanguages) / sizeof(LanguageTriplet); i++) {
 		if (strcasecmp(lang, ISO_QTLanguages[i].twoChar) == 0)
 			return ISO_QTLanguages[i].qtLang;
 	}
-	
+
 	return langUnspecified;
 }
 
 short ISO639_2ToQTLangCode(const char *lang)
 {
 	int i;
-	
+
 	if (strlen(lang) != 3)
 		return langUnspecified;
-	
+
 	for (i = 0; i < sizeof(ISO_QTLanguages) / sizeof(LanguageTriplet); i++) {
 		if (strcasecmp(lang, ISO_QTLanguages[i].threeChar) == 0)
 			return ISO_QTLanguages[i].qtLang;
 	}
-	
+
 	return langUnspecified;
 }
+#endif
 
 /* write the int32_t data to target & then return a pointer which points after that data */
 uint8_t *write_int32(uint8_t *target, int32_t data)
@@ -253,15 +259,15 @@ ComponentResult ReadESDSDescExt(Handle descExt, UInt8 **buffer, int *size)
 {
 	UInt8 *esds = (UInt8 *) *descExt;
 	int tag, len;
-	
+
 	*size = 0;
-	
+
 	esds += 4;		// version + flags
 	len = readDescr(&esds, &tag);
 	esds += 2;		// ID
 	if (tag == MP4ESDescrTag)
 		esds++;		// priority
-	
+
 	len = readDescr(&esds, &tag);
 	if (tag == MP4DecConfigDescrTag) {
 		esds++;		// object type id
@@ -269,7 +275,7 @@ ComponentResult ReadESDSDescExt(Handle descExt, UInt8 **buffer, int *size)
 		esds += 3;	// buffer size db
 		esds += 4;	// max bitrate
 		esds += 4;	// average bitrate
-		
+
 		len = readDescr(&esds, &tag);
 		if (tag == MP4DecSpecificDescrTag) {
 			*buffer = calloc(1, len + FF_INPUT_BUFFER_PADDING_SIZE);
@@ -279,7 +285,7 @@ ComponentResult ReadESDSDescExt(Handle descExt, UInt8 **buffer, int *size)
 			}
 		}
 	}
-	
+
 	return noErr;
 }
 
@@ -288,7 +294,7 @@ int isImageDescriptionExtensionPresent(ImageDescriptionHandle desc, long type)
 	ImageDescriptionPtr d = *desc;
 	int offset = sizeof(ImageDescription);
 	uint8_t *p = (uint8_t *)d;
-	
+
 	//read next description, need 8 bytes for size and type
 	while(offset < d->idSize - 8)
 	{
@@ -301,6 +307,7 @@ int isImageDescriptionExtensionPresent(ImageDescriptionHandle desc, long type)
 	return 0;
 }
 
+#if TARGET_OS_MAC
 static const CFStringRef defaultFrameDroppingList[] = {
 	CFSTR("Finder"),
 	CFSTR("Front Row"),
@@ -310,17 +317,6 @@ static const CFStringRef defaultFrameDroppingList[] = {
 	CFSTR("QTKitServer"),
 	CFSTR("QuickTime Player"),
 	CFSTR("Spiral")
-};
-
-static const CFStringRef defaultTransparentSubtitleList_10_6[] = {
-	CFSTR("CoreMediaAuthoringSessionHelper"),
-	CFSTR("CoreMediaAuthoringSourcePropertyHelper"),
-	CFSTR("Front Row"),
-	CFSTR("QTPlayerHelper")
-};
-
-static const CFStringRef defaultTransparentSubtitleList_10_5[] = {
-	CFSTR("Front Row")
 };
 
 static const CFStringRef defaultForcedAppList[] = {
@@ -343,42 +339,44 @@ static int findNameInList(CFStringRef loadingApp, const CFStringRef *names, int 
 static CFDictionaryRef getMyProcessInformation()
 {
 	ProcessSerialNumber myProcess;
-	GetCurrentProcess(&myProcess);
 	CFDictionaryRef processInformation;
-	
+
+	GetCurrentProcess(&myProcess);
+
 	processInformation = ProcessInformationCopyDictionary(&myProcess, kProcessDictionaryIncludeAllInformationMask);
 	return processInformation;
 }
 
 static CFStringRef getProcessName(CFDictionaryRef processInformation)
 {
-	CFStringRef path = CFDictionaryGetValue(processInformation, kCFBundleExecutableKey);
+	CFStringRef path = CFDictionaryGetValue(processInformation, kCFBundleExecutableKey), myProcessName;
 	CFRange entireRange = CFRangeMake(0, CFStringGetLength(path)), basename;
-	
+
 	CFStringFindWithOptions(path, CFSTR("/"), entireRange, kCFCompareBackwards, &basename);
-	
+
 	basename.location += 1; //advance past "/"
 	basename.length = entireRange.length - basename.location;
-	
-	CFStringRef myProcessName = CFStringCreateWithSubstring(NULL, path, basename);
+
+	myProcessName = CFStringCreateWithSubstring(NULL, path, basename);
 	return myProcessName;
 }
 
 static int isApplicationNameInList(CFStringRef prefOverride, const CFStringRef *defaultList, unsigned int defaultListCount)
 {
 	CFDictionaryRef processInformation = getMyProcessInformation();
-	
+	CFArrayRef list = CopyPreferencesValueTyped(prefOverride, CFArrayGetTypeID());
+	CFStringRef myProcessName;
+	int ret;
+
 	if (!processInformation)
 		return FALSE;
-	
-	CFArrayRef list = CopyPreferencesValueTyped(prefOverride, CFArrayGetTypeID());
-	CFStringRef myProcessName = getProcessName(processInformation);
-	int ret;
-	
+
+	myProcessName = getProcessName(processInformation);
+
 	if (list) {
 		int count = CFArrayGetCount(list);
 		CFStringRef names[count];
-		
+
 		CFArrayGetValues(list, CFRangeMake(0, count), (void *)names);
 		ret = findNameInList(myProcessName, names, count);
 		CFRelease(list);
@@ -387,38 +385,43 @@ static int isApplicationNameInList(CFStringRef prefOverride, const CFStringRef *
 	}
 	CFRelease(myProcessName);
 	CFRelease(processInformation);
-	
+
 	return ret;
 }
+#endif
 
 int IsFrameDroppingEnabled()
 {
 	static int enabled = -1;
-	
+
+#if TARGET_OS_MAC
 	if (enabled == -1)
 		enabled = isApplicationNameInList(CFSTR("FrameDroppingWhiteList"),
 										  defaultFrameDroppingList,
 										  sizeof(defaultFrameDroppingList)/sizeof(defaultFrameDroppingList[0]));
+#endif
 	return enabled;
 }
 
 int IsForcedDecodeEnabled()
 {
 	static int forced = -1;
-	
+#if TARGET_OS_MAC
 	if(forced == -1)
 		forced = isApplicationNameInList(CFSTR("ForceFFusionAppList"),
 										 defaultForcedAppList,
 										 sizeof(defaultForcedAppList)/sizeof(defaultForcedAppList[0]));
+#endif
 	return forced;
 }
 
+#if TARGET_OS_MAC
 static int GetSystemMinorVersion()
 {
 	static SInt32 minorVersion = -1;
 	if (minorVersion == -1)
 		Gestalt(gestaltSystemVersionMinor, &minorVersion);
-	
+
 	return minorVersion;
 }
 
@@ -427,18 +430,31 @@ static int GetSystemMicroVersion()
 	static SInt32 microVersion = -1;
 	if (microVersion == -1)
 		Gestalt(gestaltSystemVersionBugFix, &microVersion);
-	
+
 	return microVersion;
 }
+#endif
+
+#ifndef FFUSION_CODEC_ONLY
+static const CFStringRef defaultTransparentSubtitleList_10_6[] = {
+	CFSTR("CoreMediaAuthoringSessionHelper"),
+	CFSTR("CoreMediaAuthoringSourcePropertyHelper"),
+	CFSTR("Front Row"),
+	CFSTR("QTPlayerHelper")
+};
+
+static const CFStringRef defaultTransparentSubtitleList_10_5[] = {
+	CFSTR("Front Row")
+};
 
 int IsTransparentSubtitleHackEnabled()
 {
 	static int forced = -1;
-	
+
 	if(forced == -1)
 	{
 		int minorVersion = GetSystemMinorVersion();
-				
+
 		if (minorVersion == 5)
 			forced = isApplicationNameInList(CFSTR("TransparentModeSubtitleAppList"),
 											 defaultTransparentSubtitleList_10_5,
@@ -450,25 +466,30 @@ int IsTransparentSubtitleHackEnabled()
 		else
 			forced = 0;
 	}
-	
+
 	return forced;
 }
+#endif
 
 int IsAltivecSupported()
 {
+#ifdef i386
+	return 0;
+#else
 	static int altivec = -1;
-	
+
 	if (altivec == -1) {
 		long response = 0;
 		int err = Gestalt(gestaltPowerPCProcessorFeatures, &response);
-		
+
 		altivec = !err && ((response & (1 << gestaltPowerPCHasVectorInstructions)) != 0);
 	}
-	
+
 	return altivec;
+#endif
 }
 
-
+#ifndef FFUSION_CODEC_ONLY
 // this could be a defaults setting, but no real call for it yet
 int ShouldImportFontFileName(const char *filename)
 {
@@ -477,6 +498,7 @@ int ShouldImportFontFileName(const char *filename)
 	// FIXME: This font works when in ~/Library/Fonts (!). Check it again with CoreText.
 	return !(GetSystemMinorVersion() >= 6 && fnmatch("DF*.ttc", filename, 0) == 0);
 }
+#endif
 
 // does the system support HE-AAC with a base frequency over 32khz?
 // 10.6.3 does, nothing else does. this may be conflated with some encoder bugs.
@@ -492,23 +514,24 @@ CFPropertyListRef CopyPreferencesValueTyped(CFStringRef key, CFTypeID type)
 	return NULL;
 #else
 	CFPropertyListRef val = CFPreferencesCopyAppValue(key, FFUSION_PREF_DOMAIN);
-	
+
 	if (val && CFGetTypeID(val) != type) {
 		CFRelease(val);
 		val = NULL;
 	}
-	
+
 	return val;
 #endif
 }
 
+#if TARGET_OS_MAC
 static pthread_mutex_t init_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int FFusionInitEnter(volatile Boolean *inited)
 {
 	if (*inited)
 		return FALSE;
-	
+
 	pthread_mutex_lock(&init_mutex);
 	return TRUE;
 }
@@ -518,45 +541,67 @@ void FFusionInitExit(int unlock)
 	if (unlock)
 		pthread_mutex_unlock(&init_mutex);
 }
+#else
+static CRITICAL_SECTION init_mutex;
+static Boolean init_mutexOK = FALSE;
+
+int FFusionInitEnter(volatile Boolean *inited)
+{
+	if (*inited)
+		return FALSE;
+	if( ! init_mutexOK ){
+		init_mutexOK = InitializeCriticalSectionAndSpinCount( &init_mutex, 4000 );
+	}
+	EnterCriticalSection(&init_mutex);
+	return TRUE;
+}
+
+void FFusionInitExit(int unlock)
+{
+	if (unlock)
+		LeaveCriticalSection(&init_mutex);
+}
+#endif
 
 void *fast_realloc_with_padding(void *ptr, unsigned int *size, unsigned int min_size)
 {
-	void *res = ptr;
-	av_fast_malloc(&res, size, min_size + FF_INPUT_BUFFER_PADDING_SIZE);
+	unsigned char *res = ptr;
+	av_fast_malloc( (void**)&res, size, min_size + FF_INPUT_BUFFER_PADDING_SIZE);
 	if (res) memset(res + min_size, 0, FF_INPUT_BUFFER_PADDING_SIZE);
 	return res;
 }
 
+#if TARGET_OS_MAC
 // from Apple Q&A 1396
 static CGColorSpaceRef CreateICCColorSpaceFromPathToProfile (const char * iccProfilePath)
 {
 	CMProfileRef    iccProfile = NULL;
 	CGColorSpaceRef iccColorSpace = NULL;
 	CMProfileLocation loc;
-	
+
 	// Specify that the location of the profile will be a POSIX path to the profile.
 	loc.locType = cmPathBasedProfile;
-	
+
 	// Make sure the path is not larger then the buffer
 	if(strlen(iccProfilePath) > sizeof(loc.u.pathLoc.path))
 		return NULL;
-	
+
 	// Copy the path the profile into the CMProfileLocation structure
 	strcpy (loc.u.pathLoc.path, iccProfilePath);
-	
+
 	// Open the profile
 	if (CMOpenProfile(&iccProfile, &loc) != noErr)
 	{
 		iccProfile = (CMProfileRef) 0;
 		return NULL;
 	}
-	
+
 	// Create the ColorSpace with the open profile.
 	iccColorSpace = CGColorSpaceCreateWithPlatformColorSpace( iccProfile );
-	
+
 	// Close the profile now that we have what we need from it.
 	CMCloseProfile(iccProfile);
-	
+
 	return iccColorSpace;
 }
 
@@ -564,26 +609,26 @@ static CGColorSpaceRef CreateColorSpaceFromSystemICCProfileName(CFStringRef prof
 {
 	FSRef pathToProfilesFolder;
     FSRef pathToProfile;
-	
+
 	// Find the Systems Color Sync Profiles folder
 	if(FSFindFolder(kOnSystemDisk, kColorSyncProfilesFolderType,
 					kDontCreateFolder, &pathToProfilesFolder) == noErr) {
-		
+
 		// Make a UniChar string of the profile name
 		UniChar uniBuffer[sizeof(CMPathLocation)];
 		CFStringGetCharacters (profileName,CFRangeMake(0,CFStringGetLength(profileName)),uniBuffer);
-		
+
 		// Create a FSRef to the profile in the Systems Color Sync Profile folder
 		if(FSMakeFSRefUnicode (&pathToProfilesFolder,CFStringGetLength(profileName),uniBuffer,
 							   kUnicodeUTF8Format,&pathToProfile) == noErr) {
 			unsigned char path[sizeof(CMPathLocation)];
-			
+
 			// Write the posix path to the profile into our path buffer from the FSRef
 			if(FSRefMakePath (&pathToProfile,path,sizeof(CMPathLocation)) == noErr)
 				return CreateICCColorSpaceFromPathToProfile((char*)path);
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -601,14 +646,15 @@ CGColorSpaceRef GetSRGBColorSpace()
 		} else {
 			sRGBColorSpace = CreateColorSpaceFromSystemICCProfileName(CFSTR("sRGB Profile.icc"));
 		}
-		
+
 		CGColorSpaceRetain(sRGBColorSpace);
 	}
-	
+
 	FFusionInitExit(unlock);
-	
+
 	return sRGBColorSpace;
 }
+#endif
 
 // Map 8-bit alpha (graphicsModePreBlackAlpha) to 1-bit alpha (transparent)
 // Pretty much this is just mapping all opaque black to (1,1,1,255)
@@ -619,21 +665,21 @@ void ConvertImageToQDTransparent(Ptr baseAddr, OSType pixelFormat, int rowBytes,
 		 replacement = EndianU32_BtoN((pixelFormat == k32ARGBPixelFormat) ? 0xFF010101 : 0x010101FF);
 	Ptr p = baseAddr;
 	int y, x;
-	
+
 	for (y = 0; y < height; y++) {
 		UInt32 *p32 = (UInt32*)p;
 		for (x = 0; x < width; x++) {
 			UInt32 px = *p32;
-			
+
 			// if px is black, and opaque (alpha == 255)
 			if (!(px & ~alphaMask) && ((px & alphaMask) == alphaMask)) {
 				// then set it to not-quite-black so it'll show up
 				*p32 = replacement;
 			}
-			
+
 			p32++;
 		}
-		
+
 		p += rowBytes;
 	}
 }
