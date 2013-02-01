@@ -42,11 +42,13 @@ extern "C"
 {
 #endif
 
+#ifndef FFUSION_CODEC_ONLY
 // ISO 639-1 to language ID expected by SetMediaLanguage
 short ISO639_1ToQTLangCode(const char *lang);
 
 // ISO 639-2 to language ID expected by SetMediaLanguage
 short ISO639_2ToQTLangCode(const char *lang);
+#endif
 
 /* write the int32_t data to target & then return a pointer which points after that data */
 uint8_t *write_int32(uint8_t *target, int32_t data);
@@ -69,13 +71,14 @@ int IsFrameDroppingEnabled();
 // does the current process break if we return errors in Preflight?
 int IsForcedDecodeEnabled();
 
-// does the current process break if we use graphicsModePreBlackAlpha?
-int IsTransparentSubtitleHackEnabled();
-
 int IsAltivecSupported();
 
-// is this font name known to be incompatible with ATSUI?
-int ShouldImportFontFileName(const char *filename);
+#ifndef FFUSION_CODEC_ONLY
+	// is this font name known to be incompatible with ATSUI?
+	int ShouldImportFontFileName(const char *filename);
+	// does the current process break if we use graphicsModePreBlackAlpha?
+	int IsTransparentSubtitleHackEnabled();
+#endif
 	
 // can we safely create an HE-AAC track with a frequency of more than 48khz?
 int ShouldPlayHighFreqSBR();
@@ -100,10 +103,17 @@ void ConvertImageToQDTransparent(Ptr baseAddr, OSType pixelFormat, int rowBytes,
 
 #ifdef _MSC_VER
 #	define DLLIMPORT	__declspec(dllimport)
+#	define _CRT_SECURE_NO_WARNINGS	1
 #else
 #	define DLLIMPORT	/**/
 #endif
 	
+#if TARGET_OS_WIN32
+#	define IntToFixed(a)       ((Fixed)(a) << 16)
+#	define FloatToFixed(a) (_IntSaturate((a) * fixed1))
+#	define _IntSaturate(x) ((int)(x) <= (int)-2147483648 ? (int) -2147483648 : (int)2147483648 <= (int)(x) ? (int) 0x7fffffff : (int) (x))
+#endif
+
 #ifdef __cplusplus
 }
 #endif

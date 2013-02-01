@@ -27,9 +27,14 @@
 #include "CommonUtils.h"
 #include "Codecprintf.h"
 #include "CodecIDs.h"
-#include <pthread.h>
-#include "avformat.h"
+#if TARGET_OS_MAC
+#	include <pthread.h>
+#else
+#	include <windows.h>
+#endif
+#include "libavformat/avformat.h"
 
+#ifndef FFUSION_CODEC_ONLY
 void FFAVCodecContextToASBD(AVCodecContext *avctx, AudioStreamBasicDescription *asbd)
 {
 	asbd->mFormatID         = avctx->codec_tag;
@@ -49,7 +54,9 @@ void FFASBDToAVCodecContext(AudioStreamBasicDescription *asbd, AVCodecContext *a
 	avctx->frame_size  = asbd->mFramesPerPacket;
 	avctx->bits_per_coded_sample = asbd->mBitsPerChannel;
 }
+#endif
 
+#if TARGET_OS_MAC
 static int FFusionLockMgrCallback(void **mutex, enum AVLockOp op)
 {
 	pthread_mutex_t **m = (pthread_mutex_t **)mutex;
@@ -73,6 +80,31 @@ static int FFusionLockMgrCallback(void **mutex, enum AVLockOp op)
 	
 	return ret;
 }
+#else
+static int FFusionLockMgrCallback(void **mutex, enum AVLockOp op)
+{
+	CRITICAL_SECTION **m = (CRITICAL_SECTION **)mutex;
+	int ret = 0;
+	
+	switch (op) {
+		case AV_LOCK_CREATE:
+			*m = malloc(sizeof(CRITICAL_SECTION));
+			ret = !InitializeCriticalSectionAndSpinCount( *m, 4000 );
+			break;
+		case AV_LOCK_OBTAIN:
+			EnterCriticalSection(*m);
+			break;
+		case AV_LOCK_RELEASE:
+			LeaveCriticalSection(*m);
+			break;
+		case AV_LOCK_DESTROY:
+			DeleteCriticalSection(*m);
+			free(*m);
+	}
+	
+	return ret;
+}
+#endif
 
 #define REGISTER_MUXER(x) { \
 	extern DLLIMPORT AVOutputFormat x##_muxer; \
@@ -221,6 +253,7 @@ void FFInitFFmpeg()
 	FFusionInitExit(unlock);
 }
 
+#ifndef FFUSION_CODEC_ONLY
 // List of codec IDs we know about and that map to audio fourccs
 // XXX this is probably a duplicate of something inside libavformat
 static const struct {
@@ -251,21 +284,26 @@ static const struct {
 	{ kAudioFormatFlashADPCM, CODEC_ID_ADPCM_SWF },
 	{ 0, CODEC_ID_NONE }
 };
+#endif
 
 enum CodecID FFFourCCToCodecID(OSType formatID)
 {
+#ifndef FFUSION_CODEC_ONLY
 	for (int i = 0; kAudioCodecMap[i].codecID != CODEC_ID_NONE; i++) {
 		if (kAudioCodecMap[i].mFormatID == formatID)
 			return kAudioCodecMap[i].codecID;
 	}
+#endif
 	return CODEC_ID_NONE;
 }
 
 OSType FFCodecIDToFourCC(enum CodecID codecID)
 {
+#ifndef FFUSION_CODEC_ONLY
 	for (int i = 0; kAudioCodecMap[i].codecID != CODEC_ID_NONE; i++) {
 		if (kAudioCodecMap[i].codecID == codecID)
 			return kAudioCodecMap[i].mFormatID;
 	}
+#endif
 	return CODEC_ID_NONE;
 }

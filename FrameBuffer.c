@@ -22,19 +22,17 @@
 #include "FrameBuffer.h"
 #include "libavcodec/avcodec.h"
 #include "CommonUtils.h"
-
 #ifndef MAX
-#	define	MAX(a,b) (((a)>(b))?(a):(b))
-#endif	/* MAX */
+#	define	MAX(a,b)	(((a)>(b))?(a):(b))
+#endif
 
 void FFusionDataSetup(FFusionData *data, int dataSize, int bufferSize)
 {
+	int i, framesSize = sizeof(FrameData) * dataSize;
 	memset(data, 0, sizeof(FFusionData));
-	int framesSize = sizeof(FrameData) * dataSize;
 	data->frames = malloc(framesSize);
 	memset(data->frames, 0, framesSize);
-	
-	int i;
+
 	for(i=0; i<dataSize; i++)
 	{
 		FrameData *fdata = data->frames + i;
@@ -64,14 +62,15 @@ static void expansion(FFusionData *data, int dataSize)
 {
 	//Create the prev structure to hold all existing frames
 	FFusionData *prev = malloc(sizeof(FFusionData));
+	int i, newRingSize;
+
 	//Move all frames to prev
 	memcpy(prev, data, sizeof(FFusionData));
-	int i;
 	for(i=0; i<data->frameSize; i++)
 		data->frames[i].data = prev;
-	
+
 	//Create new data
-	int newRingSize = MAX(dataSize * 10, data->ringSize * 2);
+	newRingSize = MAX(dataSize * 10, data->ringSize * 2);
 	FFusionDataSetup(data, data->frameSize * 2, newRingSize);
 	//Preserve pointer to old data
 	data->previousData = prev;
@@ -128,15 +127,15 @@ static uint8_t *insertIntoBuffer(FFusionData *data, uint8_t *buffer, int dataSiz
 }
 
 FrameData *FFusionDataAppend(FFusionData *data, uint8_t *buffer, int dataSize, int type)
-{
+{ FrameData *dest;
 	//Find an available frame
 	if((data->frameWrite + 1) % data->frameSize == data->frameRead)
 	{
 		expansion(data, dataSize);
 	}
-	
-	FrameData *dest = data->frames + data->frameWrite;
-	
+
+	dest = data->frames + data->frameWrite;
+
 	if(data->unparsedFrames.buffer == buffer)
 	{		
 		//This was an unparsed frame, don't memcpy; it's already in the correct place.
@@ -194,21 +193,20 @@ FrameData *FrameDataCheckPrereq(FrameData * toData)
 
 void FFusionDataMarkRead(FrameData *toData)
 {
-	if(toData == NULL)
+	if(toData == NULL || toData->prereqFrame != NULL){
 		return;
-	
-	if(toData->prereqFrame != NULL)
-		return;
-	
-	FFusionData *data = toData->data;
-	data->frameRead = toData - data->frames + 1;
-	data->ringRead = toData->buffer + toData->dataSize - data->ringBuffer;
-	if(data->previousData != NULL)
-	{
-		//If there's previous data, free it since we are now done with it
-		FFusionDataFree(data->previousData);
-		free(data->previousData);
-		data->previousData = NULL;
+	}
+	else{
+		FFusionData *data = toData->data;
+		data->frameRead = toData - data->frames + 1;
+		data->ringRead = toData->buffer + toData->dataSize - data->ringBuffer;
+		if(data->previousData != NULL)
+		{
+			//If there's previous data, free it since we are now done with it
+			FFusionDataFree(data->previousData);
+			free(data->previousData);
+			data->previousData = NULL;
+		}
 	}
 }
 

@@ -26,23 +26,43 @@
 #ifndef __FFMPEGUTILS__
 #define __FFMPEGUTILS__
 
-#include <QuickTime/QuickTime.h>
-#include <CoreAudio/CoreAudio.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdint.h>
+#ifdef _MSC_VER
+	// prevent the GNU compatibility stdint.h header included with the QuickTime SDK from being included:
+#	define _STDINT_H
+#endif
+#ifdef __MACH__
+#	include <QuickTime/QuickTime.h>
+#else
+#	include <ConditionalMacros.h>
+#	include <Endian.h>
+#	include <ImageCodec.h>
+#endif
+#ifndef FFUSION_CODEC_ONLY
+#	include <CoreAudio/CoreAudio.h>
+#endif
 
-__BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include "avcodec.h"
+#include "libavcodec/avcodec.h"
 
+#ifndef FFUSION_CODEC_ONLY
 void FFAVCodecContextToASBD(AVCodecContext *avctx, AudioStreamBasicDescription *asbd);
 
 void FFASBDToAVCodecContext(AudioStreamBasicDescription *asbd, AVCodecContext *avctx);
+#endif
 
 void FFInitFFmpeg();
 
 enum CodecID FFFourCCToCodecID(OSType formatID);
-
 OSType FFCodecIDToFourCC(enum CodecID codecID);
 
-__END_DECLS
+#ifdef __cplusplus
+}
+#endif
 
 #endif
