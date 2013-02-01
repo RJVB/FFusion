@@ -2206,6 +2206,7 @@
 		D617819416B85DF200FE3AC6 /* trasher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trasher.c; sourceTree = "<group>"; };
 		D617819516B85DF200FE3AC6 /* unwrap-diff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "unwrap-diff"; sourceTree = "<group>"; };
 		D617819616B85DF200FE3AC6 /* version.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
+		D66D737F16BC337200BF1C5E /* FFusion.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.modula2.def; name = FFusion.def; path = Resources/FFusion.def; sourceTree = "<group>"; };
 		D67BC4B216B166FF00E26386 /* FFusion.component */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFusion.component; sourceTree = BUILT_PRODUCTS_DIR; };
 		D67BC4D516B1698400E26386 /* FFusion-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FFusion-Info.plist"; path = "Plists/FFusion-Info.plist"; sourceTree = "<group>"; };
 		D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = FFusionInfoPlist.strings; path = Plists/FFusionInfoPlist.strings; sourceTree = "<group>"; };
@@ -2289,6 +2290,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D66D737F16BC337200BF1C5E /* FFusion.def */,
 				D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */,
 				D67BC58D16B1963E00E26386 /* FFusionResourceInc.r */,
 				D67BC55716B1936B00E26386 /* FFusionResources.r */,

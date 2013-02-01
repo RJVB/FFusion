@@ -37,6 +37,12 @@
 #include "attributes.h"
 #include "libavutil/avconfig.h"
 
+#ifdef _MSC_VER
+#	define DLLIMPORT	__declspec(dllimport)
+#else
+#	define DLLIMPORT	/**/
+#endif
+
 #if AV_HAVE_BIGENDIAN
 #   define AV_NE(be, le) (be)
 #else
@@ -60,9 +66,9 @@
 #define FFALIGN(x, a) (((x)+(a)-1)&~((a)-1))
 
 /* misc math functions */
-extern const uint8_t ff_log2_tab[256];
+extern DLLIMPORT const uint8_t ff_log2_tab[256];
 
-extern const uint8_t av_reverse[256];
+extern DLLIMPORT const uint8_t av_reverse[256];
 
 static inline av_const int av_log2_c(unsigned int v)
 {

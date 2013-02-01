@@ -99,17 +99,17 @@ static const uint8_t ac3_halfrate[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3};
 static int ac3_synchronize(uint8_t *buf, int buf_size)
 {
     int i;
-	
+
     for (i = 0; i < buf_size - 1; i++)
         if (buf[i] == 0x0b && buf[i + 1] == 0x77)
             return i;
-	
+
     return -1;
 }
 
 /* A lot of this was stolen from: http://svn.mplayerhq.hu/ac3/ (LGPL)
  * Fill info from an ac3 stream
- * 
+ *
  * @param asdb Pointer to the AudioStreamBasicDescription to fill
  * @param acl Pointer to the AudioChannelLayout to fill
  * @param buffer Pointer to the buffer data to scan
@@ -122,21 +122,21 @@ int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *a
 	int offset = ac3_synchronize(buffer, buff_size);
 	if(offset == -1)
 		return 0;
-	
+
 	if(buff_size < offset + 7)
 		return 0;
-	
+
 	uint8_t fscod_and_frmsizecod = buffer[offset + 4];
-	
+
 	uint8_t fscod = fscod_and_frmsizecod >> 6;
 	uint8_t frmsizecod = fscod_and_frmsizecod & 0x3f;
 	if(frmsizecod >= 38)
 		return 0;
-	
+
 	uint8_t bsid = buffer[offset + 5] >> 3;
 	if(bsid >= 0x12)
 		return 0;
-	
+
 	uint8_t acmod = buffer[offset + 6] >> 5;
 	uint8_t shift = 4;
 	if(acmod & 0x01 && acmod != 0x01)
@@ -146,7 +146,7 @@ int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *a
 	if(acmod == 0x02)
 		shift -= 2;
 	uint8_t lfe = (buffer[offset + 6] >> shift) & 0x01;
-	
+
 	/* This is a valid frame!!! */
 	uint8_t half = ac3_halfrate[bsid];
 	int sample_rate = ac3_freqs[fscod] >> half;
@@ -154,20 +154,20 @@ int parse_ac3_bitstream(AudioStreamBasicDescription *asbd, AudioChannelLayout *a
 	shift = 0;
 	if(bsid > 8)
 		shift = bsid - 8;
-	
+
 	/* Setup the AudioStreamBasicDescription and AudioChannelLayout */
 	memset(asbd, 0, sizeof(AudioStreamBasicDescription));
 	asbd->mSampleRate = sample_rate >> shift;
 	asbd->mFormatID = kAudioFormatAC3MS;
 	asbd->mChannelsPerFrame = nfchans_tbl[acmod] + lfe;
 	asbd->mFramesPerPacket = 1536;
-	
+
 	memset(acl, 0, sizeof(AudioChannelLayout));
 	if(lfe)
 		acl->mChannelLayoutTag = ac3_layout_lfe[acmod];
 	else
 		acl->mChannelLayoutTag = ac3_layout_no_lfe[acmod];
-	
+
 	return 1;
 }
 #endif
@@ -179,7 +179,7 @@ static int parse_mpeg4_extra(FFusionParserContext *parser, const uint8_t *buf, i
 	GetBitContext gb1, *gb = &gb1;
 
 	pc1->pc.frame_start_found = 0;
-	
+
 	s->avctx = parser->avctx;
 	s->current_picture_ptr = &s->current_picture;
 
@@ -211,10 +211,10 @@ static int parse_mpeg4_stream(FFusionParserContext *parser, const uint8_t *buf, 
 	endOfFrame = ff_mpeg4_find_frame_end(&(pc1->pc), buf, buf_size);
 
 	s = pc1->enc;
-	
+
 	s->avctx = parser->avctx;
 	s->current_picture_ptr = &s->current_picture;
-	
+
 	init_get_bits(gb, buf, 8 * buf_size);
 	{ int parse_res = ff_mpeg4_decode_picture_header(s, gb);
 		if(parse_res == FRAME_SKIPPED) {
@@ -226,11 +226,11 @@ static int parse_mpeg4_stream(FFusionParserContext *parser, const uint8_t *buf, 
 		if(parse_res != 0)
 			return 0;
 	}
-	
+
 	*type = s->pict_type;
 	*skippable = (*type == FF_B_TYPE);
 	*skipped = 0;
-	
+
 	if(endOfFrame == END_NOT_FOUND)
 		*out_buf_size = buf_size;
 	else
@@ -243,18 +243,18 @@ static int parse_mpeg12_stream(FFusionParserContext *ffparser, const uint8_t *bu
 	const uint8_t *out_unused;
 	int size_unused;
 	AVCodecParser *parser = ffparser->pc->parser;
-	
+
 	parser->parser_parse(ffparser->pc, ffparser->avctx, &out_unused, &size_unused, buf, buf_size);
-	
+
 	*out_buf_size = buf_size;
 	*type = ffparser->pc->pict_type;
 	*skippable = *type == FF_B_TYPE;
 	*skipped = 0;
-	
+
 	return 1;
 }
 
-#if LIBAVCODEC_VERSION_MAJOR > 52 
+#if LIBAVCODEC_VERSION_MAJOR > 52
 	extern DLLIMPORT AVCodecParser ff_mpeg4video_parser;
 #	define mpeg4video_parser	ff_mpeg4video_parser
 #else
@@ -269,7 +269,7 @@ static FFusionParser ffusionMpeg4VideoParser = {
 	parse_mpeg4_stream,
 };
 
-#if LIBAVCODEC_VERSION_MAJOR > 52 
+#if LIBAVCODEC_VERSION_MAJOR > 52
 	extern DLLIMPORT AVCodecParser ff_mpegvideo_parser;
 #	define mpegvideo_parser	ff_mpegvideo_parser
 #else
@@ -289,10 +289,10 @@ typedef struct H264ParserContext_s
 	int is_avc;
 	int nal_length_size;
 	int prevPts;
-	
+
 	int profile_idc;
 	int level_idc;
-	
+
 	int poc_type;
 	int log2_max_frame_num;
 	int frame_mbs_only_flag;
@@ -307,9 +307,9 @@ typedef struct H264ParserContext_s
 	int offset_for_non_ref_pic;
 	int num_ref_frames_in_pic_order_cnt_cycle;
 	int sum_of_offset_for_ref_frames;
-	
+
 	int chroma_format_idc;
-	
+
 	int gaps_in_frame_num_value_allowed_flag;
 }H264ParserContext;
 
@@ -318,7 +318,7 @@ static int decode_nal(const uint8_t *buf, int buf_size, uint8_t *out_buf, int *o
 	int i;
 	int outIndex = 0;
 	int numNulls = 0;
-	
+
 	for(i=1; i<buf_size; i++)
 	{
 		if(buf[i] == 0)
@@ -341,10 +341,10 @@ static int decode_nal(const uint8_t *buf, int buf_size, uint8_t *out_buf, int *o
 		out_buf[outIndex] = buf[i];
 		outIndex++;
 	}
-	
+
 	if(outIndex <= 0)
 		return 0;
-	
+
 	*type = buf[0] & 0x1f;
 	*nal_ref_idc = (buf[0] >> 5) & 0x03;
 	*out_buf_size = outIndex;
@@ -353,7 +353,7 @@ static int decode_nal(const uint8_t *buf, int buf_size, uint8_t *out_buf, int *o
 
 static void skip_scaling_list(GetBitContext *gb, int size){
 	int i, next = 8, last = 8;
-	
+
     if(get_bits1(gb)) /* matrix not written, we use the predicted one */
 		for(i=0;i<size;i++){
 			if(next)
@@ -400,7 +400,7 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 {
 	GetBitContext getbit, *gb = &getbit;
 	int mbs_only, nal_hrd_parameters_present_flag, vcl_hrd_parameters_present_flag;
-	
+
 	init_get_bits(gb, buf, 8 * buf_size);
     context->profile_idc= get_bits(gb, 8);
     get_bits1(gb);		//constraint_set0_flag
@@ -428,7 +428,7 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 	else if(context->poc_type == 1)
 	{
 		int i;
-		
+
 		context->delta_pic_order_always_zero_flag = get_bits1(gb);
 		context->offset_for_non_ref_pic = get_se_golomb(gb);
 		get_se_golomb(gb);	//offset_for_top_to_bottom_field
@@ -509,7 +509,7 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 			get_ue_golomb(gb);	//log2_max_mv_length_horizontal
 			get_ue_golomb(gb);	//log2_max_mv_length_vertical
 			context->num_reorder_frames = get_ue_golomb(gb);
-			get_ue_golomb(gb);	//max_dec_frame_buffering			
+			get_ue_golomb(gb);	//max_dec_frame_buffering
 		}
 	}
 #endif
@@ -518,7 +518,7 @@ static void decode_sps(H264ParserContext *context, const uint8_t *buf, int buf_s
 static void decode_pps(H264ParserContext *context, const uint8_t *buf, int buf_size)
 {
 	GetBitContext getbit, *gb = &getbit;
-	
+
 	init_get_bits(gb, buf, 8 * buf_size);
 	get_ue_golomb(gb); //pic_parameter_set_id
 	get_ue_golomb(gb); //seq_parameter_set_id
@@ -535,21 +535,21 @@ static int inline decode_slice_header(H264ParserContext *context, const uint8_t 
 	int frame_number;
 //	static const uint8_t slice_type_map[5] = {FF_P_TYPE, FF_B_TYPE, FF_I_TYPE, FF_SP_TYPE, FF_SI_TYPE};
 	static const uint8_t slice_type_map[5] = {FF_P_TYPE, FF_P_TYPE, FF_I_TYPE, FF_SP_TYPE, FF_SI_TYPE};
-	
+
 	init_get_bits(gb, buf, 8 * buf_size);
-	
+
 	get_ue_golomb(gb);	//first_mb_in_slice
 	slice_type = get_ue_golomb(gb);
 	if(slice_type > 9)
 		return 0;
-	
+
 	if(slice_type > 4)
 		slice_type -= 5;
-	
+
 	*type = slice_type_map[slice_type];
 	if(just_type)
 		return 1;
-	
+
 	get_ue_golomb(gb); //pic_parameter_set_id
 	frame_number = get_bits(gb, context->log2_max_frame_num);
 	if(!context->frame_mbs_only_flag)
@@ -568,7 +568,7 @@ static int inline decode_slice_header(H264ParserContext *context, const uint8_t 
 		int delta_pic_order_cnt_bottom = 0;
 		int maxPicOrderCntLsb = 1 << context->log2_max_poc_lsb;
 		int pic_order_msb;
-		
+
 		if(context->pic_order_present_flag && !field_pic_flag)
 			delta_pic_order_cnt_bottom = get_se_golomb(gb);
 		if((pts_lsb < context->prev_poc_lsb) && (context->prev_poc_lsb - pts_lsb) >= maxPicOrderCntLsb)
@@ -577,13 +577,13 @@ static int inline decode_slice_header(H264ParserContext *context, const uint8_t 
 			pic_order_msb = context->poc_msb - maxPicOrderCntLsb;
 		else
 			pic_order_msb = context->poc_msb;
-		
+
 		context->poc_msb = pic_order_msb;
-		
+
 		*pts = pic_order_msb + pts_lsb;
 		if(delta_pic_order_cnt_bottom < 0)
 			*pts += delta_pic_order_cnt_bottom;
-			
+
 	}
 	else if(context->poc_type == 1 && !context->delta_pic_order_always_zero_flag)
 	{
@@ -592,31 +592,31 @@ static int inline decode_slice_header(H264ParserContext *context, const uint8_t 
 		delta_pic_order_cnt[0] = get_se_golomb(gb);
 		if(context->pic_order_present_flag && !field_pic_flag)
 			delta_pic_order_cnt[1] = get_se_golomb(gb);
-		
+
 		frame_num_offset = 0;  //I think this is wrong, but the pts code isn't used anywhere, so no harm yet and this removes a warning.
-		
+
 		abs_frame_num = 0;
 		num_ref_frames_in_pic_order_cnt_cycle = context->num_ref_frames_in_pic_order_cnt_cycle;
 		if(num_ref_frames_in_pic_order_cnt_cycle != 0)
 			abs_frame_num = frame_num_offset + frame_number;
-		
+
 		if(nal_ref_idc == 0 && abs_frame_num > 0)
 			abs_frame_num--;
-		
+
 		expected_delta_per_poc_cycle = context->sum_of_offset_for_ref_frames;
 		expectedpoc = 0;
 		if(abs_frame_num > 0)
 		{
 			int poc_cycle_cnt = (abs_frame_num - 1) / num_ref_frames_in_pic_order_cnt_cycle;
-			
+
 			expectedpoc = poc_cycle_cnt * expected_delta_per_poc_cycle + context->sum_of_offset_for_ref_frames;
 		}
-		
+
 		if(nal_ref_idc == 0)
 			expectedpoc = expectedpoc + context->offset_for_non_ref_pic;
 		*pts = expectedpoc + delta_pic_order_cnt[0];
 	}
-	
+
 	return 1;
 }
 
@@ -635,7 +635,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 	int slice_type = 0;
 
 	*skippable = 1;
-	
+
 #if 0 /*this was an attempt to figure out the PTS information and detect an out of order P frame before we hit its B frame */
 	if(context->poc_type == 2)
 	{
@@ -644,7 +644,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 		*precedesAPastFrame = 0;
 	}
 #endif
-	
+
 	for(;;)
 	{
 		if(context->is_avc)
@@ -728,7 +728,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 			buf_index = start_offset;
 		}
 
-		
+
 		if(decode_nal(buf + buf_index, FFMIN(nalsize, NAL_PEEK_SIZE), partOfNal, &decodedNalSize, &nalType, &nal_ref_idc))
 		{
 			int pts = 0;
@@ -752,7 +752,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 						}
 					}
 				}
-				
+
 				// Parser users assume I-frames are IDR-frames
 				// but in H.264 they don't have to be.
 				// Mark these as P-frames if they effectively are.
@@ -775,7 +775,7 @@ static int inline decode_nals(H264ParserContext *context, const uint8_t *buf, in
 	}
 	if(lowestType != 20)
 		*type = lowestType;
-	
+
 	return ret;
 }
 
@@ -806,7 +806,7 @@ static int parse_h264_stream(FFusionParserContext *parser, const uint8_t *buf, i
 	 * Slice header has a ue(v) for first_mb_in_slice and then a ue(v) for the slice_type
 	 * Slice types 0, 5 are P, 1, 6 are B, 2, 7 are I
 	 */
-	
+
 	do
 	{
 		parseBuf = parseBuf + size;
@@ -820,7 +820,7 @@ static int parse_h264_stream(FFusionParserContext *parser, const uint8_t *buf, i
 			parseSize = endOfFrame;
 		}
 	}while(decode_nals(parser->internalContext, parseBuf, parseSize, type, skippable) == 0 && size < buf_size);
-		
+
 	*skipped = 0;
 	*out_buf_size = size;
 	return 1;
@@ -829,7 +829,7 @@ static int parse_h264_stream(FFusionParserContext *parser, const uint8_t *buf, i
 static int init_h264_parser(FFusionParserContext *parser)
 {
 	H264ParserContext *context = parser->internalContext;
-	
+
 	context->nal_length_size = 2;
 	context->is_avc = 0;
 	return 1;
@@ -840,7 +840,7 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 	H264ParserContext *context = parser->internalContext;
 	const uint8_t *cur = buf;
 	int count, i, type, ref;
-	
+
 	context->is_avc = 1;
 	count = *(cur+5) & 0x1f;
 	cur += 6;
@@ -865,13 +865,13 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 		cur += size + 2;
 		free(decoded);
 	}
-	
+
 	context->nal_length_size = ((*(buf+4)) & 0x03) + 1;
-	
+
 	return 1;
 }
 
-#if LIBAVCODEC_VERSION_MAJOR > 52 
+#if LIBAVCODEC_VERSION_MAJOR > 52
 	extern DLLIMPORT AVCodecParser ff_h264_parser;
 #	define h264_parser	ff_h264_parser
 #else
@@ -898,7 +898,7 @@ void initFFusionParsers()
 {
 	static Boolean inited = FALSE;
 	int unlock = FFusionInitEnter(&inited);
-	
+
 	if(!inited)
 	{
 		inited = TRUE;
@@ -909,14 +909,14 @@ void initFFusionParsers()
 		ffusionMpeg12VideoParser.avparse = &mpegvideo_parser;
 		registerFFusionParsers(&ffusionMpeg12VideoParser);
 	}
-	
+
 	FFusionInitExit(unlock);
 }
 
 void ffusionParserFree(FFusionParserContext *parser)
 {
 	AVCodecParser *avparse = parser->parserStructure->avparse;
-	
+
 	if(parser->pc)
 	{
 		if (avparse->parser_close)
@@ -936,15 +936,15 @@ FFusionParserContext *ffusionParserInit(int codec_id)
 	FFusionParser *ffParser;
 	FFusionParserContext *parserContext = NULL;
     int ret, i;
-	
+
     if(codec_id == CODEC_ID_NONE)
         return NULL;
-	
+
 	if (!ffusionFirstParser) initFFusionParsers();
-	
+
     for(ffParser = ffusionFirstParser; ffParser != NULL; ffParser = ffParser->next) {
 		parser = ffParser->avparse;
-		
+
 		for (i = 0; i < 5; i++)
 			if (parser->codec_ids[i] == codec_id)
 				goto found;
@@ -970,7 +970,7 @@ found:
     }
     s->fetch_timestamp=1;
 	s->flags |= PARSER_FLAG_COMPLETE_FRAMES;
-	
+
 	parserContext = malloc(sizeof(FFusionParserContext));
 	parserContext->avctx = avcodec_alloc_context();
 	parserContext->pc = s;
@@ -994,7 +994,7 @@ found:
 {
 	 if(parser->parserStructure->extra_data)
 		 return (parser->parserStructure->extra_data)(parser, buf, buf_size);
-	 return 1;	 
+	 return 1;
 }
 
 /*
@@ -1019,7 +1019,7 @@ void ffusionLogDebugInfo(FFusionParserContext *parser, FILE *log)
 	if (parser) {
 		if (parser->parserStructure == &ffusionH264Parser) {
 			H264ParserContext *h264parser = parser->internalContext;
-			
+
 			Codecprintf(log, "H.264 format: profile %d level %d\n\tis_avc %d\n\tframe_mbs_only %d\n\tchroma_format_idc %d\n\tframe_num_gaps %d\n\tnum_reorder_frames %d\n",
 						h264parser->profile_idc, h264parser->level_idc, h264parser->is_avc, h264parser->frame_mbs_only_flag, h264parser->chroma_format_idc, h264parser->gaps_in_frame_num_value_allowed_flag,
 						h264parser->num_reorder_frames);
@@ -1030,11 +1030,11 @@ void ffusionLogDebugInfo(FFusionParserContext *parser, FILE *log)
 FFusionDecodeAbilities ffusionIsParsedVideoDecodable(FFusionParserContext *parser)
 {
 	if (!parser) return FFUSION_PREFER_DECODE;
-	
+
 	if (parser->parserStructure == &ffusionH264Parser) {
 		H264ParserContext *h264parser = parser->internalContext;
 		FFusionDecodeAbilities ret = FFUSION_PREFER_DECODE;
-		
+
 		//QT is bad at high profile
 		//and x264 B-pyramid (sps.vui.num_reorder_frames > 1)
 		if(h264parser->profile_idc < 100 && h264parser->num_reorder_frames < 2
@@ -1044,20 +1044,20 @@ FFusionDecodeAbilities ffusionIsParsedVideoDecodable(FFusionParserContext *parse
 		){
 			ret = FFUSION_PREFER_NOT_DECODE;
 		}
-		
+
 		//PAFF/MBAFF
 		//ffmpeg is ok at this now but we can't test it (not enough AVCHD samples)
 		//and the quicktime api for it may or may not actually exist
 		if(!h264parser->frame_mbs_only_flag)
 			ret = FFUSION_CANNOT_DECODE;
-		
+
 		//4:2:2 chroma
 		if(h264parser->chroma_format_idc > 1)
 			ret = FFUSION_CANNOT_DECODE;
-		
+
 		return ret;
 	}
-	
+
 	return FFUSION_PREFER_DECODE;
 }
 
