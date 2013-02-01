@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Develop|Win32">
+      <Configuration>Develop</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -12,7 +16,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6057FBDE-3E10-4A83-AE4B-F9F76760F7DA}</ProjectGuid>
-    <RootNamespace>XiphQT</RootNamespace>
+    <RootNamespace>FFusion</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -21,6 +25,11 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
@@ -36,13 +45,21 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Release\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">false</LinkIncremental>
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
@@ -54,7 +71,7 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release/XiphQT.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release/FFusion.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -67,7 +84,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;NDEBUG;WIN32;_WINDOWS;_USRDLL;XIPHQT_EXPORTS;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;XIPHQT_NO_ENCODERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -90,23 +107,91 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/XiphQT.dll</OutputFile>
+      <OutputFile>.\Release/FFusion.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libCMT.lib;libc.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ModuleDefinitionFile>.\FFusion.def</ModuleDefinitionFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Release/XiphQT.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/FFusion.pdb</ProgramDatabaseFile>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>.\Release/XiphQT.lib</ImportLibrary>
+      <ImportLibrary>.\Release/FFusion.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release/XiphQT.bsc</OutputFile>
+      <OutputFile>.\Release/FFusion.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>qtx-ing</Message>
+      <Command>if exist "$(IntDir)$(TargetName).qtx" Attrib -R "$(IntDir)$(TargetName).qtx"
+RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$(IntDir)$(TargetName).qtx"
+
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/FFusion.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <PrecompiledHeaderOutputFile>
+      </PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0809</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/FFusion.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Release/FFusion.pdb</ProgramDatabaseFile>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>.\Release/FFusion.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/FFusion.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
@@ -122,14 +207,14 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug/XiphQT.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug/FFusion.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>FFmpeg\win32\include;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_DEBUG;WIN32;_WINDOWS;_USRDLL;XIPHQT_EXPORTS;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;XIPHQT_NO_ENCODERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_DEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -150,22 +235,22 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/XiphQT.dll</OutputFile>
+      <OutputFile>.\Debug/FFusion.dll</OutputFile>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmt;libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/XiphQT.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug/FFusion.pdb</ProgramDatabaseFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>.\Debug/XiphQT.lib</ImportLibrary>
+      <ImportLibrary>.\Debug/FFusion.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug/XiphQT.bsc</OutputFile>
+      <OutputFile>.\Debug/FFusion.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
@@ -182,8 +267,13 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">@echo on
 Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(TargetDir)$(TargetName).qtr" &lt;  "%(FullPath)"
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">@echo on
+Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(TargetDir)$(TargetName).qtr" &lt;  "%(FullPath)"
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(TargetDir)$(TargetName).qtr;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">$(TargetDir)$(TargetName).qtr;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tool for FFusionWin32Resources.r</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">Performing Custom Build Tool for FFusionWin32Resources.r</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tool for FFusionWin32Resources.r</Message>
     </CustomBuild>
   </ItemGroup>
@@ -219,7 +309,10 @@ Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(Ta
     <ClCompile Include="CommonUtils.c" />
     <ClCompile Include="FFmpegUtils.c" />
     <ClCompile Include="FFusionCodec.c" />
-    <ClCompile Include="ff_private.c" />
+    <ClCompile Include="ff_private.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">Default</CompileAs>
+    </ClCompile>
     <ClCompile Include="FrameBuffer.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

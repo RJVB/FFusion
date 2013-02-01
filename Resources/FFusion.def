@@ -1,12 +1,12 @@
 ;
-;  XiphQT.def
+;  FFusion.def
 ;
-;    Win32 XiphQT dll entry-point declarations.
+;    Win32 FFusion dll entry-point declarations.
 ;
 ;
-;  Copyright (c) 2005-2006  Arek Korbik
+;  Copyright (c) 2005-2006  Arek Korbik, (c) 2013 RJVB
 ;
-;  This file is part of XiphQT, the Xiph QuickTime Components.
+;  This file was part of XiphQT, the Xiph QuickTime Components, now of FFusion-RJVB.
 ;
 ;  XiphQT is free software; you can redistribute it and/or
 ;  modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,8 @@
 ;
 
 
-LIBRARY		  XiphQT
-DESCRIPTION  'Xiph media compression formats support for QuickTime Windows'
+LIBRARY		  FFusion
+DESCRIPTION  'FFusion codec collection bringing ffmpeg-based decoding to QuickTime for Windows'
 
 EXPORTS
 ;=============================================================================================
@@ -39,14 +39,4 @@ EXPORTS
 ;=============================================================================================
 ;	Entry-points as registered in per-component 'thng'/'dlle' resources
 
-	CAVorbisDecoderEntry
-	CAOggVorbisDecoderEntry
-	CASpeexDecoderEntry
-	CAOggSpeexDecoderEntry
-	CAFLACDecoderEntry
-	CAOggFLACDecoderEntry
-	OggImportComponentDispatch
-	Theora_ImageCodecComponentDispatch
-	Theora_ImageEncoderComponentDispatch
-
-
+	FFusionCodecComponentDispatch

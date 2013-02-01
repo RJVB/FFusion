@@ -40,8 +40,13 @@
  - handle YUV 4:2:0 with odd width
  */
 
-#define unlikely(x) __builtin_expect(x, 0)
-#define likely(x) __builtin_expect(x, 1)
+#ifdef __GNUC__
+#	define unlikely(x) __builtin_expect(x, 0)
+#	define likely(x) __builtin_expect(x, 1)
+#else
+#	define unlikely(x)	(x)
+#	define likely(x)	(x)
+#endif
 
 //Handles the last row for Y420 videos with an odd number of luma rows
 //FIXME: odd number of luma columns is not handled and they will be lost
