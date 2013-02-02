@@ -12,6 +12,7 @@
 #include <stddef.h>
 #ifdef _MSC_VER
 #	define inline	__inline
+#	include <intrin.h>
 #endif
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
@@ -28,6 +29,23 @@
 #	define mpeg4video_parser	ff_mpeg4video_parser
 #else
 	extern DLLIMPORT AVCodecParser mpeg4video_parser;
+#endif
+
+#if defined(i386) || defined(__i386__)
+#	define REG_b	"ebx"
+#	define REG_S	"esi"
+#	define cpuid(index,eax,ebx,ecx,edx)\
+    __asm__ volatile\
+        ("mov %%"REG_b", %%"REG_S"\n\t"\
+         "cpuid\n\t"\
+         "xchg %%"REG_b", %%"REG_S\
+         : "=a" (eax), "=S" (ebx),\
+           "=c" (ecx), "=d" (edx)\
+         : "0" (index));
+
+#	define cpuid2(func,ax,bx,cx,dx)\
+	__asm__ __volatile__ ("cpuid":\
+	"=a" (ax), "=b" (bx), "=c" (cx), "=d" (dx) : "a" (func));
 #endif
 
 int main( int argc, char *argv[] )
@@ -110,6 +128,37 @@ int main( int argc, char *argv[] )
 // 	if( cpuFlags & AV_CPU_FLAG_ALTIVEC ){
 // 		fputs( "ALTIVEC\n", stdout );
 // 	}
+#if defined(i386) || defined(_MSC_VER)
+	{ int val[4];
+#ifdef _MSC_VER
+	  union { int i[4]; char c[16]; } vendor;
+		__cpuid( vendor.i, 0 );
+		vendor.c[16] = '\0';
+		fprintf( stderr, "CPU vendor: 0x%x,%s ", vendor.i[0], &vendor.c[4] );
+		__cpuid( val, 1 );
+		fprintf( stderr, "cpuid(1) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		
+		__cpuid( val, 0x80000000 );
+		fprintf( stderr, "cpuid(0x80000000) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+#else
+	  union { int i[3]; char c[12]; } vendor;
+		cpuid( 0, val[0], vendor.i[0], vendor.i[1], vendor.i[2] );
+		vendor.c[11] = '\0';
+		fprintf( stderr, "CPU vendor: 0x%x,%s ", val[0], vendor.c );
+		cpuid( 1, val[0], val[1], val[2], val[3] );
+		fprintf( stderr, "cpuid(1) -> {0x%x,0x%x,0x%x,0x%x} ", val[0], val[1], val[2], val[3] );
+		cpuid2( 0, val[0], vendor.i[0], vendor.i[1], vendor.i[2] );
+		vendor.c[11] = '\0';
+		fprintf( stderr, "/\n\t0x%x,%s ", val[0], vendor.c );
+		cpuid2( 1, val[0], val[1], val[2], val[3] );
+		fprintf( stderr, "cpuid(1) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
 
+		cpuid(0x80000000, val[0], val[1], val[2], val[3]);
+		fprintf( stderr, "cpuid(0x80000000) -> {0x%x,0x%x,0x%x,0x%x} ", val[0], val[1], val[2], val[3] );
+		cpuid2(0x80000000, val[0], val[1], val[2], val[3]);
+		fprintf( stderr, "/ {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+#endif
+	}
+#endif
 	exit(0);
 }
