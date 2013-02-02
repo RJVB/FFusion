@@ -745,6 +745,10 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 
 		// multi-slice decoding
 		SetupMultithreadedDecoding(glob->avContext, codecID);
+//		if( glob->avContext->thread_count > 1 ){
+//			FFusionDebugPrint2("%p using %d threads for '%s'\n",
+//							  glob, glob->avContext->thread_count, FourCCString(glob->componentType));
+//		}
 
 		// deblock skipping for h264
 		SetSkipLoopFilter(glob, glob->avContext);
