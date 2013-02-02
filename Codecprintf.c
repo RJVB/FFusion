@@ -24,35 +24,50 @@
 #include <stdarg.h>
 #include "libavutil/log.h"
 
+#ifdef _SS_LOG_ACTIVE
+#	include "CommonUtils.h"
+#	define HAS_LOG_INIT
+#	include "Logging.h"
+#endif
+
 #define CODEC_HEADER			"FFusion: "
 
 static int Codecvprintf(FILE *fileLog, const char *format, va_list va, int print_header)
 {
 	int ret = 0;
-	
-	if(fileLog)
+#if _SS_LOG_ACTIVE
+#	ifndef DEBUG_BUILD
+	if( fileLog )
+#	endif
 	{
-		if(print_header)
+		if( !qtLog_Initialised ){
+			qtLogPtr = Initialise_Log( "FFusion Codec Log", ProgName() );
+			qtLog_Initialised = 1;
+		}
+		vcWriteLog( qtLogPtr, (char*) format, va );
+	}
+#else
+	if( fileLog ){
+		if( print_header ){
 			fprintf(fileLog, CODEC_HEADER);
+		}
 		ret = vfprintf(fileLog, format, va);
 		fflush(fileLog);
 	}
-	else
-	{
+	else{
 #ifdef DEBUG_BUILD
-		if(print_header)
+		if( print_header ){
 			printf(CODEC_HEADER);
-		
+		}
 		ret = vprintf(format, va);
 #endif
 	}
-	
+#endif
 	return ret;
 }
 
 int Codecprintf(FILE *fileLog, const char *format, ...)
-{
-	int ret;
+{int ret;
 	va_list va;
 	va_start(va, format);
 	ret = Codecvprintf(fileLog, format, va, !fileLog);

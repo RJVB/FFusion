@@ -30,6 +30,29 @@
 #	include <windows.h>
 #endif
 
+#if defined(_WINDOWS) || defined(WIN32) || defined(_MSC_VER)
+char *ProgName()
+{ static char progName[260] = "";
+	// obtain programme name: cf. http://support.microsoft.com/kb/126571
+	if( __argv && !*progName ){
+		char *pName = strrchr(__argv[0], '\\'), *ext = strrchr(__argv[0], '.'), *c, *end;
+		c = progName;
+		if( pName ){
+			pName++;
+		}
+		else{
+			pName = __argv[0];
+		}
+		end = &progName[sizeof(progName)-1];
+		while( pName < ext && c < end ){
+			*c++ = *pName++;
+		}
+		*c++ = '\0';
+	}
+	return progName;
+}
+#endif
+
 typedef struct LanguageTriplet {
 	char twoChar[3];
 	char threeChar[4];	// (ISO 639-2 3 char code)
@@ -315,6 +338,7 @@ static const CFStringRef defaultFrameDroppingList[] = {
 	CFSTR("Movist"),
 	CFSTR("NicePlayer"),
 	CFSTR("QTKitServer"),
+	CFSTR("QuickTime Player 7"),
 	CFSTR("QuickTime Player"),
 	CFSTR("Spiral")
 };
@@ -388,6 +412,53 @@ static int isApplicationNameInList(CFStringRef prefOverride, const CFStringRef *
 
 	return ret;
 }
+#else
+
+#	define strcasecmp(a,b)	_stricmp((a),(b))
+
+const char *basename( const char *url )
+{ const char *c = NULL;
+	if( url ){
+		if( (c =  strrchr( url, '\\' )) ){
+			c++;
+		}
+		else{
+			c = url;
+		}
+	}
+	return c;
+}
+
+static const char *defaultFrameDroppingList[] = {
+	"QuickTimePlayer",
+	"QTVODM2",
+};
+
+static const char *defaultForcedAppList[] = {
+	NULL
+};
+
+static int findNameInList(const char *loadingApp, const char *names[], size_t count)
+{ size_t i;
+	
+	for (i = 0; i < count; i++) {
+		if( names[i] && strcasecmp( loadingApp, names[i] ) == 0 ){
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int isApplicationNameInList(void *prefOverrideIgnored, const char *defaultList[], size_t defaultListCount)
+{ const char *myProcessName = basename( ProgName() );
+  int ret;
+
+	ret = findNameInList( myProcessName, defaultList, defaultListCount);
+
+	return ret;
+}
+
 #endif
 
 int IsFrameDroppingEnabled()
@@ -399,6 +470,10 @@ int IsFrameDroppingEnabled()
 		enabled = isApplicationNameInList(CFSTR("FrameDroppingWhiteList"),
 										  defaultFrameDroppingList,
 										  sizeof(defaultFrameDroppingList)/sizeof(defaultFrameDroppingList[0]));
+#else
+	enabled = isApplicationNameInList( NULL,
+									  defaultFrameDroppingList,
+									  sizeof(defaultFrameDroppingList)/sizeof(defaultFrameDroppingList[0]));
 #endif
 	return enabled;
 }
