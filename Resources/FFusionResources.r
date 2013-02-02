@@ -170,7 +170,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 // FIXME: can we do this without claiming Apple's manufacturer (and thus unregistering their decoder)?
-#define kCodecManufacturer 'appl'
+//#if !TARGET_REZ_WIN32
+#	define kCodecManufacturer 'appl'
+//#endif
 #define kCodecVersion kFFusionCodecVersion + 0x10
 #define kCodecInfoResID kMPEG4CodecInfoResID
 
