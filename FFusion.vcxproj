@@ -83,7 +83,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -151,7 +151,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;SSLogging;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;SSLogging;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_SS_LOG_ACTIVE;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -214,7 +214,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_DEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
