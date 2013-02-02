@@ -42,6 +42,10 @@ extern "C"
 {
 #endif
 
+#if defined(_WINDOWS) || defined(WIN32) || defined(_MSC_VER)
+	extern char *ProgName();
+#endif
+
 #ifndef FFUSION_CODEC_ONLY
 // ISO 639-1 to language ID expected by SetMediaLanguage
 short ISO639_1ToQTLangCode(const char *lang);

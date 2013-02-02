@@ -174,6 +174,7 @@ void ChangeHintText(int value, ControlRef staticTextField);
 
 //#define FFusionDebugPrint(x...) if (glob->fileLog) Codecprintf(glob->fileLog, x);
 #define FFusionDebugPrint(x,...) Codecprintf(glob->fileLog, x, ##__VA_ARGS__)
+#define FFusionDebugPrint2(x,...) Codecprintf(((glob->fileLog)?glob->fileLog:stderr), x, ##__VA_ARGS__)
 #define not(x) ((x) ? "" : "not ")
 
 //---------------------------------------------------------------------------
@@ -386,7 +387,7 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
 
     if (err = MemError())
     {
-        Codecprintf(NULL, "Unable to allocate globals! Exiting.\n");
+        Codecprintf( stderr, "Unable to allocate globals! Exiting.\n");
     }
     else
     {
@@ -418,7 +419,7 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
         }
         else
         {
-            Codecprintf(glob->fileLog, "Error opening the base image decompressor! Exiting.\n");
+            FFusionDebugPrint2("Error opening the base image decompressor! Exiting.\n");
         }
 
 		// we allocate some space for copying the frame data since we need some padding at the end
@@ -590,6 +591,8 @@ static inline int shouldDecode(FFusionGlobals glob, enum CodecID codecID)
 			decode = FFUSION_PREFER_DECODE;
 		}
 	}
+	FFusionDebugPrint2( "shouldDecode(%p,%d='%s') = %d\n",
+					   glob, codecID, FourCCString(glob->componentType), decode > FFUSION_PREFER_NOT_DECODE );
 	return decode > FFUSION_PREFER_NOT_DECODE;
 }
 
@@ -619,7 +622,8 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
     // to the fourCC if it has not been done before
 
 	FFusionDebugPrint("%p Preflight called.\n", glob);
-	FFusionDebugPrint("%p Frame dropping is %senabled\n", glob, not(IsFrameDroppingEnabled()));
+	FFusionDebugPrint2("%p Frame dropping is %senabled for '%s'\n",
+					   glob, not(IsFrameDroppingEnabled()), FourCCString(glob->componentType) );
 
     if (!glob->avCodec)
     { OSType componentType = glob->componentType;
@@ -1323,7 +1327,10 @@ pascal ComponentResult FFusionCodecEndBand(FFusionGlobals glob, ImageSubCodecDec
 		releaseBuffer(glob->avContext, buf->frame);
 
 	FFusionDebugPrint("%p EndBand #%d.\n", glob, myDrp->frameNumber);
-
+#if TARGET_OS_WIN32
+// are we being used?
+//	Sleep( 83 );
+#endif
     return noErr;
 }
 

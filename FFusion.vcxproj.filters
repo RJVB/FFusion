@@ -9,12 +9,12 @@
       <UniqueIdentifier>{b1528dfb-bc2c-4c83-bcf5-6fa1ba17b44a}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{5b2458cb-a71f-497d-93db-f4a2f8d6e244}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl</Extensions>
-    </Filter>
     <Filter Include="Source Files\Headers">
       <UniqueIdentifier>{45de66cf-2223-4293-9152-e0101e5f0150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SSLogging">
+      <UniqueIdentifier>{5b2458cb-a71f-497d-93db-f4a2f8d6e244}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +67,12 @@
     <ClInclude Include="FrameBuffer.h">
       <Filter>Source Files\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SSLogging\Logger.h">
+      <Filter>SSLogging</Filter>
+    </ClInclude>
+    <ClInclude Include="SSLogging\Logging.h">
+      <Filter>SSLogging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bitstream_info.c">
@@ -96,5 +102,13 @@
     <ClCompile Include="FrameBuffer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SSLogging\Logger.cpp">
+      <Filter>SSLogging</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\FFusionVersion.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

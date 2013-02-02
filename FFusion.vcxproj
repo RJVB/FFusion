@@ -55,9 +55,9 @@
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Develop\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Release\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">.\Develop\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">false</LinkIncremental>
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\oggdsf\sln\oggdsf_vs2008;..\..\oggdsf\sln\oggdsf_vs2008\Win32\Release;$(ReferencePath)</ReferencePath>
@@ -83,7 +83,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -151,17 +151,17 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;SSLogging;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_SS_LOG_ACTIVE;_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
-      <ObjectFileName>.\Release/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <AssemblerListingLocation>.\Develop/</AssemblerListingLocation>
+      <ObjectFileName>.\Develop/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Develop/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -174,19 +174,19 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <Culture>0x0809</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/FFusion.dll</OutputFile>
+      <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;SS_Log.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Develop/FFusion.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;c:\Libs\SS_Log_Bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Release/FFusion.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Develop/FFusion.pdb</ProgramDatabaseFile>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>.\Release/FFusion.lib</ImportLibrary>
+      <ImportLibrary>.\Develop/FFusion.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
@@ -195,8 +195,9 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
-      <Command>if exist "$(IntDir)$(TargetName).qtx" Attrib -R "$(IntDir)$(TargetName).qtx"
-RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$(IntDir)$(TargetName).qtx"
+      <Command>@echo on
+if exist "$(IntDir)$(TargetName)-dev.qtx" Attrib -R "$(IntDir)$(TargetName)-dev.qtx"
+RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$(IntDir)$(TargetName)-dev.qtx"
 
 </Command>
     </PostBuildEvent>
@@ -213,7 +214,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;..\AppleSDK\CoreAudio\PublicUtility;..\AppleSDK\CoreAudio\AudioCodecs\ACPublic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_DEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -300,6 +301,8 @@ Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(Ta
     <ClInclude Include="FFusionResourceIDs.h" />
     <ClInclude Include="ff_private.h" />
     <ClInclude Include="FrameBuffer.h" />
+    <ClInclude Include="SSLogging\Logger.h" />
+    <ClInclude Include="SSLogging\Logging.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bitstream_info.c" />
@@ -314,6 +317,10 @@ Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(Ta
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Develop|Win32'">Default</CompileAs>
     </ClCompile>
     <ClCompile Include="FrameBuffer.c" />
+    <ClCompile Include="SSLogging\Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\FFusionVersion.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
