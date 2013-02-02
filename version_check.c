@@ -24,13 +24,6 @@
 #	define DLLIMPORT	/**/
 #endif
 
-#if LIBAVCODEC_VERSION_MAJOR > 52 
-	extern DLLIMPORT AVCodecParser ff_mpeg4video_parser;
-#	define mpeg4video_parser	ff_mpeg4video_parser
-#else
-	extern DLLIMPORT AVCodecParser mpeg4video_parser;
-#endif
-
 #if defined(i386) || defined(__i386__)
 #	define REG_b	"ebx"
 #	define REG_S	"esi"
@@ -52,7 +45,6 @@ int main( int argc, char *argv[] )
 { const char *license, *configuration;
   unsigned version;
   int cpuFlags;
-  AVCodecParser *pp = &mpeg4video_parser;
 	fprintf( stderr, "avcodec,avcore,avutil version functions at %p,%p,%p\n",
 		avcodec_version, avcore_version, avutil_version );
 
@@ -61,7 +53,6 @@ int main( int argc, char *argv[] )
 	configuration = avcodec_configuration();
 	fprintf( stdout, "libavcodec, version %u / \"%s\"\n", version, configuration );
 	fprintf( stderr, "            license \"%s\"\n", license );
-	fprintf( stderr, "mpeg4video_parser @ %p\n", pp );
 	fflush(stderr), fflush(stdout);
 
 	version = avcore_version();
@@ -139,7 +130,13 @@ int main( int argc, char *argv[] )
 		fprintf( stderr, "cpuid(1) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
 		
 		__cpuid( val, 0x80000000 );
-		fprintf( stderr, "cpuid(0x80000000) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		if( val[0] >= 0x80000001 ){
+			__cpuid( val, 0x80000001 );
+			fprintf( stderr, "cpuid(0x80000001) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		}
+		else{
+			fprintf( stderr, "cpuid(0x80000000) -> no AMD 3DNow/MMX {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		}
 #else
 	  union { int i[3]; char c[12]; } vendor;
 		cpuid( 0, val[0], vendor.i[0], vendor.i[1], vendor.i[2] );
@@ -154,9 +151,15 @@ int main( int argc, char *argv[] )
 		fprintf( stderr, "cpuid(1) -> {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
 
 		cpuid(0x80000000, val[0], val[1], val[2], val[3]);
-		fprintf( stderr, "cpuid(0x80000000) -> {0x%x,0x%x,0x%x,0x%x} ", val[0], val[1], val[2], val[3] );
-		cpuid2(0x80000000, val[0], val[1], val[2], val[3]);
-		fprintf( stderr, "/ {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		if( val[0] >= 0x80000001 ){
+			cpuid(0x80000001, val[0], val[1], val[2], val[3]);
+			fprintf( stderr, "cpuid(0x80000001) -> {0x%x,0x%x,0x%x,0x%x} ", val[0], val[1], val[2], val[3] );
+			cpuid2(0x80000001, val[0], val[1], val[2], val[3]);
+			fprintf( stderr, "/ {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		}
+		else{
+			fprintf( stderr, "cpuid(0x80000000) -> no AMD 3DNow/MMX {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
+		}
 #endif
 	}
 #endif
