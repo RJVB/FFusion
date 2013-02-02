@@ -20,10 +20,10 @@ configureflags="--disable-doc --disable-pthreads --enable-w32threads --enable-ru
      --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network \
      --disable-swscale --disable-avfilter --target-os=mingw32 --enable-memalign-hack --arch=x86 \
 	--enable-cross-compile --cross-prefix=/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc- \
-	--enable-shared --disable-static --disable-stripping"
+	--enable-shared --disable-static --disable-stripping --enable-amd3dnow --enable-amd3dnowext"
 
-# -m3dnow
-cflags="-march=core2 -g -msse2 -msse3 -mssse3 -msse4 -arch i386 -Dattribute_deprecated= -w"
+# 
+cflags="-march=amdfam10 -g -msse2 -msse3 -mssse3 -msse4a -mthreads -m3dnow -arch i386 -Dattribute_deprecated= -w"
 
 if [ "$BUILD_STYLE" = "Development" ] ; then
     configureflags="$configureflags --disable-optimizations --disable-asm"
@@ -81,7 +81,7 @@ else
     # files we'd like to keep frame pointers in for in-the-wild debugging
     fptargets="libavformat/avformat.dll libavutil/avutil.dll libavcodec/utils.o"
 
-	configureflags="--prefix=${DESTDIR} ${configureflags}"
+	configureflags="--prefix=${DESTDIR} --bindir=${DESTDIR}/bin.amd --shlibdir=${DESTDIR}/bin.amd ${configureflags}"
 	if [ "$BUILD_STYLE" != "Development" ] ; then
 		optcflags_i386="$optcflags $x86flags" 
 		if [ "$x86tune" != "" ] ;then
@@ -125,7 +125,7 @@ else
 	gcp -puv "${BUILDDIR}"/*/*.def "${DESTDIR}/lib"
 	gcp -puv "${BUILDDIR}"/*/*.lib "${DESTDIR}/lib"
 	rm -rf "${DESTDIR}"/lib/*.dll.a "${DESTDIR}/lib/pkgconfig"
-	cd "${DESTDIR}/bin"
+	cd "${DESTDIR}/bin.amd"
 	find . -type l | xargs rm
 	mv avcodec-52.*.dll avcodec-52.dll
 	mv avutil-50.*.dll avutil-50.dll
