@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D61D797016BD779600F6FB18 /* version_check.c in Sources */ = {isa = PBXBuildFile; fileRef = D61D796F16BD779600F6FB18 /* version_check.c */; };
+		D61D797216BD77B000F6FB18 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA20A3CE8C10066D45F /* libavutil.a */; };
+		D61D797316BD77B000F6FB18 /* libavcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEFA3F8120560AD0097FE4C /* libavcore.a */; };
+		D61D797416BD77B000F6FB18 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA10A3CE8C10066D45F /* libavcodec.a */; };
+		D61D798416BD77DA00F6FB18 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D61D798316BD77DA00F6FB18 /* libz.dylib */; };
 		D67BC47316B166FF00E26386 /* Perian_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */; };
 		D67BC47816B166FF00E26386 /* ff_private.c in Sources */ = {isa = PBXBuildFile; fileRef = 11C85ED60A641E6400DF3D73 /* ff_private.c */; };
 		D67BC47A16B166FF00E26386 /* FFusionCodec.c in Sources */ = {isa = PBXBuildFile; fileRef = F560DF0003D61D0101ABA332 /* FFusionCodec.c */; };
@@ -2206,6 +2211,9 @@
 		D617819416B85DF200FE3AC6 /* trasher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trasher.c; sourceTree = "<group>"; };
 		D617819516B85DF200FE3AC6 /* unwrap-diff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "unwrap-diff"; sourceTree = "<group>"; };
 		D617819616B85DF200FE3AC6 /* version.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
+		D61D796A16BD777C00F6FB18 /* version_check */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = version_check; sourceTree = BUILT_PRODUCTS_DIR; };
+		D61D796F16BD779600F6FB18 /* version_check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version_check.c; sourceTree = "<group>"; };
+		D61D798316BD77DA00F6FB18 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D66D737F16BC337200BF1C5E /* FFusion.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.modula2.def; name = FFusion.def; path = Resources/FFusion.def; sourceTree = "<group>"; };
 		D66D739B16BC371800BF1C5E /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; name = Logging.h; path = SSLogging/Logging.h; sourceTree = "<group>"; };
 		D66D739C16BC371800BF1C5E /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = SSLogging/Logger.h; sourceTree = "<group>"; };
@@ -2234,6 +2242,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D61D796816BD777C00F6FB18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D61D797216BD77B000F6FB18 /* libavutil.a in Frameworks */,
+				D61D797316BD77B000F6FB18 /* libavcore.a in Frameworks */,
+				D61D797416BD77B000F6FB18 /* libavcodec.a in Frameworks */,
+				D61D798416BD77DA00F6FB18 /* libz.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D67BC49816B166FF00E26386 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2262,6 +2281,7 @@
 				D617791D16B85DEF00FE3AC6 /* ffmpeg sources */,
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB4FE9D528D11CA2CBB /* Products */,
+				D61D798316BD77DA00F6FB18 /* libz.dylib */,
 			);
 			name = "ffmpeg DivX";
 			sourceTree = "<group>";
@@ -2310,6 +2330,7 @@
 		08FB77ADFE841716C02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D61D796F16BD779600F6FB18 /* version_check.c */,
 				F53AD5E20B2A4EC000D93AC9 /* FFMPEG */,
 				F560DECD03D61B6101ABA332 /* Components.k.h */,
 				113F58980A6B091600509987 /* Codecprintf.h */,
@@ -2330,6 +2351,7 @@
 			isa = PBXGroup;
 			children = (
 				D67BC4B216B166FF00E26386 /* FFusion.component */,
+				D61D796A16BD777C00F6FB18 /* version_check */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4882,6 +4904,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D61D796916BD777C00F6FB18 /* version_check */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D61D797116BD779600F6FB18 /* Build configuration list for PBXNativeTarget "version_check" */;
+			buildPhases = (
+				D61D796716BD777C00F6FB18 /* Sources */,
+				D61D796816BD777C00F6FB18 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = version_check;
+			productName = version_check;
+			productReference = D61D796A16BD777C00F6FB18 /* version_check */;
+			productType = "com.apple.product-type.tool";
+		};
 		D67BC46416B166FF00E26386 /* FFusion */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D67BC4AE16B166FF00E26386 /* Build configuration list for PBXNativeTarget "FFusion" */;
@@ -4927,6 +4965,7 @@
 			projectRoot = "";
 			targets = (
 				D67BC46416B166FF00E26386 /* FFusion */,
+				D61D796916BD777C00F6FB18 /* version_check */,
 			);
 		};
 /* End PBXProject section */
@@ -4955,6 +4994,14 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D61D796716BD777C00F6FB18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D61D797016BD779600F6FB18 /* version_check.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D67BC47416B166FF00E26386 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5118,6 +5165,71 @@
 			};
 			name = "Deployment+Debug";
 		};
+		D61D796C16BD777C00F6FB18 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FFmpeg/osx86/lib\"",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = version_check;
+			};
+			name = Development;
+		};
+		D61D796D16BD777C00F6FB18 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DEBUGGING_SYMBOLS = used;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				HEADER_SEARCH_PATHS = (
+					"FFmpeg/osx86/include/**",
+					"FFmpeg/source/**",
+					"\"$(BUILT_PRODUCTS_DIR)\"",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FFmpeg/osx86/lib\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PREBINDING = NO;
+				PRODUCT_NAME = version_check;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D61D796E16BD777C00F6FB18 /* Deployment+Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FFmpeg/osx86/lib\"",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = version_check;
+			};
+			name = "Deployment+Debug";
+		};
 		D67BC4AF16B166FF00E26386 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5264,6 +5376,16 @@
 				11D4ED480A3CE59A0066D45F /* Development */,
 				11D4ED490A3CE59A0066D45F /* Deployment */,
 				3D4BBE510B59EE0A000EDE04 /* Deployment+Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Deployment+Debug";
+		};
+		D61D797116BD779600F6FB18 /* Build configuration list for PBXNativeTarget "version_check" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D61D796C16BD777C00F6FB18 /* Development */,
+				D61D796D16BD777C00F6FB18 /* Deployment */,
+				D61D796E16BD777C00F6FB18 /* Deployment+Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Deployment+Debug";
