@@ -2207,6 +2207,10 @@
 		D617819516B85DF200FE3AC6 /* unwrap-diff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "unwrap-diff"; sourceTree = "<group>"; };
 		D617819616B85DF200FE3AC6 /* version.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
 		D66D737F16BC337200BF1C5E /* FFusion.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.modula2.def; name = FFusion.def; path = Resources/FFusion.def; sourceTree = "<group>"; };
+		D66D739B16BC371800BF1C5E /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; name = Logging.h; path = SSLogging/Logging.h; sourceTree = "<group>"; };
+		D66D739C16BC371800BF1C5E /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = SSLogging/Logger.h; sourceTree = "<group>"; };
+		D66D739D16BC371800BF1C5E /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Logger.cpp; path = SSLogging/Logger.cpp; sourceTree = "<group>"; };
+		D66D745C16BC503700BF1C5E /* FFusionWin32Resources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionWin32Resources.r; path = Resources/FFusionWin32Resources.r; sourceTree = "<group>"; };
 		D67BC4B216B166FF00E26386 /* FFusion.component */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFusion.component; sourceTree = BUILT_PRODUCTS_DIR; };
 		D67BC4D516B1698400E26386 /* FFusion-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FFusion-Info.plist"; path = "Plists/FFusion-Info.plist"; sourceTree = "<group>"; };
 		D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = FFusionInfoPlist.strings; path = Plists/FFusionInfoPlist.strings; sourceTree = "<group>"; };
@@ -2254,6 +2258,8 @@
 			children = (
 				08FB77ADFE841716C02AAC07 /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
+				D66D739A16BC36ED00BF1C5E /* win32 */,
+				D617791D16B85DEF00FE3AC6 /* ffmpeg sources */,
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB4FE9D528D11CA2CBB /* Products */,
 			);
@@ -2297,7 +2303,6 @@
 				D67BC4D516B1698400E26386 /* FFusion-Info.plist */,
 				D67BC4D616B1698400E26386 /* FFusionInfoPlist.strings */,
 				83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */,
-				D617791D16B85DEF00FE3AC6 /* ffmpeg sources */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -4826,6 +4831,17 @@
 				D617819516B85DF200FE3AC6 /* unwrap-diff */,
 			);
 			path = tools;
+			sourceTree = "<group>";
+		};
+		D66D739A16BC36ED00BF1C5E /* win32 */ = {
+			isa = PBXGroup;
+			children = (
+				D66D745C16BC503700BF1C5E /* FFusionWin32Resources.r */,
+				D66D739B16BC371800BF1C5E /* Logging.h */,
+				D66D739C16BC371800BF1C5E /* Logger.h */,
+				D66D739D16BC371800BF1C5E /* Logger.cpp */,
+			);
+			name = win32;
 			sourceTree = "<group>";
 		};
 		F53AD5E20B2A4EC000D93AC9 /* FFMPEG */ = {
