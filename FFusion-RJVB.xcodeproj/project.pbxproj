@@ -2228,6 +2228,8 @@
 		D67BC5AC16B1981D00E26386 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = /usr/local/FFmpeg/trunk/lib/libavformat.a; sourceTree = "<absolute>"; };
 		D67BC5AE16B1981D00E26386 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = /usr/local/FFmpeg/trunk/lib/libavutil.a; sourceTree = "<absolute>"; };
 		D67BC5C216B19A4300E26386 /* codecID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = codecID.c; sourceTree = "<group>"; };
+		D68306EC16BEDEA800301AD1 /* timing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = timing.c; sourceTree = "<group>"; };
+		D68306ED16BEDEA800301AD1 /* timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timing.h; sourceTree = "<group>"; };
 		D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionMacOSXResources.r; path = Resources/FFusionMacOSXResources.r; sourceTree = "<group>"; };
 		F52286240B50625E00F8CF7D /* bitstream_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream_info.h; sourceTree = "<group>"; };
 		F52286250B50625E00F8CF7D /* bitstream_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream_info.c; sourceTree = "<group>"; };
@@ -2330,6 +2332,8 @@
 		08FB77ADFE841716C02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D68306EC16BEDEA800301AD1 /* timing.c */,
+				D68306ED16BEDEA800301AD1 /* timing.h */,
 				D61D796F16BD779600F6FB18 /* version_check.c */,
 				F53AD5E20B2A4EC000D93AC9 /* FFMPEG */,
 				F560DECD03D61B6101ABA332 /* Components.k.h */,
@@ -5191,11 +5195,12 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_DEBUGGING_SYMBOLS = used;
+				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = (
 					"FFmpeg/osx86/include/**",
