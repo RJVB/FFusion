@@ -18,6 +18,8 @@
 #include <libavutil/avutil.h>
 #include <libavcore/avcore.h>
 
+#include "timing.c"
+
 #ifdef _MSC_VER
 #	define DLLIMPORT	__declspec(dllimport)
 #else
@@ -40,6 +42,150 @@
 	__asm__ __volatile__ ("cpuid":\
 	"=a" (ax), "=b" (bx), "=c" (cx), "=d" (dx) : "a" (func));
 #endif
+
+#ifdef __GNUC__
+#	define unlikely(x) __builtin_expect(x, 0)
+#	define likely(x) __builtin_expect(x, 1)
+#else
+#	define unlikely(x)	(x)
+#	define likely(x)	(x)
+#endif
+
+//Handles the last row for Y420 videos with an odd number of luma rows
+//FIXME: odd number of luma columns is not handled and they will be lost
+static void Y420toY422_lastrow(uint8_t *o, uint8_t *yc, uint8_t *uc, uint8_t *vc, int halfWidth)
+{
+	int x;
+	for(x=0; x < halfWidth; x++)
+	{
+		int x4 = x*4, x2 = x*2;
+
+		o[x4]   = uc[x];
+		o[++x4] = yc[x2];
+		o[++x4] = vc[x];
+		o[++x4] = yc[++x2];
+	}
+}
+
+#define HandleLastRow(o, yc, uc, vc, halfWidth, height) if (unlikely(height & 1)) Y420toY422_lastrow(o, yc, uc, vc, halfWidth)
+
+#include <emmintrin.h>
+
+#ifdef _MSCVER
+#	define FASTCALL	__fastcall
+#elif defined(__i386__) && !defined(__llvm__) && !defined(_MSC_VER)
+#	define FASTCALL	__attribute__((fastcall))
+#else
+#	define FASTCALL
+#endif
+
+static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, int width, int height)
+{
+	uint8_t	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2];
+	int		rY = picture->linesize[0], rUV = picture->linesize[1];
+	int		y, x, halfwidth = width >> 1, halfheight = height >> 1;
+	int		vWidth = width >> 5;
+
+	for (y = 0; y < halfheight; y++) {
+		uint8_t   *o2 = o + outRB,   *yc2 = yc + rY;
+		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
+		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
+		
+#if defined(__i386__) && !defined(_MSC_VER) //FIXMERJVB
+		int vWidth_ = vWidth;
+
+		asm volatile(
+			"\n0:			\n\t"
+			"movdqa		(%2),	%%xmm0	\n\t"
+			"movdqa		16(%2),	%%xmm2	\n\t"
+			"movdqa		(%3),		%%xmm1	\n\t"
+			"movdqa		16(%3),	%%xmm3	\n\t"
+			"movdqu		(%4),	%%xmm4	\n\t"
+			"movdqu		(%5),	%%xmm5	\n\t"
+			"addl		$32,	%2		\n\t"
+			"addl		$32,	%3		\n\t"
+			"addl		$16,	%4		\n\t"
+			"addl		$16,	%5		\n\t"
+			"movdqa		%%xmm4, %%xmm6	\n\t"
+			"punpcklbw	%%xmm5, %%xmm4	\n\t" /*chroma_l*/
+			"punpckhbw	%%xmm5, %%xmm6	\n\t" /*chroma_h*/
+			"movdqa		%%xmm4, %%xmm5	\n\t"
+			"punpcklbw	%%xmm0, %%xmm5	\n\t"
+			"movntdq	%%xmm5, (%0)	\n\t" /*ov[x4]*/
+			"movdqa		%%xmm4, %%xmm5	\n\t"
+			"punpckhbw	%%xmm0, %%xmm5	\n\t"
+			"movntdq	%%xmm5, 16(%0)	\n\t" /*ov[x4+1]*/
+			"movdqa		%%xmm6, %%xmm5	\n\t"
+			"punpcklbw	%%xmm2, %%xmm5	\n\t"
+			"movntdq	%%xmm5, 32(%0)	\n\t" /*ov[x4+2]*/
+			"movdqa		%%xmm6, %%xmm5	\n\t"
+			"punpckhbw	%%xmm2, %%xmm5	\n\t"
+			"movntdq	%%xmm5, 48(%0)	\n\t" /*ov[x4+3]*/
+			"addl		$64,	%0		\n\t"
+			"movdqa		%%xmm4, %%xmm5	\n\t"
+			"punpcklbw	%%xmm1, %%xmm5	\n\t"
+			"movntdq	%%xmm5, (%1)	\n\t" /*ov2[x4]*/
+			"punpckhbw	%%xmm1, %%xmm4	\n\t"
+			"movntdq	%%xmm4, 16(%1)	\n\t" /*ov2[x4+1]*/
+			"movdqa		%%xmm6, %%xmm5	\n\t"
+			"punpcklbw	%%xmm3, %%xmm5	\n\t"
+			"movntdq	%%xmm5, 32(%1)	\n\t" /*ov2[x4+2]*/
+			"punpckhbw	%%xmm3, %%xmm6	\n\t"
+			"movntdq	%%xmm6, 48(%1)	\n\t" /*ov2[x4+3]*/
+			"addl		$64,	%1		\n\t"
+			"decl		%6				\n\t"
+			"jnz		0b				\n\t"
+			: "+r" (ov), "+r" (ov2), "+r" (yv),
+			  "+r" (yv2), "+r" (uv), "+r" (vv), "+m"(vWidth_)
+			:
+			: "memory", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6"
+			);
+#else
+		for (x = 0; x < vWidth; x++) {
+			int x2 = x*2, x4 = x*4;
+
+			__m128i	tmp_y = yv[x2], tmp_y3 = yv[x2+1],
+					tmp_y2 = yv2[x2], tmp_y4 = yv2[x2+1],
+					tmp_u = _mm_loadu_si128(&uv[x]), tmp_v = _mm_loadu_si128(&vv[x]),
+					chroma_l = _mm_unpacklo_epi8(tmp_u, tmp_v),
+					chroma_h = _mm_unpackhi_epi8(tmp_u, tmp_v);
+			
+			_mm_stream_si128(&ov[x4],   _mm_unpacklo_epi8(chroma_l, tmp_y)); 
+			_mm_stream_si128(&ov[x4+1], _mm_unpackhi_epi8(chroma_l, tmp_y)); 
+			_mm_stream_si128(&ov[x4+2], _mm_unpacklo_epi8(chroma_h, tmp_y3)); 
+			_mm_stream_si128(&ov[x4+3], _mm_unpackhi_epi8(chroma_h, tmp_y3)); 
+			
+			_mm_stream_si128(&ov2[x4],  _mm_unpacklo_epi8(chroma_l, tmp_y2)); 
+			_mm_stream_si128(&ov2[x4+1],_mm_unpackhi_epi8(chroma_l, tmp_y2));
+			_mm_stream_si128(&ov2[x4+2],_mm_unpacklo_epi8(chroma_h, tmp_y4));
+			_mm_stream_si128(&ov2[x4+3],_mm_unpackhi_epi8(chroma_h, tmp_y4));
+		}
+#endif
+
+		for (x=vWidth * 16; x < halfwidth; x++) {
+		  int x4 = x*4, x2 = x*2;
+			o2[x4]     = o[x4] = uc[x];
+//			o [x4 + 1] = yc[x2];
+//			o2[x4 + 1] = yc2[x2];
+//			o2[x4 + 2] = o[x4 + 2] = vc[x];
+//			o [x4 + 3] = yc[x2 + 1];
+//			o2[x4 + 3] = yc2[x2 + 1];
+			x4++;
+			o [x4] = yc[x2], o2[x4] = yc2[x2];
+			x4++;
+			o2[x4] = o[x4] = vc[x];
+			x4++, x2++;
+			o [x4] = yc[x2], o2[x4] = yc2[x2];
+		}			
+		
+		o  += outRB*2;
+		yc += rY*2;
+		uc += rUV;
+		vc += rUV;
+	}
+
+	HandleLastRow(o, yc, uc, vc, halfwidth, height);
+}
 
 int main( int argc, char *argv[] )
 { const char *license, *configuration;
@@ -121,7 +267,7 @@ int main( int argc, char *argv[] )
 // 	}
 #if defined(i386) || defined(_MSC_VER)
 	{ int val[4];
-#ifdef _MSC_VER
+#	ifdef _MSC_VER
 	  union { int i[4]; char c[16]; } vendor;
 		__cpuid( vendor.i, 0 );
 		vendor.c[16] = '\0';
@@ -137,7 +283,7 @@ int main( int argc, char *argv[] )
 		else{
 			fprintf( stderr, "cpuid(0x80000000) -> no AMD 3DNow/MMX {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
 		}
-#else
+#	else
 	  union { int i[3]; char c[12]; } vendor;
 		cpuid( 0, val[0], vendor.i[0], vendor.i[1], vendor.i[2] );
 		vendor.c[11] = '\0';
@@ -160,8 +306,43 @@ int main( int argc, char *argv[] )
 		else{
 			fprintf( stderr, "cpuid(0x80000000) -> no AMD 3DNow/MMX {0x%x,0x%x,0x%x,0x%x}\n", val[0], val[1], val[2], val[3] );
 		}
-#endif
+#	endif
 	}
 #endif
+	{ AVPicture pict;
+	  uint8_t *baseAddr = NULL;
+	  int width = 720, height = 576, outRB = 1440;
+	  double t;
+	  unsigned long N = 0;
+		memset( &pict.data, 0, sizeof(pict.data) );
+		pict.linesize[0] = 752, pict.linesize[1] = 376;
+		init_HRTime();
+		if( (pict.data[0] = (uint8_t*) malloc( width * height * 2 * sizeof(uint8_t) ))
+		   && (pict.data[1] = (uint8_t*) malloc( width * height * 2 * sizeof(uint8_t) ))
+		   && (pict.data[2] = (uint8_t*) malloc( width * height * 2 * sizeof(uint8_t) ))
+		   && (baseAddr = (uint8_t*) malloc( width * height * 4 * 2 * sizeof(uint8_t) ))
+		){
+		  double startT = HRTime_Time();
+			do{
+				Y420toY422_sse2( &pict, baseAddr, outRB, width, height );
+				N += 1;
+			} while( (t = HRTime_Time() - startT) < 5 );
+			fprintf( stderr, "%lu Y420toY422_sse2(outRB=%d,width=%d,height=%d) conversions in %gs; %gHz\n",
+					N, outRB, width, height, t,
+					N / t );
+		}
+		if( pict.data[0] ){
+			free(pict.data[0]);
+		}
+		if( pict.data[1] ){
+			free(pict.data[1]);
+		}
+		if( pict.data[2] ){
+			free(pict.data[2]);
+		}
+		if( baseAddr ){
+			free(baseAddr);
+		}
+	}
 	exit(0);
 }

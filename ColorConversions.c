@@ -58,9 +58,9 @@ static void Y420toY422_lastrow(UInt8 *o, UInt8 *yc, UInt8 *uc, UInt8 *vc, int ha
 		int x4 = x*4, x2 = x*2;
 
 		o[x4]   = uc[x];
-		o[x4+1] = yc[x2];
-		o[x4+2] = vc[x];
-		o[x4+3] = yc[x2+1];
+		o[++x4] = yc[x2];
+		o[++x4] = vc[x];
+		o[++x4] = yc[++x2];
 	}
 }
 
@@ -177,7 +177,8 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
 	int		y, x, halfwidth = width >> 1, halfheight = height >> 1;
 	int		vWidth = width >> 5;
-	
+
+//	Codecprintf( stderr, "Y420toY422_sse2(%p,%p,%d,%d,%d,%d,%d)\n", picture, o, outRB, width, height, rY, rUV );
 	for (y = 0; y < halfheight; y++) {
 		UInt8   *o2 = o + outRB,   *yc2 = yc + rY;
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
@@ -255,13 +256,19 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 #endif
 
 		for (x=vWidth * 16; x < halfwidth; x++) {
-			int x4 = x*4, x2 = x*2;
+		  int x4 = x*4, x2 = x*2;
 			o2[x4]     = o[x4] = uc[x];
-			o [x4 + 1] = yc[x2];
-			o2[x4 + 1] = yc2[x2];
-			o2[x4 + 2] = o[x4 + 2] = vc[x];
-			o [x4 + 3] = yc[x2 + 1];
-			o2[x4 + 3] = yc2[x2 + 1];
+//			o [x4 + 1] = yc[x2];
+//			o2[x4 + 1] = yc2[x2];
+//			o2[x4 + 2] = o[x4 + 2] = vc[x];
+//			o [x4 + 3] = yc[x2 + 1];
+//			o2[x4 + 3] = yc2[x2 + 1];
+			x4++;
+			o [x4] = yc[x2], o2[x4] = yc2[x2];
+			x4++;
+			o2[x4] = o[x4] = vc[x];
+			x4++, x2++;
+			o [x4] = yc[x2], o2[x4] = yc2[x2];
 		}			
 		
 		o  += outRB*2;
@@ -286,11 +293,17 @@ static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, UInt8 *o, int out
 		for (x = 0; x < halfwidth; x++) {
 			int x4 = x*4, x2 = x*2;
 			o2[x4]     = o[x4] = u[x];
-			o [x4 + 1] = yc[x2];
-			o2[x4 + 1] = yc2[x2];
-			o2[x4 + 2] = o[x4 + 2] = v[x];
-			o [x4 + 3] = yc[x2 + 1];
-			o2[x4 + 3] = yc2[x2 + 1];
+//			o [x4 + 1] = yc[x2];
+//			o2[x4 + 1] = yc2[x2];
+//			o2[x4 + 2] = o[x4 + 2] = v[x];
+//			o [x4 + 3] = yc[x2 + 1];
+//			o2[x4 + 3] = yc2[x2 + 1];
+			o [++x4] = yc[x2];
+			o2[x4] = yc2[x2];
+			x4++;
+			o2[x4] = o[x4] = v[x];
+			o [++x4] = yc[++x2];
+			o2[x4] = yc2[x2];
 		}
 		
 		o  += outRB*2;
@@ -313,10 +326,11 @@ static FASTCALL void YA420toV408(AVPicture *picture, UInt8 *o, int outRB, int wi
 	
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
-			o[x*4]   = u[x>>1];
-			o[x*4+1] = yc[x];
-			o[x*4+2] = v[x>>1];
-			o[x*4+3] = a[x];
+		  int x4 = x*4;
+			o[x4]   = u[x>>1];
+			o[++x4] = yc[x];
+			o[++x4] = v[x>>1];
+			o[++x4] = a[x];
 		}
 		
 		o  += outRB;
