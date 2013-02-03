@@ -26,7 +26,9 @@
 	// prevent the GNU compatibility stdint.h header included with the QuickTime SDK from being included:
 #	define _STDINT_H
 #	define restrict	/**/
-	// FIXMERJVB
+	// RJVB: the FASTDIV macro is used in a static inline function defined in mpeg4video.h, but that function
+	// is never called from what I've seen. So, just redefine the macro by the "standard" division, to avoid
+	// compile and linking errors, and in case it ever does happen to be called.
 #	define FASTDIV(a,b)	(a)/(b)
 #endif
 

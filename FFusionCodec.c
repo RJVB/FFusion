@@ -139,6 +139,7 @@ typedef struct
 	struct decode_glob	decode;
 	struct decode_stats stats;
 	ColorConversionFuncs colorConv;
+	int isFrameDroppingEnabled, isForcedDecodeEnabled;
 } FFusionGlobalsRecord, *FFusionGlobals;
 
 typedef struct
@@ -425,6 +426,8 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
 		// we allocate some space for copying the frame data since we need some padding at the end
 		// for ffmpeg's optimized bitstream readers. Size doesn't really matter, it'll grow if need be
 		FFusionDataSetup(&(glob->data), 256, 1024*1024);
+		glob->isFrameDroppingEnabled = IsFrameDroppingEnabled();
+		glob->isForcedDecodeEnabled = IsForcedDecodeEnabled();
     }
 
     FFusionDebugPrint("%p opened for '%s'\n", glob, FourCCString(glob->componentType));
@@ -587,7 +590,7 @@ static inline int shouldDecode(FFusionGlobals glob, enum CodecID codecID)
 		decode = FFUSION_PREFER_NOT_DECODE;
 	}
 	if(decode > FFUSION_CANNOT_DECODE){
-		if(IsForcedDecodeEnabled()){
+		if(glob->isForcedDecodeEnabled){
 			decode = FFUSION_PREFER_DECODE;
 		}
 	}
@@ -623,7 +626,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 
 	FFusionDebugPrint("%p Preflight called.\n", glob);
 	FFusionDebugPrint2("%p Frame dropping is %senabled for '%s'\n",
-					   glob, not(IsFrameDroppingEnabled()), FourCCString(glob->componentType) );
+					   glob, not(glob->isFrameDroppingEnabled), FourCCString(glob->componentType) );
 
     if (!glob->avCodec)
     { OSType componentType = glob->componentType;
@@ -635,7 +638,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 
 		if(codecID == CODEC_ID_NONE)
 		{
-			Codecprintf(glob->fileLog, "Warning! Unknown codec type! Using MPEG4 by default.\n");
+			FFusionDebugPrint2("Warning! Unknown codec type! Using MPEG4 by default.\n");
 			codecID = CODEC_ID_MPEG4;
 		}
 
@@ -644,7 +647,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 			glob->begin.parser = ffusionParserInit(codecID);
 
 		if ((codecID == CODEC_ID_MPEG4 || codecID == CODEC_ID_H264) && !glob->begin.parser)
-			Codecprintf(glob->fileLog, "This is a parseable format, but we couldn't open a parser!\n");
+			FFusionDebugPrint2("This is a parseable format, but we couldn't open a parser!\n");
 
         // we do the same for the AVCodecContext since all context values are
         // correctly initialized when calling the alloc function
@@ -847,7 +850,8 @@ static int qtTypeForFrameInfo(int original, int fftype, int skippable)
 		if(!skippable)
 			return kCodecFrameTypeKey;
 	}
-	else if(skippable && IsFrameDroppingEnabled())
+//	else if(skippable && IsFrameDroppingEnabled())
+	else if(skippable)
 		return kCodecFrameTypeDroppableDifference;
 	else if(fftype != 0)
 		return kCodecFrameTypeDifference;
@@ -931,7 +935,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 			if(frameData != NULL)
 			{
 				myDrp->frameData = frameData;
-				drp->frameType = qtTypeForFrameInfo(drp->frameType, myDrp->frameData->type, myDrp->frameData->skippabble);
+				drp->frameType = qtTypeForFrameInfo(drp->frameType, myDrp->frameData->type, (myDrp->frameData->skippabble && glob->isFrameDroppingEnabled) );
 				myDrp->frameNumber = p->frameNumber;
 				myDrp->GOPStartFrameNumber = glob->begin.lastIFrame;
 				return noErr;
@@ -1052,7 +1056,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 			myDrp->bufferSize = bufferSize;
 		}
 
-		drp->frameType = qtTypeForFrameInfo(drp->frameType, type, skippable);
+		drp->frameType = qtTypeForFrameInfo(drp->frameType, type, (skippable && glob->isFrameDroppingEnabled) );
 		if(myDrp->frameData != NULL)
 		{
 			myDrp->frameData->frameNumber = p->frameNumber;
