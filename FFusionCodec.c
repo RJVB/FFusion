@@ -625,7 +625,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
     // to the fourCC if it has not been done before
 
 	FFusionDebugPrint("%p Preflight called.\n", glob);
-	FFusionDebugPrint2("%p Frame dropping is %senabled for '%s'\n",
+	FFusionDebugPrint("%p Frame dropping is %senabled for '%s'\n",
 					   glob, not(glob->isFrameDroppingEnabled), FourCCString(glob->componentType) );
 
     if (!glob->avCodec)
