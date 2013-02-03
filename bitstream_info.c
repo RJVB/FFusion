@@ -852,7 +852,8 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 		if(decode_nal(cur + 2, size, decoded, &out_size, &type, &ref))
 			decode_sps(context, decoded, out_size);
 		cur += size + 2;
-		free(decoded);
+		// RJVB: we should use av_free here!
+		av_free(decoded);
 	}
 	count = *(cur++);
 	for (i=0; i<count; i++)
@@ -863,7 +864,8 @@ static int parse_extra_data_h264(FFusionParserContext *parser, const uint8_t *bu
 		if(decode_nal(cur + 2, size, decoded, &out_size, &type, &ref))
 			decode_pps(context, decoded, out_size);
 		cur += size + 2;
-		free(decoded);
+		// RJVB: we should use av_free here!
+		av_free(decoded);
 	}
 
 	context->nal_length_size = ((*(buf+4)) & 0x03) + 1;
