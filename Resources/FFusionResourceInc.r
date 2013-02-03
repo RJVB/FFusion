@@ -1,5 +1,5 @@
 /*
- *  FFusionResourceInf.r
+ *  FFusionResourceInc.r
  *  FFusion
  *
  *  Created by RJVB 20130124
