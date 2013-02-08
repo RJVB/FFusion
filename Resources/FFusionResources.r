@@ -34,9 +34,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kFormatFlags ( codecInfoDepth32 | codecInfoDepth24 | codecInfoDepth16 | codecInfoDepth8 | codecInfoDepth1 )
 
 #define kCodecInfoResID kDivX1CodecInfoResID
-#define kCodecName "MS-MPEG4 v1"
+#define kCodecName "MS-MPEG4 v1 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in MS-MPEG4 version 1 format."
+#define kCodecDescription "FFusion decompresses video stored in MS-MPEG4 version 1 format."
 #define kCodecSubType 'MPG4'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'mpg4'
@@ -47,9 +47,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kDivX2CodecInfoResID
-#define kCodecName "MS-MPEG4 v2"
+#define kCodecName "MS-MPEG4 v2 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in MS-MPEG4 version 2 format."
+#define kCodecDescription "FFusion decompresses video stored in MS-MPEG4 version 2 format."
 #define kCodecSubType 'MP42'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'mp42'
@@ -60,9 +60,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kDivX3CodecInfoResID
-#define kCodecName "DivX 3"
+#define kCodecName "DivX 3 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in DivX 3.11 alpha format."
+#define kCodecDescription "FFusion decompresses video stored in DivX 3.11 alpha format."
 #define kCodecSubType 'MPG3'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'mpg3'
@@ -99,9 +99,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kDivX4CodecInfoResID
-#define kCodecName "DivX 4"
+#define kCodecName "DivX 4 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in OpenDivX format."
+#define kCodecDescription "FFusion decompresses video stored in OpenDivX format."
 #define kCodecSubType 'DIVX'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'divx'
@@ -120,16 +120,16 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kDivX5CodecInfoResID
-#define kCodecName "DivX 5"
+#define kCodecName "DivX 5 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in DivX 5 format."
+#define kCodecDescription "FFusion decompresses video stored in DivX 5 format."
 #define kCodecSubType 'DX50'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID k3ivxCodecInfoResID
-#define kCodecName "3ivx"
+#define kCodecName "3ivx (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in 3ivx format."
+#define kCodecDescription "FFusion decompresses video stored in 3ivx format."
 #define kCodecSubType '3IVD'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType '3ivd'
@@ -140,9 +140,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kXVIDCodecInfoResID
-#define kCodecName "Xvid"
+#define kCodecName "Xvid (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Xvid format."
+#define kCodecDescription "FFusion decompresses video stored in Xvid format."
 #define kCodecSubType 'XVID'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'xvid'
@@ -157,7 +157,7 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecInfoResID kMPEG4CodecInfoResID
 #define kCodecName "MPEG-4 (a)"
 
-#define kCodecDescription "Decompresses video stored in MPEG-4 format."
+#define kCodecDescription "FFusion decompresses video stored in MPEG-4 format."
 #define kCodecSubType 'RMP4'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'SEDG'
@@ -176,17 +176,24 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecVersion kFFusionCodecVersion + 0x10
 #define kCodecInfoResID kMPEG4CodecInfoResID
 
-
-#define kCodecDescription "Decompresses video stored in MPEG-4 format."
+#define kCodecDescription "FFusion decompresses video stored in MPEG-4 format."
 #define kCodecSubType 'mp4v'
+#include "Resources/FFusionResourceInc.r"  
+
+//RJVB
+#define kCodecInfoResID kMJP2CodecInfoResID
+#define kCodecManufacturer 'appl'
+#define kCodecName "Motion-JPEG2000"
+#define kCodecDescription "FFusion decompresses video stored in Motion-JPEG2000 format."
+#define kCodecSubType 'mjp2'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecVersion kFFusionCodecVersion
 #define kCodecManufacturer kFFusionCodecManufacturer
 #define kCodecInfoResID kH264CodecInfoResID
-#define kCodecName "H.264 (FFusion)"
+#define kCodecName "H.264"
 
-#define kCodecDescription "Decompresses video stored in H.264 format."
+#define kCodecDescription "FFusion decompresses video stored in H.264 format."
 #define kCodecSubType 'H264'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'h264'
@@ -207,21 +214,21 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecInfoResID kFLV1CodecInfoResID
 #define kCodecName "Sorenson H.263"
 
-#define kCodecDescription "Decompresses video stored in Sorenson H.263 format."
+#define kCodecDescription "FFusion decompresses video stored in Sorenson H.263 format."
 #define kCodecSubType 'FLV1'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kFlashSVCodecInfoResID
-#define kCodecName "Flash Screen Video"
+#define kCodecName "Flash Screen Video (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Flash Screen Video format."
+#define kCodecDescription "FFusion decompresses video stored in Flash Screen Video format."
 #define kCodecSubType 'FSV1'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kVP6CodecInfoResID
-#define kCodecName "TrueMotion VP6"
+#define kCodecName "TrueMotion VP6 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in On2 VP6 format."
+#define kCodecDescription "FFusion decompresses video stored in On2 VP6 format."
 #define kCodecSubType 'VP60'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'VP61'
@@ -232,48 +239,48 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecInfoResID kVP6CodecInfoResID
 
 
-#define kCodecDescription "Decompresses video stored in On2 VP6 format."
+#define kCodecDescription "FFusion decompresses video stored in On2 VP6 format."
 #define kCodecSubType 'VP6F'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'FLV4'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kI263CodecInfoResID
-#define kCodecName "Intel H.263"
+#define kCodecName "Intel H.263 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Intel H.263 format."
+#define kCodecDescription "FFusion decompresses video stored in Intel H.263 format."
 #define kCodecSubType 'I263'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'i263'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kVP3CodecInfoResID
-#define kCodecName "On2 VP3"
+#define kCodecName "On2 VP3 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in On2 VP3 format."
+#define kCodecDescription "FFusion decompresses video stored in On2 VP3 format."
 #define kCodecSubType 'VP30'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'VP31'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kHuffYUVCodecInfoResID
-#define kCodecName "HuffYUV"
+#define kCodecName "HuffYUV (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in HuffYUV format."
+#define kCodecDescription "FFusion decompresses video stored in HuffYUV format."
 #define kCodecSubType 'HFYU'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kHuffYUVCodecInfoResID
 
 
-#define kCodecDescription "Decompresses video stored in HuffYUV format."
+#define kCodecDescription "FFusion decompresses video stored in HuffYUV format."
 #define kCodecSubType 'FFVH'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kMPEG1CodecInfoResID
-#define kCodecName "MPEG-1"
+#define kCodecName "MPEG-1 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in MPEG-1 format."
+#define kCodecDescription "FFusion decompresses video stored in MPEG-1 format."
 #define kCodecSubType 'MPEG'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'mpg1'
@@ -282,9 +289,9 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kMPEG2CodecInfoResID
-#define kCodecName "MPEG-2"
+#define kCodecName "MPEG-2 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in MPEG-2 format."
+#define kCodecDescription "FFusion decompresses video stored in MPEG-2 format."
 #define kCodecSubType 'MPG2'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'mpg2'
@@ -293,39 +300,39 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kFRAPSCodecInfoResID
-#define kCodecName "Fraps"
+#define kCodecName "Fraps (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Fraps format."
+#define kCodecDescription "FFusion decompresses video stored in Fraps format."
 #define kCodecSubType 'FPS1'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kSnowCodecInfoResID
-#define kCodecName "Snow"
+#define kCodecName "Snow (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Snow format."
+#define kCodecDescription "FFusion decompresses video stored in Snow format."
 #define kCodecSubType 'SNOW'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kNuvCodecInfoResID
-#define kCodecName "NuppelVideo"
+#define kCodecName "NuppelVideo (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in NuppelVideo format."
+#define kCodecDescription "FFusion decompresses video stored in NuppelVideo format."
 #define kCodecSubType 'RJPG'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'NUV1'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kIndeo2CodecInfoResID
-#define kCodecName "Indeo 2"
+#define kCodecName "Indeo 2 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Intel's Indeo 2 format."
+#define kCodecDescription "FFusion decompresses video stored in Intel's Indeo 2 format."
 #define kCodecSubType 'RT21'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kIndeo3CodecInfoResID
-#define kCodecName "Indeo 3"
+#define kCodecName "Indeo 3 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Intel's Indeo 3 format."
+#define kCodecDescription "FFusion decompresses video stored in Intel's Indeo 3 format."
 #define kCodecSubType 'IV32'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'iv32'
@@ -336,52 +343,53 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kIndeo5CodecInfoResID
-#define kCodecName "Indeo 5"
+#define kCodecName "Indeo 5 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Intel's Indeo 5 format."
+#define kCodecDescription "FFusion decompresses video stored in Intel's Indeo 5 format."
 #define kCodecSubType 'IV50'
 #include "Resources/FFusionResourceInc.r"  
 #define kCodecSubType 'iv50'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kTSCCCodecInfoResID
-#define kCodecName "Techsmith Screen Capture"
+#define kCodecName "Techsmith Screen Capture (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in Techsmith Screen Capture format."
+#define kCodecDescription "FFusion decompresses video stored in Techsmith Screen Capture format."
 #define kCodecSubType 'tscc'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kZMBVCodecInfoResID
-#define kCodecName "DosBox Capture"
+#define kCodecName "DosBox Capture (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in DosBox Capture format."
+#define kCodecDescription "FFusion decompresses video stored in DosBox Capture format."
 #define kCodecSubType 'ZMBV'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kVP6ACodecInfoResID
-#define kCodecName "On2 VP6A"
+#define kCodecName "On2 VP6A (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in On2 VP6A format."
+#define kCodecDescription "FFusion decompresses video stored in On2 VP6A format."
 #define kCodecSubType 'VP6A'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kVP8CodecInfoResID
-#define kCodecName "On2 VP8"
+#define kCodecName "On2 VP8 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in On2 VP8 format."
+#define kCodecDescription "FFusion decompresses video stored in On2 VP8 format."
 #define kCodecSubType 'VP80'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kFFv1CodecInfoResID
-#define kCodecName "FFv1"
+#define kCodecName "FFv1 (FFusion)"
 
-#define kCodecDescription "Decompresses video stored in FFv1 format."
+#define kCodecDescription "FFusion decompresses video stored in FFv1 format."
 #define kCodecSubType 'FFV1'
 #include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kCompressMP3CodecResourceID
-#define kCodecName "MP3"
+#define kCodecName "MP3 (FFusion)"
 
-#define kCodecDescription "Decompresses compressed video stream stored in MPEG-4 format."
+#define kCodecDescription "FFusion decompresses compressed video stream stored in MPEG-4 format."
 #define kCodecSubType kCompressedMP3
 #include "Resources/FFusionResourceInc.r"  
+

@@ -16,11 +16,18 @@ CC="gcc"
 x86tune=""
 x86flags="--param max-completely-peel-times=2"
 
+if [ "$SRCROOT" = "" ] ;then
+	cd "`dirname $0`"
+	SRCROOT="`pwd`"
+fi
+
 configureflags="--disable-doc --disable-pthreads --enable-w32threads --enable-runtime-cpudetect \
-     --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network \
-     --disable-swscale --disable-avfilter --target-os=mingw32 --enable-memalign-hack --arch=x86 \
+     --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network --disable-avdevice \
+     --disable-swscale --enable-avfilter --target-os=mingw32 --enable-memalign-hack --arch=x86 --enable-libopenjpeg \
+	--extra-cflags=-I${SRCROOT}/FFmpeg/win32/include/openjpeg-1.5 \
+	--extra-ldflags=-L${SRCROOT}/FFmpeg/win32/lib \
 	--enable-cross-compile --cross-prefix=/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc- \
-	--enable-shared --disable-static --disable-stripping --enable-amd3dnow --enable-amd3dnowext"
+	--enable-ffprobe --enable-shared --disable-static --disable-stripping --enable-amd3dnow --enable-amd3dnowext"
 
 # 
 cflags="-march=amdfam10 -g -msse2 -msse3 -mssse3 -msse4a -mthreads -m3dnow -arch i386 -Dattribute_deprecated= -w"
@@ -124,7 +131,7 @@ else
 	gcp -p "${BUILDDIR}/config.h" "${DESTDIR}/include/config.h"
 	gcp -puv "${BUILDDIR}"/*/*.def "${DESTDIR}/lib"
 	gcp -puv "${BUILDDIR}"/*/*.lib "${DESTDIR}/lib"
-	rm -rf "${DESTDIR}"/lib/*.dll.a "${DESTDIR}/lib/pkgconfig"
+	rm -rf "${DESTDIR}"/lib/av*.dll.a "${DESTDIR}"/lib/libav*.dll.a "${DESTDIR}/lib/pkgconfig"
 	cd "${DESTDIR}/bin.amd"
 	find . -type l | xargs rm
 	mv avcodec-52.*.dll avcodec-52.dll
@@ -132,6 +139,7 @@ else
 	mv avdevice-52.*.dll avdevice-52.dll
 	mv avformat-52.*.dll avformat-52.dll
 	mv avcore-0.*.dll avcore-0.dll
+	mv avfilter-1.*.dll avfilter-1.dll
 	echo "Now run correctDotLibFiles.bat to use MSVC's lib.exe on the .def export files to regenerate the .lib export libraries properly!"
 	echo "or do NOT use linker references when building optimised code with MSVC (/OPT:NOREF)"
 fi

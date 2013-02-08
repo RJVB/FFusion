@@ -1,458 +1,466 @@
 EXPORTS
     _get_output_format @1
-    aac_demuxer @2 DATA
-    ac3_demuxer @3 DATA
-    aea_demuxer @4 DATA
-    aiff_demuxer @5 DATA
-    amr_demuxer @6 DATA
-    anm_demuxer @7 DATA
-    apc_demuxer @8 DATA
-    ape_demuxer @9 DATA
-    applehttp_demuxer @10 DATA
-    asf_demuxer @11 DATA
-    ass_demuxer @12 DATA
-    au_demuxer @13 DATA
-    av_add_index_entry @14
-    av_alloc_format_context @15
-    av_alloc_put_byte @16
-    av_append_packet @17
-    av_close_input_file @18
-    av_close_input_stream @19
-    av_codec_get_id @20
-    av_codec_get_tag @21
-    av_convert_lang_to @22
-    av_destruct_packet@LIBAVFORMAT_52 @23
-    av_destruct_packet_nofree@LIBAVFORMAT_52 @24
-    av_dup_packet@LIBAVFORMAT_52 @25
-    av_filename_number_test @26
-    av_find_best_stream @27
-    av_find_default_stream_index @28
-    av_find_input_format @29
-    av_find_stream_info @30
-    av_free_packet@LIBAVFORMAT_52 @31
-    av_gen_search @32
-    av_get_frame_filename @33
-    av_get_packet @34
-    av_gettime @35
-    av_guess_codec @36
-    av_guess_format @37
-    av_guess_image2_codec @38
-    av_hex_dump @39
-    av_hex_dump_log @40
-    av_iformat_next @41
-    av_index_search_timestamp @42
-    av_init_packet@LIBAVFORMAT_52 @43
-    av_interleave_packet_per_dts @44
-    av_interleaved_write_frame @45
-    av_match_ext @46
-    av_metadata_conv @47
-    av_metadata_copy @48
-    av_metadata_free @49
-    av_metadata_get @50
-    av_metadata_set @51
-    av_metadata_set2 @52
-    av_new_packet@LIBAVFORMAT_52 @53
-    av_new_program @54
-    av_new_stream @55
-    av_oformat_next @56
-    av_open_input_file @57
-    av_open_input_stream @58
-    av_pkt_dump @59
-    av_pkt_dump_log @60
-    av_probe_input_format @61
-    av_probe_input_format2 @62
-    av_protocol_next @63
-    av_read_frame @64
-    av_read_packet @65
-    av_read_pause @66
-    av_read_play @67
-    av_register_all @68
-    av_register_input_format @69
-    av_register_output_format @70
-    av_register_protocol @71
-    av_register_protocol2 @72
-    av_seek_frame @73
-    av_seek_frame_binary @74
-    av_set_parameters @75
-    av_set_pts_info @76
-    av_update_cur_dts @77
-    av_url_read_fpause @78
-    av_url_read_fseek @79
-    av_url_read_pause @80
-    av_url_read_seek @81
-    av_url_split @82
-    av_write_frame @83
-    av_write_header @84
-    av_write_trailer @85
-    avf_sdp_create @86
-    avformat_alloc_context @87
-    avformat_configuration @88
-    avformat_license @89
-    avformat_seek_file @90
-    avformat_version @91
-    avi_demuxer @92 DATA
-    avs_demuxer @93 DATA
-    bethsoftvid_demuxer @94 DATA
-    bfi_demuxer @95 DATA
-    bink_demuxer @96 DATA
-    brktimegm @97
-    c93_demuxer @98 DATA
-    caf_demuxer @99 DATA
-    cavsvideo_demuxer @100 DATA
-    cdg_demuxer @101 DATA
-    codec_movaudio_tags @102 DATA
-    codec_movvideo_tags @103 DATA
-    concat_protocol @104 DATA
-    daud_demuxer @105 DATA
-    dirac_demuxer @106 DATA
-    dnxhd_demuxer @107 DATA
-    dsicin_demuxer @108 DATA
-    dts_demuxer @109 DATA
-    dump_format @110
-    dv_demuxer @111 DATA
-    dv_get_packet @112
-    dv_init_demux @113
-    dv_offset_reset @114
-    dv_produce_packet @115
-    dxa_demuxer @116 DATA
-    ea_cdata_demuxer @117 DATA
-    ea_demuxer @118 DATA
-    eac3_demuxer @119 DATA
-    ff_ape_parse_tag @120
-    ff_asf_audio_conceal_none @121 DATA
-    ff_asf_audio_conceal_spread @122 DATA
-    ff_asf_audio_stream @123 DATA
-    ff_asf_codec_comment1_header @124 DATA
-    ff_asf_codec_comment_header @125 DATA
-    ff_asf_command_stream @126 DATA
-    ff_asf_comment_header @127 DATA
-    ff_asf_content_encryption @128 DATA
-    ff_asf_data_header @129 DATA
-    ff_asf_digital_signature @130 DATA
-    ff_asf_ext_content_encryption @131 DATA
-    ff_asf_ext_stream_audio_stream @132 DATA
-    ff_asf_ext_stream_embed_stream_header @133 DATA
-    ff_asf_ext_stream_header @134 DATA
-    ff_asf_extended_content_header @135 DATA
-    ff_asf_file_header @136 DATA
-    ff_asf_head1_guid @137 DATA
-    ff_asf_head2_guid @138 DATA
-    ff_asf_header @139 DATA
-    ff_asf_jfif_media @140 DATA
-    ff_asf_language_guid @141 DATA
-    ff_asf_marker_header @142 DATA
-    ff_asf_metadata_conv @143 DATA
-    ff_asf_metadata_header @144 DATA
-    ff_asf_my_guid @145 DATA
-    ff_asf_simple_index_header @146 DATA
-    ff_asf_stream_header @147 DATA
-    ff_asf_video_conceal_none @148 DATA
-    ff_asf_video_stream @149 DATA
-    ff_asfcrypt_dec @150
-    ff_avi_metadata_conv @151 DATA
-    ff_avi_tags @152 DATA
-    ff_codec_bmp_tags @153 DATA
-    ff_codec_caf_tags @154 DATA
-    ff_codec_get_id @155
-    ff_codec_get_tag @156
-    ff_codec_movsubtitle_tags @157 DATA
-    ff_codec_rso_tags @158 DATA
-    ff_codec_wav_tags @159 DATA
-    ff_crc04C11DB7_update @160
-    ff_data_to_hex @161
-    ff_dirac_codec @162 DATA
-    ff_dynarray_add @163
-    ff_find_stream_index @164
-    ff_flac_codec @165 DATA
-    ff_free_parser_state @166
-    ff_gen_syncpoint_search @167
-    ff_get_bmp_header @168
-    ff_get_guid @169
-    ff_get_line @170
-    ff_get_v @171
-    ff_get_v_length @172
-    ff_get_wav_header @173
-    ff_guidcmp @174
-    ff_hex_to_data @175
-    ff_id3v1_genre_str @176 DATA
-    ff_id3v1_read @177
-    ff_id3v2_match @178
-    ff_id3v2_metadata_conv @179 DATA
-    ff_id3v2_parse @180
-    ff_id3v2_read @181
-    ff_id3v2_tag_len @182
-    ff_id3v2_tags @183 DATA
-    ff_interleave_add_packet @184
-    ff_interleave_compare_dts @185
-    ff_lsb2full @186
-    ff_metadata_conv @187
-    ff_metadata_conv_ctx @188
-    ff_metadata_demux_compat @189
-    ff_metadata_mux_compat @190
-    ff_mkv_codec_tags @191 DATA
-    ff_mkv_metadata_conv @192 DATA
-    ff_mkv_mime_tags @193 DATA
-    ff_mov_get_lpcm_codec_id @194
-    ff_mov_iso639_to_lang @195
-    ff_mov_lang_to_iso639 @196
-    ff_mov_read_esds @197
-    ff_mov_read_stsd_entries @198
-    ff_mp4_obj_type @199 DATA
-    ff_mp4_read_dec_config_descr @200
-    ff_mp4_read_descr @201
-    ff_mp4_read_descr_len @202
-    ff_mpegts_parse_close @203
-    ff_mpegts_parse_open @204
-    ff_mpegts_parse_packet @205
-    ff_mxf_codec_uls @206 DATA
-    ff_mxf_data_definition_uls @207 DATA
-    ff_mxf_decode_pixel_layout @208
-    ff_mxf_pixel_layouts @209 DATA
-    ff_new_chapter @210
-    ff_ntp_time @211
-    ff_nut_add_sp @212
-    ff_nut_dispositions @213 DATA
-    ff_nut_free_sp @214
-    ff_nut_metadata_conv @215 DATA
-    ff_nut_reset_ts @216
-    ff_nut_sp_pos_cmp @217
-    ff_nut_sp_pts_cmp @218
-    ff_nut_subtitle_tags @219 DATA
-    ff_nut_video_tags @220 DATA
-    ff_ogm_audio_codec @221 DATA
-    ff_ogm_old_codec @222 DATA
-    ff_ogm_text_codec @223 DATA
-    ff_ogm_video_codec @224 DATA
-    ff_old_dirac_codec @225 DATA
-    ff_old_flac_codec @226 DATA
-    ff_parse_key_value @227
-    ff_parse_mpeg2_descriptor @228
-    ff_parse_specific_params @229
-    ff_probe_input_buffer @230
-    ff_program_add_stream_index @231
-    ff_put_str16_nolen @232
-    ff_put_v @233
-    ff_raw_audio_read_header @234
-    ff_raw_read_header @235
-    ff_raw_read_partial_packet @236
-    ff_raw_video_read_header @237
-    ff_read_frame_flush @238
-    ff_reduce_index @239
-    ff_restore_parser_state @240
-    ff_rewind_with_probe_data @241
-    ff_rm_alloc_rmstream @242
-    ff_rm_codec_tags @243 DATA
-    ff_rm_free_rmstream @244
-    ff_rm_metadata @245 DATA
-    ff_rm_parse_packet @246
-    ff_rm_read_mdpr_codecdata @247
-    ff_rm_reorder_sipr_data @248
-    ff_rm_retrieve_cache @249
-    ff_sauce_read @250
-    ff_sdp_write_media @251
-    ff_sipr_subpk_size @252 DATA
-    ff_skeleton_codec @253 DATA
-    ff_spdif_bswap_buf16 @254
-    ff_speex_codec @255 DATA
-    ff_store_parser_state @256
-    ff_theora_codec @257 DATA
-    ff_url_join @258
-    ff_url_split @259
-    ff_voc_codec_tags @260 DATA
-    ff_voc_magic @261 DATA
-    ff_vorbis_codec @262 DATA
-    ff_vorbis_comment @263
-    ff_vorbiscomment_length @264
-    ff_vorbiscomment_metadata_conv @265 DATA
-    ff_vorbiscomment_write @266
-    ff_wav_codec_get_id @267
-    ff_write_chained @268
-    ffm_demuxer @269 DATA
-    ffmetadata_demuxer @270 DATA
-    file_protocol @271 DATA
-    filmstrip_demuxer @272 DATA
-    find_info_tag @273
-    first_iformat @274 DATA
-    first_oformat @275 DATA
-    first_protocol @276 DATA
-    flac_demuxer @277 DATA
-    flic_demuxer @278 DATA
-    flv_demuxer @279 DATA
-    fourxm_demuxer @280 DATA
-    g722_demuxer @281 DATA
-    get_be16 @282
-    get_be24 @283
-    get_be32 @284
-    get_be64 @285
-    get_buffer @286
-    get_byte @287
-    get_checksum @288
-    get_le16 @289
-    get_le24 @290
-    get_le32 @291
-    get_le64 @292
-    get_partial_buffer @293
-    get_strz @294
-    gsm_demuxer @295 DATA
-    guess_format @296
-    guess_stream_format @297
-    gxf_demuxer @298 DATA
-    h261_demuxer @299 DATA
-    h263_demuxer @300 DATA
-    h264_demuxer @301 DATA
-    idcin_demuxer @302 DATA
-    iff_demuxer @303 DATA
-    image2_demuxer @304 DATA
-    image2pipe_demuxer @305 DATA
-    ingenient_demuxer @306 DATA
-    init_checksum @307
-    init_put_byte @308
-    ipmovie_demuxer @309 DATA
-    iss_demuxer @310 DATA
-    iv8_demuxer @311 DATA
-    ivf_demuxer @312 DATA
-    lmlm4_demuxer @313 DATA
-    lxf_demuxer @314 DATA
-    m4v_demuxer @315 DATA
-    matroska_demuxer @316 DATA
-    md5_protocol @317 DATA
-    mjpeg_demuxer @318 DATA
-    mktimegm @319
-    mlp_demuxer @320 DATA
-    mm_demuxer @321 DATA
-    mmf_demuxer @322 DATA
-    mov_demuxer @323 DATA
-    mp3_demuxer @324 DATA
-    mpc8_demuxer @325 DATA
-    mpc_demuxer @326 DATA
-    mpegps_demuxer @327 DATA
-    mpegts_demuxer @328 DATA
-    mpegtsraw_demuxer @329 DATA
-    mpegvideo_demuxer @330 DATA
-    msnwc_tcp_demuxer @331 DATA
-    mtv_demuxer @332 DATA
-    mvi_demuxer @333 DATA
-    mxf_demuxer @334 DATA
-    mxg_demuxer @335 DATA
-    nc_demuxer @336 DATA
-    nsv_demuxer @337 DATA
-    nut_demuxer @338 DATA
-    nuv_demuxer @339 DATA
-    ogg_demuxer @340 DATA
-    oma_demuxer @341 DATA
-    parse_date @342
-    parse_frame_rate @343
-    parse_image_size @344
-    pcm_alaw_demuxer @345 DATA
-    pcm_f32be_demuxer @346 DATA
-    pcm_f32le_demuxer @347 DATA
-    pcm_f64be_demuxer @348 DATA
-    pcm_f64le_demuxer @349 DATA
-    pcm_mulaw_demuxer @350 DATA
-    pcm_read_seek @351
-    pcm_s16be_demuxer @352 DATA
-    pcm_s16le_demuxer @353 DATA
-    pcm_s24be_demuxer @354 DATA
-    pcm_s24le_demuxer @355 DATA
-    pcm_s32be_demuxer @356 DATA
-    pcm_s32le_demuxer @357 DATA
-    pcm_s8_demuxer @358 DATA
-    pcm_u16be_demuxer @359 DATA
-    pcm_u16le_demuxer @360 DATA
-    pcm_u24be_demuxer @361 DATA
-    pcm_u24le_demuxer @362 DATA
-    pcm_u32be_demuxer @363 DATA
-    pcm_u32le_demuxer @364 DATA
-    pcm_u8_demuxer @365 DATA
-    pipe_protocol @366 DATA
-    put_be16 @367
-    put_be24 @368
-    put_be32 @369
-    put_be64 @370
-    put_buffer @371
-    put_byte @372
-    put_flush_packet @373
-    put_le16 @374
-    put_le24 @375
-    put_le32 @376
-    put_le64 @377
-    put_nbyte @378
-    put_strz @379
-    put_tag @380
-    pva_demuxer @381 DATA
-    qcp_demuxer @382 DATA
-    r3d_demuxer @383 DATA
-    rawvideo_demuxer @384 DATA
-    rdt_demuxer @385 DATA
-    register_protocol @386
-    rl2_demuxer @387 DATA
-    rm_demuxer @388 DATA
-    roq_demuxer @389 DATA
-    rpl_demuxer @390 DATA
-    rso_demuxer @391 DATA
-    segafilm_demuxer @392 DATA
-    shorten_demuxer @393 DATA
-    siff_demuxer @394 DATA
-    smacker_demuxer @395 DATA
-    small_strptime @396
-    sol_demuxer @397 DATA
-    sox_demuxer @398 DATA
-    spdif_demuxer @399 DATA
-    srt_demuxer @400 DATA
-    str_demuxer @401 DATA
-    strncasecmp @402
-    swf_demuxer @403 DATA
-    thp_demuxer @404 DATA
-    tiertexseq_demuxer @405 DATA
-    tmv_demuxer @406 DATA
-    truehd_demuxer @407 DATA
-    tta_demuxer @408 DATA
-    tty_demuxer @409 DATA
-    txd_demuxer @410 DATA
-    url_alloc @411
-    url_close @412
-    url_connect @413
-    url_exist @414
-    url_fclose @415
-    url_fdopen @416
-    url_feof @417
-    url_ferror @418
-    url_fget_max_packet_size @419
-    url_fgetc @420
-    url_fgets @421
-    url_fileno @422
-    url_filesize @423
-    url_fopen @424
-    url_fseek @425
-    url_fsize @426
-    url_fskip @427
-    url_ftell @428
-    url_get_file_handle @429
-    url_get_filename @430
-    url_get_max_packet_size @431
-    url_interrupt_cb @432 DATA
-    url_open @433
-    url_open_protocol @434
-    url_read @435
-    url_read_complete @436
-    url_resetbuf @437
-    url_seek @438
-    url_set_interrupt_cb @439
-    url_setbufsize @440
-    url_write @441
-    vc1_demuxer @442 DATA
-    vc1t_demuxer @443 DATA
-    vmd_demuxer @444 DATA
-    voc_demuxer @445 DATA
-    voc_get_packet @446
-    vqf_demuxer @447 DATA
-    w64_demuxer @448 DATA
-    wav_demuxer @449 DATA
-    wc3_demuxer @450 DATA
-    wsaud_demuxer @451 DATA
-    wsvqa_demuxer @452 DATA
-    wtv_demuxer @453 DATA
-    wv_demuxer @454 DATA
-    xa_demuxer @455 DATA
-    yop_demuxer @456 DATA
-    yuv4mpegpipe_demuxer @457 DATA
+    _nm__av_aes_size @2 DATA
+    _nm__av_md5_size @3 DATA
+    _nm__av_tree_node_size @4 DATA
+    _nm__ff_frame_rate_tab @5 DATA
+    _nm__ff_log2_tab @6 DATA
+    _nm__ff_mpa_freq_tab @7 DATA
+    _nm__ff_mpeg4audio_sample_rates @8 DATA
+    aac_demuxer @9 DATA
+    ac3_demuxer @10 DATA
+    aea_demuxer @11 DATA
+    aiff_demuxer @12 DATA
+    amr_demuxer @13 DATA
+    anm_demuxer @14 DATA
+    apc_demuxer @15 DATA
+    ape_demuxer @16 DATA
+    applehttp_demuxer @17 DATA
+    asf_demuxer @18 DATA
+    ass_demuxer @19 DATA
+    au_demuxer @20 DATA
+    av_add_index_entry @21
+    av_alloc_format_context @22
+    av_alloc_put_byte @23
+    av_append_packet @24
+    av_close_input_file @25
+    av_close_input_stream @26
+    av_codec_get_id @27
+    av_codec_get_tag @28
+    av_convert_lang_to @29
+    av_destruct_packet@LIBAVFORMAT_52 @30
+    av_destruct_packet_nofree@LIBAVFORMAT_52 @31
+    av_dup_packet@LIBAVFORMAT_52 @32
+    av_filename_number_test @33
+    av_find_best_stream @34
+    av_find_default_stream_index @35
+    av_find_input_format @36
+    av_find_stream_info @37
+    av_free_packet@LIBAVFORMAT_52 @38
+    av_gen_search @39
+    av_get_frame_filename @40
+    av_get_packet @41
+    av_gettime @42
+    av_guess_codec @43
+    av_guess_format @44
+    av_guess_image2_codec @45
+    av_hex_dump @46
+    av_hex_dump_log @47
+    av_iformat_next @48
+    av_index_search_timestamp @49
+    av_init_packet@LIBAVFORMAT_52 @50
+    av_interleave_packet_per_dts @51
+    av_interleaved_write_frame @52
+    av_match_ext @53
+    av_metadata_conv @54
+    av_metadata_copy @55
+    av_metadata_free @56
+    av_metadata_get @57
+    av_metadata_set @58
+    av_metadata_set2 @59
+    av_new_packet@LIBAVFORMAT_52 @60
+    av_new_program @61
+    av_new_stream @62
+    av_oformat_next @63
+    av_open_input_file @64
+    av_open_input_stream @65
+    av_pkt_dump @66
+    av_pkt_dump_log @67
+    av_probe_input_format @68
+    av_probe_input_format2 @69
+    av_protocol_next @70
+    av_read_frame @71
+    av_read_packet @72
+    av_read_pause @73
+    av_read_play @74
+    av_register_all @75
+    av_register_input_format @76
+    av_register_output_format @77
+    av_register_protocol @78
+    av_register_protocol2 @79
+    av_seek_frame @80
+    av_seek_frame_binary @81
+    av_set_parameters @82
+    av_set_pts_info @83
+    av_update_cur_dts @84
+    av_url_read_fpause @85
+    av_url_read_fseek @86
+    av_url_read_pause @87
+    av_url_read_seek @88
+    av_url_split @89
+    av_write_frame @90
+    av_write_header @91
+    av_write_trailer @92
+    avf_sdp_create @93
+    avformat_alloc_context @94
+    avformat_configuration @95
+    avformat_license @96
+    avformat_seek_file @97
+    avformat_version @98
+    avi_demuxer @99 DATA
+    avs_demuxer @100 DATA
+    bethsoftvid_demuxer @101 DATA
+    bfi_demuxer @102 DATA
+    bink_demuxer @103 DATA
+    brktimegm @104
+    c93_demuxer @105 DATA
+    caf_demuxer @106 DATA
+    cavsvideo_demuxer @107 DATA
+    cdg_demuxer @108 DATA
+    codec_movaudio_tags @109 DATA
+    codec_movvideo_tags @110 DATA
+    concat_protocol @111 DATA
+    daud_demuxer @112 DATA
+    dirac_demuxer @113 DATA
+    dnxhd_demuxer @114 DATA
+    dsicin_demuxer @115 DATA
+    dts_demuxer @116 DATA
+    dump_format @117
+    dv_demuxer @118 DATA
+    dv_get_packet @119
+    dv_init_demux @120
+    dv_offset_reset @121
+    dv_produce_packet @122
+    dxa_demuxer @123 DATA
+    ea_cdata_demuxer @124 DATA
+    ea_demuxer @125 DATA
+    eac3_demuxer @126 DATA
+    ff_ape_parse_tag @127
+    ff_asf_audio_conceal_none @128 DATA
+    ff_asf_audio_conceal_spread @129 DATA
+    ff_asf_audio_stream @130 DATA
+    ff_asf_codec_comment1_header @131 DATA
+    ff_asf_codec_comment_header @132 DATA
+    ff_asf_command_stream @133 DATA
+    ff_asf_comment_header @134 DATA
+    ff_asf_content_encryption @135 DATA
+    ff_asf_data_header @136 DATA
+    ff_asf_digital_signature @137 DATA
+    ff_asf_ext_content_encryption @138 DATA
+    ff_asf_ext_stream_audio_stream @139 DATA
+    ff_asf_ext_stream_embed_stream_header @140 DATA
+    ff_asf_ext_stream_header @141 DATA
+    ff_asf_extended_content_header @142 DATA
+    ff_asf_file_header @143 DATA
+    ff_asf_head1_guid @144 DATA
+    ff_asf_head2_guid @145 DATA
+    ff_asf_header @146 DATA
+    ff_asf_jfif_media @147 DATA
+    ff_asf_language_guid @148 DATA
+    ff_asf_marker_header @149 DATA
+    ff_asf_metadata_conv @150 DATA
+    ff_asf_metadata_header @151 DATA
+    ff_asf_my_guid @152 DATA
+    ff_asf_simple_index_header @153 DATA
+    ff_asf_stream_header @154 DATA
+    ff_asf_video_conceal_none @155 DATA
+    ff_asf_video_stream @156 DATA
+    ff_asfcrypt_dec @157
+    ff_avi_metadata_conv @158 DATA
+    ff_avi_tags @159 DATA
+    ff_codec_bmp_tags @160 DATA
+    ff_codec_caf_tags @161 DATA
+    ff_codec_get_id @162
+    ff_codec_get_tag @163
+    ff_codec_movsubtitle_tags @164 DATA
+    ff_codec_rso_tags @165 DATA
+    ff_codec_wav_tags @166 DATA
+    ff_crc04C11DB7_update @167
+    ff_data_to_hex @168
+    ff_dirac_codec @169 DATA
+    ff_dynarray_add @170
+    ff_find_stream_index @171
+    ff_flac_codec @172 DATA
+    ff_free_parser_state @173
+    ff_gen_syncpoint_search @174
+    ff_get_bmp_header @175
+    ff_get_guid @176
+    ff_get_line @177
+    ff_get_v @178
+    ff_get_v_length @179
+    ff_get_wav_header @180
+    ff_guidcmp @181
+    ff_hex_to_data @182
+    ff_id3v1_genre_str @183 DATA
+    ff_id3v1_read @184
+    ff_id3v2_match @185
+    ff_id3v2_metadata_conv @186 DATA
+    ff_id3v2_parse @187
+    ff_id3v2_read @188
+    ff_id3v2_tag_len @189
+    ff_id3v2_tags @190 DATA
+    ff_interleave_add_packet @191
+    ff_interleave_compare_dts @192
+    ff_lsb2full @193
+    ff_metadata_conv @194
+    ff_metadata_conv_ctx @195
+    ff_metadata_demux_compat @196
+    ff_metadata_mux_compat @197
+    ff_mkv_codec_tags @198 DATA
+    ff_mkv_metadata_conv @199 DATA
+    ff_mkv_mime_tags @200 DATA
+    ff_mov_get_lpcm_codec_id @201
+    ff_mov_iso639_to_lang @202
+    ff_mov_lang_to_iso639 @203
+    ff_mov_read_esds @204
+    ff_mov_read_stsd_entries @205
+    ff_mp4_obj_type @206 DATA
+    ff_mp4_read_dec_config_descr @207
+    ff_mp4_read_descr @208
+    ff_mp4_read_descr_len @209
+    ff_mpegts_parse_close @210
+    ff_mpegts_parse_open @211
+    ff_mpegts_parse_packet @212
+    ff_mxf_codec_uls @213 DATA
+    ff_mxf_data_definition_uls @214 DATA
+    ff_mxf_decode_pixel_layout @215
+    ff_mxf_pixel_layouts @216 DATA
+    ff_new_chapter @217
+    ff_ntp_time @218
+    ff_nut_add_sp @219
+    ff_nut_dispositions @220 DATA
+    ff_nut_free_sp @221
+    ff_nut_metadata_conv @222 DATA
+    ff_nut_reset_ts @223
+    ff_nut_sp_pos_cmp @224
+    ff_nut_sp_pts_cmp @225
+    ff_nut_subtitle_tags @226 DATA
+    ff_nut_video_tags @227 DATA
+    ff_ogm_audio_codec @228 DATA
+    ff_ogm_old_codec @229 DATA
+    ff_ogm_text_codec @230 DATA
+    ff_ogm_video_codec @231 DATA
+    ff_old_dirac_codec @232 DATA
+    ff_old_flac_codec @233 DATA
+    ff_parse_key_value @234
+    ff_parse_mpeg2_descriptor @235
+    ff_parse_specific_params @236
+    ff_probe_input_buffer @237
+    ff_program_add_stream_index @238
+    ff_put_str16_nolen @239
+    ff_put_v @240
+    ff_raw_audio_read_header @241
+    ff_raw_read_header @242
+    ff_raw_read_partial_packet @243
+    ff_raw_video_read_header @244
+    ff_read_frame_flush @245
+    ff_reduce_index @246
+    ff_restore_parser_state @247
+    ff_rewind_with_probe_data @248
+    ff_rm_alloc_rmstream @249
+    ff_rm_codec_tags @250 DATA
+    ff_rm_free_rmstream @251
+    ff_rm_metadata @252 DATA
+    ff_rm_parse_packet @253
+    ff_rm_read_mdpr_codecdata @254
+    ff_rm_reorder_sipr_data @255
+    ff_rm_retrieve_cache @256
+    ff_sauce_read @257
+    ff_sdp_write_media @258
+    ff_sipr_subpk_size @259 DATA
+    ff_skeleton_codec @260 DATA
+    ff_spdif_bswap_buf16 @261
+    ff_speex_codec @262 DATA
+    ff_store_parser_state @263
+    ff_theora_codec @264 DATA
+    ff_url_join @265
+    ff_url_split @266
+    ff_voc_codec_tags @267 DATA
+    ff_voc_magic @268 DATA
+    ff_vorbis_codec @269 DATA
+    ff_vorbis_comment @270
+    ff_vorbiscomment_length @271
+    ff_vorbiscomment_metadata_conv @272 DATA
+    ff_vorbiscomment_write @273
+    ff_wav_codec_get_id @274
+    ff_write_chained @275
+    ffm_demuxer @276 DATA
+    ffmetadata_demuxer @277 DATA
+    file_protocol @278 DATA
+    filmstrip_demuxer @279 DATA
+    find_info_tag @280
+    first_iformat @281 DATA
+    first_oformat @282 DATA
+    first_protocol @283 DATA
+    flac_demuxer @284 DATA
+    flic_demuxer @285 DATA
+    flv_demuxer @286 DATA
+    fourxm_demuxer @287 DATA
+    g722_demuxer @288 DATA
+    get_be16 @289
+    get_be24 @290
+    get_be32 @291
+    get_be64 @292
+    get_buffer @293
+    get_byte @294
+    get_checksum @295
+    get_le16 @296
+    get_le24 @297
+    get_le32 @298
+    get_le64 @299
+    get_partial_buffer @300
+    get_strz @301
+    gsm_demuxer @302 DATA
+    guess_format @303
+    guess_stream_format @304
+    gxf_demuxer @305 DATA
+    h261_demuxer @306 DATA
+    h263_demuxer @307 DATA
+    h264_demuxer @308 DATA
+    idcin_demuxer @309 DATA
+    iff_demuxer @310 DATA
+    image2_demuxer @311 DATA
+    image2pipe_demuxer @312 DATA
+    ingenient_demuxer @313 DATA
+    init_checksum @314
+    init_put_byte @315
+    ipmovie_demuxer @316 DATA
+    iss_demuxer @317 DATA
+    iv8_demuxer @318 DATA
+    ivf_demuxer @319 DATA
+    lmlm4_demuxer @320 DATA
+    lxf_demuxer @321 DATA
+    m4v_demuxer @322 DATA
+    matroska_demuxer @323 DATA
+    md5_protocol @324 DATA
+    mjpeg_demuxer @325 DATA
+    mktimegm @326
+    mlp_demuxer @327 DATA
+    mm_demuxer @328 DATA
+    mmf_demuxer @329 DATA
+    mov_demuxer @330 DATA
+    mp3_demuxer @331 DATA
+    mpc8_demuxer @332 DATA
+    mpc_demuxer @333 DATA
+    mpegps_demuxer @334 DATA
+    mpegts_demuxer @335 DATA
+    mpegtsraw_demuxer @336 DATA
+    mpegvideo_demuxer @337 DATA
+    msnwc_tcp_demuxer @338 DATA
+    mtv_demuxer @339 DATA
+    mvi_demuxer @340 DATA
+    mxf_demuxer @341 DATA
+    mxg_demuxer @342 DATA
+    nc_demuxer @343 DATA
+    nsv_demuxer @344 DATA
+    nut_demuxer @345 DATA
+    nuv_demuxer @346 DATA
+    ogg_demuxer @347 DATA
+    oma_demuxer @348 DATA
+    parse_date @349
+    parse_frame_rate @350
+    parse_image_size @351
+    pcm_alaw_demuxer @352 DATA
+    pcm_f32be_demuxer @353 DATA
+    pcm_f32le_demuxer @354 DATA
+    pcm_f64be_demuxer @355 DATA
+    pcm_f64le_demuxer @356 DATA
+    pcm_mulaw_demuxer @357 DATA
+    pcm_read_seek @358
+    pcm_s16be_demuxer @359 DATA
+    pcm_s16le_demuxer @360 DATA
+    pcm_s24be_demuxer @361 DATA
+    pcm_s24le_demuxer @362 DATA
+    pcm_s32be_demuxer @363 DATA
+    pcm_s32le_demuxer @364 DATA
+    pcm_s8_demuxer @365 DATA
+    pcm_u16be_demuxer @366 DATA
+    pcm_u16le_demuxer @367 DATA
+    pcm_u24be_demuxer @368 DATA
+    pcm_u24le_demuxer @369 DATA
+    pcm_u32be_demuxer @370 DATA
+    pcm_u32le_demuxer @371 DATA
+    pcm_u8_demuxer @372 DATA
+    pipe_protocol @373 DATA
+    put_be16 @374
+    put_be24 @375
+    put_be32 @376
+    put_be64 @377
+    put_buffer @378
+    put_byte @379
+    put_flush_packet @380
+    put_le16 @381
+    put_le24 @382
+    put_le32 @383
+    put_le64 @384
+    put_nbyte @385
+    put_strz @386
+    put_tag @387
+    pva_demuxer @388 DATA
+    qcp_demuxer @389 DATA
+    r3d_demuxer @390 DATA
+    rawvideo_demuxer @391 DATA
+    rdt_demuxer @392 DATA
+    register_protocol @393
+    rl2_demuxer @394 DATA
+    rm_demuxer @395 DATA
+    roq_demuxer @396 DATA
+    rpl_demuxer @397 DATA
+    rso_demuxer @398 DATA
+    segafilm_demuxer @399 DATA
+    shorten_demuxer @400 DATA
+    siff_demuxer @401 DATA
+    smacker_demuxer @402 DATA
+    small_strptime @403
+    sol_demuxer @404 DATA
+    sox_demuxer @405 DATA
+    spdif_demuxer @406 DATA
+    srt_demuxer @407 DATA
+    str_demuxer @408 DATA
+    strcasecmp @409
+    strncasecmp @410
+    swf_demuxer @411 DATA
+    thp_demuxer @412 DATA
+    tiertexseq_demuxer @413 DATA
+    tmv_demuxer @414 DATA
+    truehd_demuxer @415 DATA
+    tta_demuxer @416 DATA
+    tty_demuxer @417 DATA
+    txd_demuxer @418 DATA
+    url_alloc @419
+    url_close @420
+    url_connect @421
+    url_exist @422
+    url_fclose @423
+    url_fdopen @424
+    url_feof @425
+    url_ferror @426
+    url_fget_max_packet_size @427
+    url_fgetc @428
+    url_fgets @429
+    url_fileno @430
+    url_filesize @431
+    url_fopen @432
+    url_fseek @433
+    url_fsize @434
+    url_fskip @435
+    url_ftell @436
+    url_get_file_handle @437
+    url_get_filename @438
+    url_get_max_packet_size @439
+    url_interrupt_cb @440 DATA
+    url_open @441
+    url_open_protocol @442
+    url_read @443
+    url_read_complete @444
+    url_resetbuf @445
+    url_seek @446
+    url_set_interrupt_cb @447
+    url_setbufsize @448
+    url_write @449
+    vc1_demuxer @450 DATA
+    vc1t_demuxer @451 DATA
+    vmd_demuxer @452 DATA
+    voc_demuxer @453 DATA
+    voc_get_packet @454
+    vqf_demuxer @455 DATA
+    w64_demuxer @456 DATA
+    wav_demuxer @457 DATA
+    wc3_demuxer @458 DATA
+    wsaud_demuxer @459 DATA
+    wsvqa_demuxer @460 DATA
+    wtv_demuxer @461 DATA
+    wv_demuxer @462 DATA
+    xa_demuxer @463 DATA
+    yop_demuxer @464 DATA
+    yuv4mpegpipe_demuxer @465 DATA

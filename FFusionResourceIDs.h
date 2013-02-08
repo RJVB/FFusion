@@ -30,11 +30,6 @@ enum{
 	kXVIDCodecInfoResID,
 	kMPEG4CodecInfoResID,
 
-
-
-
-
-
 	kH264CodecInfoResID,
 	kFLV1CodecInfoResID,
 	kFlashSVCodecInfoResID,
@@ -59,28 +54,17 @@ enum{
 	kFFv1CodecInfoResID,
 	kTheoraCodecInfoResID,
 
-
 	kVobSubCodecResourceID,
-
 
 	kCompressAVC1CodecResourceID,
 	kCompressMP4VCodecResourceID,
 
-
 	kSSASubCodecResourceID,
 	kTextSubCodecResourceID,
-
-
-
-
-
-
-
 
 	kWMA1MSCodecResourceID,
 	kWMA2MSCodecResourceID,
 	kFlashADPCMCodecResourceID,
-
 
 	kXiphVorbisCodecResourceID,
 	kMPEG1L1CodecResourceID,
@@ -90,11 +74,12 @@ enum{
 	kDTSCodecResourceID,
 	kNellymoserCodecResourceID,
 
-
 	kCompressAC3CodecResourceID,
 	kCompressMP1CodecResourceID,
 	kCompressMP2CodecResourceID,
 	kCompressMP3CodecResourceID,
 	kCompressDTSCodecResourceID,
 
+	// RJVB
+	kMJP2CodecInfoResID,
 };
