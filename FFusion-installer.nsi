@@ -66,6 +66,7 @@ Function LockedListShow
   LockedList::AddModule "\avcodec-52.dll"
   LockedList::AddModule "\avutil-50.dll"
   LockedList::AddModule "\avcore-0.dll"
+  LockedList::AddModule "\libopenjpeg-1.dll"
   LockedList::Dialog /autonext /autoclose "" "" "" ""
     pop $R0
 FunctionEnd
@@ -175,7 +176,9 @@ Section "FFmpeg Libraries, Intel" SEC02
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin\avcodec-52.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin\avutil-50.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin\avcore-0.dll"
+  File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin\libopenjpeg-1.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\source\FFmpeg-LICENSE.txt"
+  File "s:\MacOSX\FFusion-124R\LICENSE-libopenjpeg1.txt"
 SectionEnd
 
 Section "FFmpeg Libraries, AMD" SEC03
@@ -196,6 +199,7 @@ Section "FFmpeg Libraries, AMD" SEC03
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin.amd\avutil-50.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin.amd\avcore-0.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\source\FFmpeg-LICENSE.txt"
+  File "s:\MacOSX\FFusion-124R\LICENSE-libopenjpeg1.txt"
 SectionEnd
 
 ; Section descriptions

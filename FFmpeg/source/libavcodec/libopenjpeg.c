@@ -27,7 +27,9 @@
 #include "libavcore/imgutils.h"
 #include "avcodec.h"
 #include "libavutil/intreadwrite.h"
-#define  OPJ_STATIC
+#ifndef __MINGW32__
+#	define  OPJ_STATIC
+#endif
 #include <openjpeg.h>
 
 #define JP2_SIG_TYPE    0x6A502020

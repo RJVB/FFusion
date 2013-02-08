@@ -699,6 +699,19 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 
 				DisposeHandle(imgDescExt);
 			}
+		} else if (glob->componentType == 'mjp2') {
+			count = isImageDescriptionExtensionPresent(p->imageDescription, 'jp2h');
+
+			if (count >= 1) {
+				imgDescExt = NewHandle(0);
+				GetImageDescriptionExtension(p->imageDescription, &imgDescExt, 'jp2h', 1);
+
+				glob->avContext->extradata = calloc(1, GetHandleSize(imgDescExt) + FF_INPUT_BUFFER_PADDING_SIZE);
+				memcpy(glob->avContext->extradata, *imgDescExt, GetHandleSize(imgDescExt));
+				glob->avContext->extradata_size = GetHandleSize(imgDescExt);
+
+				DisposeHandle(imgDescExt);
+			}
 		} else if (glob->componentType == kVideoFormatTheora) {
 			count = isImageDescriptionExtensionPresent(p->imageDescription, kVideoFormatTheora);
 
@@ -1088,9 +1101,6 @@ static OSErr PrereqDecompress(FFusionGlobals glob, FrameData *prereq, AVCodecCon
 	if(preprereq)
 		PrereqDecompress(glob, preprereq, context, width, height, picture);
 
-
-	// RJVB
-	// (UInt8 *)drp->baseAddr, rowJump = drp->rowBytes - (width * sizeof(MoviePixel)), width, height
 	err = FFusionDecompress(glob, context, dataPtr, width, height, picture, dataSize);
 
 	return err;
