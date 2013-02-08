@@ -183,7 +183,7 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 		UInt8   *o2 = o + outRB,   *yc2 = yc + rY;
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
 		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
-//FIXMERJVB
+// RJVB
 // 20130203: nothing to fix here. Processing speed differences between the GCC-style inline assembly and
 // SSE2 intrinsics are minimal (using GCC); there is no reason to assume that this would be different with MSVC.
 // Also, Y420toY422_sse2() execution speed for a 720x576 image with outRB=1440 and linesize=752,376
