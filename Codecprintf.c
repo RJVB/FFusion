@@ -105,15 +105,16 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl)
     static int print_prefix=1;
 	int print_header = 1;
     AVClass* avc= ptr ? *(AVClass**)ptr : NULL;
-    if(level>av_log_get_level())
-        return;
+
+//    if(level>av_log_get_level())
+//        return;
 
     if(print_prefix && avc) {
-		Codecprintf(NULL, "[%s @ %p]", avc->item_name(ptr), avc);
+		Codecprintf(stderr, "[%s 0x%lx l=%d] ", avc->item_name(ptr), (unsigned long) avc, level);
 		print_header = 0;
     }
 	
     print_prefix= strstr(fmt, "\n") != NULL;
 	
-	Codecvprintf(NULL, fmt, vl, print_header);
+	Codecvprintf(stderr, fmt, vl, print_header);
 }
