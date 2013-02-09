@@ -631,6 +631,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
     if (!glob->avCodec)
     { OSType componentType = glob->componentType;
 	  enum CodecID codecID = getCodecID(componentType);
+
 		FFInitFFmpeg();
 		initFFusionParsers();
 

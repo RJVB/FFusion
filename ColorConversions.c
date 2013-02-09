@@ -632,9 +632,7 @@ OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixF
 			return k4444YpCbCrA8PixelFormat;
 		// RJVB
 		case PIX_FMT_GRAY8:
-			// RJVB : yuv420p MJPEG2000 is (sometimes?) misrecognised as GRAY8 by the lavc version we use...
-			// but we cannot just pretend it's yuv420p ...
-//			return (codecID == CODEC_ID_JPEG2000)? k2vuyPixelFormat : k24RGBPixelFormat;
+			// QT only seems to know indexed grayscale, so we use RGB with 3 identical colour values...
 			return k24RGBPixelFormat;
 		default:
 			return 0; // error
@@ -643,11 +641,6 @@ OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixF
 
 int ColorConversionFindFor(ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt, AVPicture *ffPicture, OSType qtPixFmt)
 {
-	// RJVB : yuv420p MJPEG2000 is (sometimes?) misrecognised as GRAY8 by the lavc version we use
-	// but we cannot just pretend it's yuv420p ...
-//	if( ffPixFmt == PIX_FMT_GRAY8 && codecID == CODEC_ID_JPEG2000 ){
-//		ffPixFmt = PIX_FMT_YUV420P;
-//	}
 	switch (ffPixFmt) {
 		case PIX_FMT_YUVJ420P:
 		case PIX_FMT_YUV420P:
