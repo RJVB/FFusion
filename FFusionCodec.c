@@ -824,7 +824,7 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
     index = 0;
 
 	if (!err) {
-		OSType qtPixFmt = ColorConversionDstForPixFmt(glob->avContext->pix_fmt);
+		OSType qtPixFmt = ColorConversionDstForPixFmt(glob->avCodec->id, glob->avContext->pix_fmt);
 
 		/*
 		 an error here means either
@@ -834,8 +834,10 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 		 in the case of 2 we have to special-case bail right here, since errors
 		 in BeginBand are ignored
 		 */
-		if (qtPixFmt)
+		if (qtPixFmt){
+			// RJVB : yuv420p MJPEG2000 is (sometimes?) misrecognised as GRAY8 by the lavc version we use
 			pos[index++] = qtPixFmt;
+		}
 		else
 			err = featureUnsupported;
 	}
@@ -921,7 +923,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 		return internalComponentErr;
 	}
 
-	if (p->frameNumber == 0 && myDrp->pixelFormat != ColorConversionDstForPixFmt(glob->avContext->pix_fmt)) {
+	if (p->frameNumber == 0 && myDrp->pixelFormat != ColorConversionDstForPixFmt(glob->avCodec->id, glob->avContext->pix_fmt)) {
 		Codecprintf(glob->fileLog, "QT gave us unwanted pixelFormat %s (%08x), this will not work\n", FourCCString(myDrp->pixelFormat), (unsigned)myDrp->pixelFormat);
 	}
 
@@ -1296,7 +1298,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 		//Display black (no frame decoded yet)
 
 		if (!glob->colorConv.clear) {
-			err = ColorConversionFindFor(&glob->colorConv, glob->avContext->pix_fmt, NULL, myDrp->pixelFormat);
+			err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt, NULL, myDrp->pixelFormat);
 			if (err) goto err;
 		}
 
@@ -1305,7 +1307,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 	}
 
 	if (!glob->colorConv.convert) {
-		err = ColorConversionFindFor(&glob->colorConv, glob->avContext->pix_fmt, picture, myDrp->pixelFormat);
+		err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt, picture, myDrp->pixelFormat);
 		if (err) goto err;
 	}
 
