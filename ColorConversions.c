@@ -382,10 +382,46 @@ static FASTCALL void RGBtoRGB(AVPicture *picture, UInt8 *baseAddr, int rowBytes,
 	}
 }
 
+static FASTCALL void RGBtoRGBXOR(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height, int bytesPerPixel)
+{
+	UInt8 *srcPtr = picture->data[0], *bA = baseAddr;
+	int srcRB = picture->linesize[0];
+	size_t y, size;
+	
+	for (y = 0; y < height; y++) {
+		memcpy(baseAddr, srcPtr, width * bytesPerPixel);
+		
+		baseAddr += rowBytes;
+		srcPtr += srcRB;
+	}
+	size = height * rowBytes;
+	for( y = 0, baseAddr = bA ; y < rowBytes ; y++, baseAddr++ ){
+		*baseAddr ^= 0xff;
+	}
+}
+
 //Big-endian XRGB32 to big-endian XRGB32
 static FASTCALL void RGB32toRGB32Copy(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 4);
+}
+
+// RJVB
+static FASTCALL void RGB32toARGB( AVPicture *picture, register UInt8 *baseAddr, int rowBytes, register int width, register int height )
+{ register UInt8 *srcPtr = picture->data[0];
+  register int x, y;
+  int srcRB;
+
+	srcRB = picture->linesize[0] - width * 4, rowBytes -= width * 4;
+	for( y = 0; y < height; y++ ){
+		for( x = 0 ; x < width ; x++ ){
+			*baseAddr++ = srcPtr[3];
+			memcpy( baseAddr, srcPtr, 3 );
+			baseAddr += 3, srcPtr += 4;
+		}
+
+		baseAddr += rowBytes, srcPtr += srcRB;
+	}
 }
 
 static FASTCALL void RGB24toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
@@ -396,6 +432,34 @@ static FASTCALL void RGB24toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBy
 static FASTCALL void RGB16toRGB16(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 2);
+}
+
+static FASTCALL void GRAY8toGRAY8(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+{
+	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 1);
+}
+
+static FASTCALL void GRAY8toGRAY8XOR(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+{
+	RGBtoRGBXOR(picture, baseAddr, rowBytes, width, height, 1);
+}
+
+//RJVB
+static FASTCALL void GRAY8toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+{ UInt8 *srcPtr = picture->data[0];
+  int x, y, srcRB;
+
+	srcRB = picture->linesize[0] - width, rowBytes -= width * 3;
+	for( y = 0; y < height; y++ ){
+		for( x = 0 ; x < width ; x++, srcPtr++ ){
+			*baseAddr++ = *srcPtr;
+			*baseAddr++ = *srcPtr;
+			*baseAddr++ = *srcPtr;
+		}
+
+		baseAddr += rowBytes;
+		srcPtr += srcRB;
+	}
 }
 
 //Little-endian XRGB32 to big-endian XRGB32
@@ -502,6 +566,11 @@ static FASTCALL void ClearRGB16(UInt8 *baseAddr, int rowBytes, int width, int he
 	ClearRGB(baseAddr, rowBytes, width, height, 2);
 }
 
+static FASTCALL void ClearGRAY8(UInt8 *baseAddr, int rowBytes, int width, int height)
+{
+	ClearRGB(baseAddr, rowBytes, width, height, 1);
+}
+
 static FASTCALL void ClearV408(UInt8 *baseAddr, int rowBytes, int width, int height)
 {
 	int x, y;
@@ -536,7 +605,7 @@ static FASTCALL void ClearY422(UInt8 *baseAddr, int rowBytes, int width, int hei
 	}
 }
 
-OSType ColorConversionDstForPixFmt(enum PixelFormat ffPixFmt)
+OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixFmt)
 {
 	switch (ffPixFmt) {
 		case PIX_FMT_RGB555LE:
@@ -549,6 +618,9 @@ OSType ColorConversionDstForPixFmt(enum PixelFormat ffPixFmt)
 		case PIX_FMT_ARGB:
 		case PIX_FMT_BGRA:
 			return k32ARGBPixelFormat;
+		// RJVB
+		case PIX_FMT_RGBA:
+			return k32ARGBPixelFormat;
 		case PIX_FMT_YUV410P:
 			return k2vuyPixelFormat;
 		case PIX_FMT_YUVJ420P:
@@ -558,13 +630,24 @@ OSType ColorConversionDstForPixFmt(enum PixelFormat ffPixFmt)
 			return k2vuyPixelFormat;
 		case PIX_FMT_YUVA420P:
 			return k4444YpCbCrA8PixelFormat;
+		// RJVB
+		case PIX_FMT_GRAY8:
+			// RJVB : yuv420p MJPEG2000 is (sometimes?) misrecognised as GRAY8 by the lavc version we use...
+			// but we cannot just pretend it's yuv420p ...
+//			return (codecID == CODEC_ID_JPEG2000)? k2vuyPixelFormat : k24RGBPixelFormat;
+			return k24RGBPixelFormat;
 		default:
 			return 0; // error
 	}
 }
 
-int ColorConversionFindFor(ColorConversionFuncs *funcs, enum PixelFormat ffPixFmt, AVPicture *ffPicture, OSType qtPixFmt)
+int ColorConversionFindFor(ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt, AVPicture *ffPicture, OSType qtPixFmt)
 {
+	// RJVB : yuv420p MJPEG2000 is (sometimes?) misrecognised as GRAY8 by the lavc version we use
+	// but we cannot just pretend it's yuv420p ...
+//	if( ffPixFmt == PIX_FMT_GRAY8 && codecID == CODEC_ID_JPEG2000 ){
+//		ffPixFmt = PIX_FMT_YUV420P;
+//	}
 	switch (ffPixFmt) {
 		case PIX_FMT_YUVJ420P:
 		case PIX_FMT_YUV420P:
@@ -597,6 +680,11 @@ int ColorConversionFindFor(ColorConversionFuncs *funcs, enum PixelFormat ffPixFm
 			funcs->convert = RGB32toRGB32Copy;
 #endif
 			break;
+			// RJVB
+		case PIX_FMT_RGBA:
+			funcs->clear = ClearRGB32;
+			funcs->convert = RGB32toARGB;
+			break;
 		case PIX_FMT_BGRA:
 			funcs->clear = ClearRGB32;
 #ifdef __ppc__
@@ -608,6 +696,10 @@ int ColorConversionFindFor(ColorConversionFuncs *funcs, enum PixelFormat ffPixFm
 		case PIX_FMT_RGB24:
 			funcs->clear = ClearRGB24;
 			funcs->convert = RGB24toRGB24;
+			break;
+		case PIX_FMT_GRAY8:
+			funcs->clear = ClearGRAY8;
+			funcs->convert = GRAY8toRGB24;
 			break;
 		case PIX_FMT_RGB555LE:
 			funcs->clear = ClearRGB16;
