@@ -146,6 +146,9 @@ void FFInitFFmpeg()
 	/* Register the Parser of ffmpeg, needed because we do no proper setup of the libraries */
 	if(!inited) {
 		inited = TRUE;
+
+		av_log_set_callback(FFMpegCodecprintf);
+
 #if LIBAVCODEC_VERSION_MAJOR <= 52
 		avcodec_init();
 #endif
@@ -204,7 +207,6 @@ void FFInitFFmpeg()
 		avcodec_register_all();
 #endif
 		
-		av_log_set_callback(FFMpegCodecprintf);
 		Codecprintf( stderr, "FFusion decoded using libavcodec, version %u / \"%s\"\n", avcodec_version(), avcodec_configuration() );
 		cpuFlags = av_get_cpu_flags();
 		cpuFlagString[0] = '\0';
