@@ -5,7 +5,7 @@
 	<key>BuildMachineOSBuild</key>
 	<string>10K549</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en_GB</string>
 	<key>CFBundleExecutable</key>
 	<string>FFusion</string>
 	<key>CFBundleGetInfoString</key>
