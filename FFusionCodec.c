@@ -232,12 +232,14 @@ static void DumpFrameDropStats(FFusionGlobals glob)
 
 	if (!glob->fileLog || glob->decode.lastFrame == 0) return;
 
-	Codecprintf(glob->fileLog, "%p frame drop stats\nType\t| BeginBand\t| DecodeBand\t| DrawBand\t| dropped before decode\t| dropped before draw\n", glob);
+	Codecprintf( glob->fileLog,
+				"%p '%s' frame drop stats\nType\t| BeginBands\t| DecodeBands\t| DrawBands\t| # before decode\t| # before draw\n",
+				glob, FourCCString(glob->componentType) );
 
 	for (i = 0; i < 4; i++) {
 		struct per_frame_decode_stats *f = &glob->stats.type[i];
 
-		Codecprintf(glob->fileLog, "%c\t| %d\t\t| %d\t\t| %d\t\t| %d/%f%%\t\t| %d/%f%%\n", types[i], f->begin_calls, f->decode_calls, f->draw_calls,
+		Codecprintf(glob->fileLog, "%c\t| %d\t\t| %d\t\t| %d\t\t| %d/%g%%\t\t| %d/%g%%\n", types[i], f->begin_calls, f->decode_calls, f->draw_calls,
 					f->begin_calls - f->decode_calls,(f->begin_calls > f->decode_calls) ? ((float)(f->begin_calls - f->decode_calls)/(float)f->begin_calls) * 100. : 0.,
 					f->decode_calls - f->draw_calls,(f->decode_calls > f->draw_calls) ? ((float)(f->decode_calls - f->draw_calls)/(float)f->decode_calls) * 100. : 0.);
 	}
@@ -416,11 +418,13 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
         err = OpenADefaultComponent(decompressorComponentType, kBaseCodecType, &glob->delegateComponent);
         if (!err)
         {
-            ComponentSetTarget(glob->delegateComponent, self);
+            if( ComponentSetTarget(glob->delegateComponent, self) == badComponentSelector ){
+				FFusionDebugPrint2("Error %d targeting the base image decompressor with ourselves!\n", err );
+			}
         }
         else
         {
-            FFusionDebugPrint2("Error opening the base image decompressor! Exiting.\n");
+            FFusionDebugPrint2("Error %d opening the base image decompressor!\n", err );
         }
 
 		// we allocate some space for copying the frame data since we need some padding at the end
@@ -441,9 +445,6 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
 
 pascal ComponentResult FFusionCodecClose(FFusionGlobals glob, ComponentInstance self)
 {
-    FFusionDebugPrint("%p closed.\n", glob);
-	DumpFrameDropStats(glob);
-
     // Make sure to close the base component and deallocate our storage
     if (glob)
     {
@@ -459,12 +460,31 @@ pascal ComponentResult FFusionCodecClose(FFusionGlobals glob, ComponentInstance 
 		setFutureFrame(glob, NULL);
 
         if (glob->avContext)
-        {
+        { FILE *fp = glob->fileLog;
+		  ComponentDescription cDescr;
+		  Handle cName = NewHandleClear(200);
+			if( !glob->fileLog ){
+				glob->fileLog = stderr;
+			}
+			DumpFrameDropStats(glob);
+			glob->fileLog = fp;
 			if (glob->avContext->extradata)
 				free(glob->avContext->extradata);
 
-			if (glob->avContext->codec) avcodec_close(glob->avContext);
+			if (glob->avContext->codec){
+				avcodec_close(glob->avContext);
+			}
             av_free(glob->avContext);
+			if( GetComponentInfo( (Component) self, &cDescr, cName, NULL, NULL ) == noErr ){
+			  char tStr[5];
+				strcpy( tStr, FourCCString(cDescr.componentSubType) );
+				FFusionDebugPrint( "%p closed - '%s' type '%s' by '%s'\n", glob,
+								   &(*cName)[1], tStr, FourCCString(cDescr.componentManufacturer) );
+			}
+			else{
+				FFusionDebugPrint("%p closed.\n", glob);
+			}
+			DisposeHandle(cName);
         }
 
 		if (glob->begin.parser)
@@ -594,7 +614,7 @@ static inline int shouldDecode(FFusionGlobals glob, enum CodecID codecID)
 			decode = FFUSION_PREFER_DECODE;
 		}
 	}
-	FFusionDebugPrint2( "shouldDecode(%p,%d='%s') = %d\n",
+	FFusionDebugPrint( "shouldDecode(%p,%d='%s') = %d\n",
 					   glob, codecID, FourCCString(glob->componentType), decode > FFUSION_PREFER_NOT_DECODE );
 	return decode > FFUSION_PREFER_NOT_DECODE;
 }
@@ -742,7 +762,10 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 			}
 		}
 
-		FFusionDebugPrint("%p preflighted for %dx%d '%s'. (%d bytes of extradata)\n", glob, (**p->imageDescription).width, (**p->imageDescription).height, FourCCString(glob->componentType), glob->avContext->extradata_size);
+		FFusionDebugPrint2("%p preflighted for %dx%d '%s'; %d bytes of extradata; frame dropping %senabled\n",
+						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
+						   FourCCString(glob->componentType), glob->avContext->extradata_size,
+						   not(glob->isFrameDroppingEnabled) );
 
 		if(glob->avContext->extradata_size != 0 && glob->begin.parser != NULL){
 			ffusionParseExtraData(glob->begin.parser, glob->avContext->extradata, glob->avContext->extradata_size);
