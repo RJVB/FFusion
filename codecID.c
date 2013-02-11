@@ -146,6 +146,7 @@ int getCodecID(OSType componentType)
 		case 'MPG2':
   		case 'mpg2':
   		case 'mp2v':
+  		case 'm2v1':
 			codecID = CODEC_ID_MPEG2VIDEO;
 			break;
 
@@ -439,6 +440,7 @@ pascal ComponentResult getFFusionCodecInfo(ComponentInstance self, OSType compon
 			case 'MPG2':
 			case 'mpg2':
 			case 'mp2v':
+			case 'm2v1':
 
 				err = GetComponentResource((Component)self, codecInfoResourceType, kMPEG2CodecInfoResID, (Handle *)&tempCodecInfo);
 				break;
