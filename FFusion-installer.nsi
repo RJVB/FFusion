@@ -199,6 +199,7 @@ Section "FFmpeg Libraries, AMD" SEC03
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin.amd\avutil-50.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin.amd\avcore-0.dll"
   File "s:\MacOSX\FFusion-124R\FFmpeg\source\FFmpeg-LICENSE.txt"
+  File "s:\MacOSX\FFusion-124R\FFmpeg\win32\bin\libopenjpeg-1.dll"
   File "s:\MacOSX\FFusion-124R\LICENSE-libopenjpeg1.txt"
 SectionEnd
 
