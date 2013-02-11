@@ -30,6 +30,7 @@
 #endif
 #ifdef __MACH__
 #	include <QuickTime/QuickTime.h>
+#	include "NSLoggerClient.h"
 #else
 #	include <ConditionalMacros.h>
 #	include <Endian.h>
@@ -42,14 +43,20 @@ extern "C" {
 
 #undef printf
 #ifdef _MSC_VER
-	extern int Codecprintf(FILE *, const char *format, ...);
+	extern int ffCodecprintf(FILE *, const char *format, ...);
 #else
-	int Codecprintf(FILE *, const char *format, ...) __attribute__((format (printf, 2, 3)));
+	int ffCodecprintf(FILE *, const char *format, ...) __attribute__((format (printf, 2, 3)));
 #endif
 void FourCCprintf(const char *string, FourCharCode a);
 const char *FourCCString(FourCharCode c);
 
 void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl);
+
+#ifdef _NSLOGGERCLIENT_H
+#	define Codecprintf(file,form,...)	NSCodecprintf(__FILE__,__LINE__,__FUNCTION__,((file)!=NULL),(form),##__VA_ARGS__)
+#else
+#	define Codecprintf	ffCodecprintf
+#endif
 
 #ifdef __cplusplus
 }

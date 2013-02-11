@@ -66,7 +66,7 @@ static int Codecvprintf(FILE *fileLog, const char *format, va_list va, int print
 	return ret;
 }
 
-int Codecprintf(FILE *fileLog, const char *format, ...)
+int ffCodecprintf(FILE *fileLog, const char *format, ...)
 {int ret;
 	va_list va;
 	va_start(va, format);
@@ -113,8 +113,12 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl)
 		Codecprintf(stderr, "[%s 0x%lx l=%d] ", avc->item_name(ptr), (unsigned long) avc, level);
 		print_header = 0;
     }
-	
+
     print_prefix= strstr(fmt, "\n") != NULL;
-	
+
+#ifdef _NSLOGGERCLIENT_H
+	NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, level, fmt, vl );
+#else
 	Codecvprintf(stderr, fmt, vl, print_header);
+#endif
 }

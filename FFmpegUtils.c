@@ -32,7 +32,10 @@
 #else
 #	include <windows.h>
 #endif
-#include "libavformat/avformat.h"
+#ifndef FFUSION_CODEC_ONLY
+#	include "libavformat/avformat.h"
+#endif
+#include "libavcodec/avcodec.h"
 
 #ifndef FFUSION_CODEC_ONLY
 void FFAVCodecContextToASBD(AVCodecContext *avctx, AudioStreamBasicDescription *asbd)
@@ -207,7 +210,9 @@ void FFInitFFmpeg()
 		avcodec_register_all();
 #endif
 		
-		Codecprintf( stderr, "FFusion decoded using libavcodec, version %u / \"%s\"\n", avcodec_version(), avcodec_configuration() );
+		Codecprintf( stderr, "FFusion decoder using libavcodec, version %d.%d.%d (%u) / \"%s\"\n",
+					LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
+					avcodec_version(), avcodec_configuration() );
 		cpuFlags = av_get_cpu_flags();
 		cpuFlagString[0] = '\0';
 		if( cpuFlags & AV_CPU_FLAG_MMX ){
