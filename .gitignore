@@ -51,3 +51,4 @@ FFmpeg/osx86/include/libavutil/rational.h
 FFmpeg/osx86/include/libavutil/sha1.h
 FFmpeg/osx86/lib/pkgconfig
 build/osx86
+FFusion-v1.25-installer.exe

@@ -11,7 +11,7 @@
 #define kCompressCodecManufacturer	kPerianManufacturer
 
 #define kPerianBaseVersion			(0x00000004)
-#define kFFusionCodecVersion		(kPerianBaseVersion+0x00030002)
+#define kFFusionCodecVersion		(kPerianBaseVersion+0x00030003)
 #define kTextSubCodecVersion		kPerianBaseVersion
 #define kVobSubCodecVersion			kPerianBaseVersion
 #define kFFissionCodecVersion		kFFusionCodecVersion

@@ -36,6 +36,9 @@
 		D67BC66016B1A40300E26386 /* bitstream_info.c in Sources */ = {isa = PBXBuildFile; fileRef = F52286250B50625E00F8CF7D /* bitstream_info.c */; };
 		D68307A416BEE9F900301AD1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68307A316BEE9F900301AD1 /* Cocoa.framework */; };
 		D6ACC46716BAC60E001EDE3F /* FFusionMacOSXResources.r in Rez */ = {isa = PBXBuildFile; fileRef = D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */; };
+		D6B9D84516C8189E00865BF4 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B9D84316C8189E00865BF4 /* LoggerClient.m */; };
+		D6B9D87E16C81E7200865BF4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B9D87D16C81E7200865BF4 /* SystemConfiguration.framework */; };
+		D6B9D8ED16C824D900865BF4 /* NSLoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B9D8EC16C824D900865BF4 /* NSLoggerClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2217,8 +2220,7 @@
 		D61D796A16BD777C00F6FB18 /* version_check */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = version_check; sourceTree = BUILT_PRODUCTS_DIR; };
 		D61D796F16BD779600F6FB18 /* version_check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version_check.c; sourceTree = "<group>"; };
 		D61D798316BD77DA00F6FB18 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		D620104216C5501600DC6EE5 /* libopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjpeg.a; path = "/Volumes/Debian/Users/bertin/work/src/MacOSX/FFusion-124R/libopenjpeg.a"; sourceTree = "<absolute>"; };
-		D620104C16C5506400DC6EE5 /* libopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjpeg.a; path = "/Volumes/Debian/Users/bertin/work/src/MacOSX/FFusion-124R/FFmpeg/osx86/lib/libopenjpeg.a"; sourceTree = "<absolute>"; };
+		D620104C16C5506400DC6EE5 /* libopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjpeg.a; path = FFmpeg/osx86/lib/libopenjpeg.a; sourceTree = "<group>"; };
 		D620108316C57CF400DC6EE5 /* FFmpeg-LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FFmpeg-LICENSE.txt"; path = "FFmpeg/source/FFmpeg-LICENSE.txt"; sourceTree = "<group>"; };
 		D620108416C57CF400DC6EE5 /* LICENSE-libopenjpeg1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE-libopenjpeg1.txt"; sourceTree = "<group>"; };
 		D66D737F16BC337200BF1C5E /* FFusion.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.modula2.def; name = FFusion.def; path = Resources/FFusion.def; sourceTree = "<group>"; };
@@ -2240,6 +2242,12 @@
 		D68307A316BEE9F900301AD1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D68307B416BEF28900301AD1 /* FFusion-installer.nsi */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = text; path = "FFusion-installer.nsi"; sourceTree = "<group>"; };
 		D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionMacOSXResources.r; path = Resources/FFusionMacOSXResources.r; sourceTree = "<group>"; };
+		D6B9D84216C8189E00865BF4 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerCommon.h; path = "../NSLogger/Client Logger/iOS/LoggerCommon.h"; sourceTree = SOURCE_ROOT; };
+		D6B9D84316C8189E00865BF4 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoggerClient.m; path = "../NSLogger/Client Logger/iOS/LoggerClient.m"; sourceTree = SOURCE_ROOT; };
+		D6B9D84416C8189E00865BF4 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerClient.h; path = "../NSLogger/Client Logger/iOS/LoggerClient.h"; sourceTree = SOURCE_ROOT; };
+		D6B9D87D16C81E7200865BF4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		D6B9D8EB16C824D900865BF4 /* NSLoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSLoggerClient.h; path = Logging/NSLoggerClient.h; sourceTree = "<group>"; };
+		D6B9D8EC16C824D900865BF4 /* NSLoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSLoggerClient.m; path = Logging/NSLoggerClient.m; sourceTree = "<group>"; };
 		F52286240B50625E00F8CF7D /* bitstream_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream_info.h; sourceTree = "<group>"; };
 		F52286250B50625E00F8CF7D /* bitstream_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream_info.c; sourceTree = "<group>"; };
 		F539CD110B62BC82005A72C9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -2278,6 +2286,7 @@
 				D620105116C5507C00DC6EE5 /* libavutil.a in Frameworks */,
 				D620105216C5507C00DC6EE5 /* libavcore.a in Frameworks */,
 				D620105316C5507C00DC6EE5 /* libavcodec.a in Frameworks */,
+				D6B9D87E16C81E7200865BF4 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2295,10 +2304,6 @@
 				D617791D16B85DEF00FE3AC6 /* ffmpeg sources */,
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB4FE9D528D11CA2CBB /* Products */,
-				D61D798316BD77DA00F6FB18 /* libz.dylib */,
-				D68307A316BEE9F900301AD1 /* Cocoa.framework */,
-				D620104216C5501600DC6EE5 /* libopenjpeg.a */,
-				D620104C16C5506400DC6EE5 /* libopenjpeg.a */,
 			);
 			name = "ffmpeg DivX";
 			sourceTree = "<group>";
@@ -2306,6 +2311,10 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D61D798316BD77DA00F6FB18 /* libz.dylib */,
+				D68307A316BEE9F900301AD1 /* Cocoa.framework */,
+				D620104C16C5506400DC6EE5 /* libopenjpeg.a */,
+				D6B9D87D16C81E7200865BF4 /* SystemConfiguration.framework */,
 				D67BC5AA16B1981D00E26386 /* libavcodec.a */,
 				D67BC5AC16B1981D00E26386 /* libavformat.a */,
 				D67BC5AE16B1981D00E26386 /* libavutil.a */,
@@ -2347,6 +2356,7 @@
 		08FB77ADFE841716C02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D6B9D84116C8187600865BF4 /* Logging */,
 				D68306EC16BEDEA800301AD1 /* timing.c */,
 				D68306ED16BEDEA800301AD1 /* timing.h */,
 				D61D796F16BD779600F6FB18 /* version_check.c */,
@@ -4886,6 +4896,18 @@
 			name = win32;
 			sourceTree = "<group>";
 		};
+		D6B9D84116C8187600865BF4 /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				D6B9D84216C8189E00865BF4 /* LoggerCommon.h */,
+				D6B9D84316C8189E00865BF4 /* LoggerClient.m */,
+				D6B9D84416C8189E00865BF4 /* LoggerClient.h */,
+				D6B9D8EB16C824D900865BF4 /* NSLoggerClient.h */,
+				D6B9D8EC16C824D900865BF4 /* NSLoggerClient.m */,
+			);
+			name = Logging;
+			sourceTree = "<group>";
+		};
 		F53AD5E20B2A4EC000D93AC9 /* FFMPEG */ = {
 			isa = PBXGroup;
 			children = (
@@ -5037,6 +5059,8 @@
 				D67BC53E16B1911300E26386 /* FrameBuffer.c in Sources */,
 				D67BC5C316B19A4300E26386 /* codecID.c in Sources */,
 				D67BC66016B1A40300E26386 /* bitstream_info.c in Sources */,
+				D6B9D84516C8189E00865BF4 /* LoggerClient.m in Sources */,
+				D6B9D8ED16C824D900865BF4 /* NSLoggerClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
