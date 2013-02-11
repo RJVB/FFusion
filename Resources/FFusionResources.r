@@ -188,6 +188,19 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecSubType 'mjp2'
 #include "Resources/FFusionResourceInc.r"  
 
+#define kCodecInfoResID kMPEG2CodecInfoResID
+#define kCodecName "MPEG-2 (FFusion)"
+
+#define kCodecDescription "FFusion decompresses video stored in MPEG-2 format."
+#define kCodecSubType 'MPG2'
+#include "Resources/FFusionResourceInc.r"  
+#define kCodecSubType 'mpg2'
+#include "Resources/FFusionResourceInc.r"  
+#define kCodecSubType 'mp2v'
+#include "Resources/FFusionResourceInc.r"  
+#define kCodecSubType 'm2v1'
+#include "Resources/FFusionResourceInc.r"  
+
 #define kCodecVersion kFFusionCodecVersion
 #define kCodecManufacturer kFFusionCodecManufacturer
 #define kCodecInfoResID kH264CodecInfoResID
@@ -288,16 +301,18 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecSubType 'mp1v'
 #include "Resources/FFusionResourceInc.r"  
 
-#define kCodecInfoResID kMPEG2CodecInfoResID
-#define kCodecName "MPEG-2 (FFusion)"
-
-#define kCodecDescription "FFusion decompresses video stored in MPEG-2 format."
-#define kCodecSubType 'MPG2'
-#include "Resources/FFusionResourceInc.r"  
-#define kCodecSubType 'mpg2'
-#include "Resources/FFusionResourceInc.r"  
-#define kCodecSubType 'mp2v'
-#include "Resources/FFusionResourceInc.r"  
+//#define kCodecInfoResID kMPEG2CodecInfoResID
+//#define kCodecName "MPEG-2 (FFusion)"
+//
+//#define kCodecDescription "FFusion decompresses video stored in MPEG-2 format."
+//#define kCodecSubType 'MPG2'
+//#include "Resources/FFusionResourceInc.r"  
+//#define kCodecSubType 'mpg2'
+//#include "Resources/FFusionResourceInc.r"  
+//#define kCodecSubType 'mp2v'
+//#include "Resources/FFusionResourceInc.r"  
+//#define kCodecSubType 'm2v1'
+//#include "Resources/FFusionResourceInc.r"  
 
 #define kCodecInfoResID kFRAPSCodecInfoResID
 #define kCodecName "Fraps (FFusion)"
