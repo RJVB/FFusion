@@ -25,6 +25,11 @@
 
 #include <stdint.h>
 
+// RJVB
+#if _WIN32_WINNT >= 0x0600
+#	define COBJMACROS
+#	include <dxva.h>
+#endif
 #include <dxva2api.h>
 
 /**
