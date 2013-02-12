@@ -38,3 +38,8 @@ int NSCodecprintf( const char *fileName, int lineNumber, const char *functionNam
 	va_end(ap);
 	return ret;
 }
+
+void NSCodecFlushLog()
+{
+	LoggerFlush( NULL, NO );
+}
