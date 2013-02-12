@@ -9,6 +9,13 @@ else
 	TEST=""
 fi
 
+if [ "$1" = "-remake" ] ;then
+	NOCONFIGURE="yes"
+	shift
+else
+	NOCONFIGURE=""
+fi
+
 x86tune="generic"
 x86flags=""
 
@@ -21,16 +28,26 @@ if [ "$SRCROOT" = "" ] ;then
 	SRCROOT="`pwd`"
 fi
 
-configureflags="--disable-doc --disable-pthreads --enable-w32threads --enable-runtime-cpudetect \
+MINGPREF="/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-"
+MINGPREF="/usr/local/mingw/32/bin/i686-w64-mingw32-"
+
+# NB: i686-w64-mingw32 bails on compiling libavcodec/x86/dsputil_mmx.c (operand type mismatch for `cmp'?!)
+# but the Cocotron compiler doesn't have that issue. Simply compile that file using Cocotron and the
+# arguments given in the failed command, and relaunch this script afterwards.
+
+configureflags="--disable-doc --enable-pthreads --disable-w32threads --enable-runtime-cpudetect \
      --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network --disable-avdevice \
      --disable-swscale --enable-avfilter --target-os=mingw32 --enable-memalign-hack --arch=x86 --enable-libopenjpeg \
+	--enable-hwaccels --enable-dxva2 \
 	--extra-cflags=-I${SRCROOT}/FFmpeg/win32/include/openjpeg-1.5 \
 	--extra-ldflags=-L${SRCROOT}/FFmpeg/win32/lib \
-	--enable-cross-compile --cross-prefix=/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc- \
+	--enable-cross-compile --cross-prefix=${MINGPREF} \
 	--enable-ffprobe --enable-shared --disable-static --disable-stripping"
 
 # -m3dnow
-cflags="-march=core2 -g -msse2 -msse3 -mssse3 -msse4 -arch i386 -Dattribute_deprecated= -w"
+# cflags="-march=core2 -g -msse2 -msse3 -mssse3 -msse4 -arch i386 -Dattribute_deprecated= -w"
+# _WIN32_WINNT must be set to >= 0x0600 to activate dxva2 support
+cflags="-march=core2 -g -msse2 -msse3 -mssse3 -msse4 -m32 -D_WIN32_WINNT=0x0600 -Dattribute_deprecated= -w"
 
 if [ "$BUILD_STYLE" = "Development" ] ; then
     configureflags="$configureflags --disable-optimizations --disable-asm"
@@ -93,7 +110,7 @@ else
 	fi
 
 	cd "$BUILDDIR"
-	if [ "$oldbuildid_ffmpeg" != "quick" ] ; then
+	if [ "$oldbuildid_ffmpeg" != "quick" -a "${NOCONFIGURE}" = "" ] ; then
 		"$SRCROOT/FFmpeg/source/configure" --extra-ldflags="$cflags" \
 			--extra-cflags="$cflags $optcflags_i386" \
 			$configureflags || exit 1
