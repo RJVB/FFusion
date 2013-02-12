@@ -20,6 +20,10 @@
 
 #include "timing.c"
 
+#ifdef _WIN32_WINNT
+static const size_t w32nt = _WIN32_WINNT;
+#endif
+
 #ifdef _MSC_VER
 #	define DLLIMPORT	__declspec(dllimport)
 #else
