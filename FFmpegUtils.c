@@ -255,6 +255,9 @@ void FFInitFFmpeg()
 			strncat( cpuFlagString, " IWMMXT", sizeof(cpuFlagString) - strlen(cpuFlagString) - 1 );
 		}
 		Codecprintf( stderr, "Extensions supported by the current CPU: %s\n", cpuFlagString );
+#ifdef _NSLOGGERCLIENT_H
+		NSCodecFlushLog();
+#endif
 	}
 	
 	FFusionInitExit(unlock);
