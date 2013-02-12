@@ -592,6 +592,7 @@ pascal ComponentResult FFusionCodecInitialize(FFusionGlobals glob, ImageSubCodec
 		cap->subCodecSupportsDecodeSmoothing = true;
 	}
 
+//	FFusionDebugPrint2( "FFusionCodecInitialize(%p) done\n", glob );
     return noErr;
 }
 
@@ -762,10 +763,10 @@ pascal ComponentResult FFusionCodecPreflight(FFusionGlobals glob, CodecDecompres
 			}
 		}
 
-		FFusionDebugPrint2("%p preflighted for %dx%d '%s'; %d bytes of extradata; frame dropping %senabled\n",
-						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
-						   FourCCString(glob->componentType), glob->avContext->extradata_size,
-						   not(glob->isFrameDroppingEnabled) );
+//		FFusionDebugPrint2("%p preflighted for %dx%d '%s'; %d bytes of extradata; frame dropping %senabled\n",
+//						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
+//						   FourCCString(glob->componentType), glob->avContext->extradata_size,
+//						   not(glob->isFrameDroppingEnabled) );
 
 		if(glob->avContext->extradata_size != 0 && glob->begin.parser != NULL){
 			ffusionParseExtraData(glob->begin.parser, glob->avContext->extradata, glob->avContext->extradata_size);
@@ -940,7 +941,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 	myDrp->frameData = NULL;
 	myDrp->buffer = NULL;
 
-	FFusionDebugPrint("%p BeginBand #%ld. (%sdecoded, packed %d)\n", glob, p->frameNumber, not(myDrp->decoded), glob->packedType);
+//	FFusionDebugPrint2("%p BeginBand #%ld. (%sdecoded, packed %d)\n", glob, p->frameNumber, not(myDrp->decoded), glob->packedType);
 
 	if (!glob->avContext) {
 		Codecprintf(glob->fileLog, "FFusion: QT tried to call BeginBand without preflighting!\n");
@@ -962,6 +963,14 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 			}
 		}
 		return noErr;
+	}
+
+	if( p->frameNumber <= 1 ){
+		FFusionDebugPrint2("FFusionCodecBeginBand(%p) for %dx%d '%s' with %d bytes of extradata;\n"
+						   "\tframe dropping %senabled; using %d threads\n",
+						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
+						   FourCCString(glob->componentType), glob->avContext->extradata_size,
+						   not(glob->isFrameDroppingEnabled), glob->avContext->thread_count );
 	}
 
 	if(glob->packedType != PACKED_QUICKTIME_KNOWS_ORDER && p->frameNumber != glob->begin.lastFrame + 1)
@@ -1144,7 +1153,7 @@ pascal ComponentResult FFusionCodecDecodeBand(FFusionGlobals glob, ImageSubCodec
 
 	glob->stats.type[drp->frameType].decode_calls++;
 	RecomputeMaxCounts(glob);
-	FFusionDebugPrint("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
+//	FFusionDebugPrint2("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
 
 	// QuickTime will drop H.264 frames when necessary if a sample dependency table exists
 	// we don't want to flush buffers in that case.
@@ -1305,7 +1314,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 
 	glob->stats.type[drp->frameType].draw_calls++;
 	RecomputeMaxCounts(glob);
-	FFusionDebugPrint("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
+//	FFusionDebugPrint2("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
 
 	if(!myDrp->decoded) {
 		err = FFusionCodecDecodeBand(glob, drp, 0);
@@ -1370,7 +1379,7 @@ pascal ComponentResult FFusionCodecEndBand(FFusionGlobals glob, ImageSubCodecDec
 	if(buf && buf->frame)
 		releaseBuffer(glob->avContext, buf->frame);
 
-	FFusionDebugPrint("%p EndBand #%d.\n", glob, myDrp->frameNumber);
+//	FFusionDebugPrint2("%p EndBand #%d.\n", glob, myDrp->frameNumber);
 #if TARGET_OS_WIN32
 // are we being used?
 //	Sleep( 83 );
@@ -1415,6 +1424,7 @@ ComponentResult FFusionCodecGetSourceDataGammaLevel(FFusionGlobals glob, Fixed *
 
 pascal ComponentResult FFusionCodecGetCodecInfo(FFusionGlobals glob, CodecInfo *info)
 {
+//	FFusionDebugPrint2( "FFusionCodecGetCodecInfo(%p)\n", glob );
 	return getFFusionCodecInfo(glob->self, glob->componentType, info);
 }
 
