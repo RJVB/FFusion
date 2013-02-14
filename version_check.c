@@ -83,7 +83,7 @@ static void Y420toY422_lastrow(uint8_t *o, uint8_t *yc, uint8_t *uc, uint8_t *vc
 #	define FASTCALL
 #endif
 
-static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, int width, int height)
+static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, int width, int height, unsigned long *N)
 {
 	uint8_t	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
@@ -189,6 +189,43 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, 
 	}
 
 	HandleLastRow(o, yc, uc, vc, halfwidth, height);
+	*N += 1;
+}
+
+static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, uint8_t *o, int outRB, int width, int height, unsigned long *N)
+{
+	uint8_t	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2];
+	int		rY = picture->linesize[0], rUV = picture->linesize[1];
+	int		halfheight = height >> 1, halfwidth = width >> 1;
+	int		y, x;
+	
+	for (y = 0; y < halfheight; y ++) {
+		uint8_t *o2 = o + outRB, *yc2 = yc + rY;
+		
+		for (x = 0; x < halfwidth; x++) {
+			int x4 = x*4, x2 = x*2;
+			o2[x4]     = o[x4] = u[x];
+//			o [x4 + 1] = yc[x2];
+//			o2[x4 + 1] = yc2[x2];
+//			o2[x4 + 2] = o[x4 + 2] = v[x];
+//			o [x4 + 3] = yc[x2 + 1];
+//			o2[x4 + 3] = yc2[x2 + 1];
+			o [++x4] = yc[x2];
+			o2[x4] = yc2[x2];
+			x4++;
+			o2[x4] = o[x4] = v[x];
+			o [++x4] = yc[++x2];
+			o2[x4] = yc2[x2];
+		}
+		
+		o  += outRB*2;
+		yc += rY*2;
+		u  += rUV;
+		v  += rUV;
+	}
+
+	HandleLastRow(o, yc, u, v, halfwidth, height);
+	*N += 1;
 }
 
 int main( int argc, char *argv[] )
@@ -328,10 +365,17 @@ int main( int argc, char *argv[] )
 		){
 		  double startT = HRTime_Time();
 			do{
-				Y420toY422_sse2( &pict, baseAddr, outRB, width, height );
-				N += 1;
+				Y420toY422_sse2( &pict, baseAddr, outRB, width, height, &N );
 			} while( (t = HRTime_Time() - startT) < 5 );
 			fprintf( stderr, "%lu Y420toY422_sse2(outRB=%d,width=%d,height=%d) conversions in %gs; %gHz\n",
+					N, outRB, width, height, t,
+					N / t );
+			startT = HRTime_Time(); N = 0;
+			do{
+				Y420toY422_x86_scalar( &pict, baseAddr, outRB, width, height, &N );
+				N += 1;
+			} while( (t = HRTime_Time() - startT) < 5 );
+			fprintf( stderr, "%lu Y420toY422_x86_scalar(outRB=%d,width=%d,height=%d) conversions in %gs; %gHz\n",
 					N, outRB, width, height, t,
 					N / t );
 		}
