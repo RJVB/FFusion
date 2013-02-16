@@ -1048,6 +1048,7 @@ HAVE_LIST="
     mmap
     pld
     posix_memalign
+    _aligned_malloc
     round
     roundf
     sdl
@@ -2683,6 +2684,7 @@ check_func  ${malloc_prefix}memalign            && enable memalign
 check_func  mkstemp
 check_func  mmap
 check_func  ${malloc_prefix}posix_memalign      && enable posix_memalign
+check_func  ${malloc_prefix}malloc      && enable ${malloc_prefix}malloc
 check_func  setrlimit
 check_func  strerror_r
 check_func  strtok_r
@@ -2708,7 +2710,7 @@ check_header X11/extensions/XvMClib.h
 
 check_struct dxva2api.h DXVA_PictureParameters wDecodedPictureIndex
 
-if ! enabled_any memalign memalign_hack posix_memalign malloc_aligned &&
+if ! enabled_any memalign memalign_hack posix_memalign ${malloc_prefix}malloc malloc_aligned &&
      enabled_any $need_memalign ; then
     die "Error, no aligned memory allocator but SSE enabled, disable it or use --enable-memalign-hack."
 fi
@@ -2957,7 +2959,7 @@ elif enabled ccc; then
     add_cflags -msg_disable ptrmismatch1
     add_cflags -msg_disable unreachcode
 elif enabled gcc; then
-    check_cflags -fno-tree-vectorize
+    #check_cflags -fno-tree-vectorize
     check_cflags -Werror=implicit-function-declaration
     check_cflags -Werror=missing-prototypes
 elif enabled llvm_gcc; then

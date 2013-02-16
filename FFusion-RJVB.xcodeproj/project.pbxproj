@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D617D1B916CE9B06000EC428 /* NSLogger-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = D617D1B816CE9B06000EC428 /* NSLogger-LICENSE.txt */; };
 		D61D797016BD779600F6FB18 /* version_check.c in Sources */ = {isa = PBXBuildFile; fileRef = D61D796F16BD779600F6FB18 /* version_check.c */; };
 		D61D797216BD77B000F6FB18 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EFA20A3CE8C10066D45F /* libavutil.a */; };
 		D61D797316BD77B000F6FB18 /* libavcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEFA3F8120560AD0097FE4C /* libavcore.a */; };
@@ -1453,7 +1454,7 @@
 		D6177E8116B85DF100FE3AC6 /* mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathematics.h; sourceTree = "<group>"; };
 		D6177E8216B85DF100FE3AC6 /* md5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
 		D6177E8316B85DF100FE3AC6 /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
-		D6177E8416B85DF100FE3AC6 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mem.c; sourceTree = "<group>"; };
+		D6177E8416B85DF100FE3AC6 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = mem.c; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		D6177E8516B85DF100FE3AC6 /* mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mem.h; sourceTree = "<group>"; };
 		D6177E8716B85DF100FE3AC6 /* intreadwrite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intreadwrite.h; sourceTree = "<group>"; };
 		D6177E8816B85DF100FE3AC6 /* opt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = opt.c; sourceTree = "<group>"; };
@@ -2217,6 +2218,7 @@
 		D617819416B85DF200FE3AC6 /* trasher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trasher.c; sourceTree = "<group>"; };
 		D617819516B85DF200FE3AC6 /* unwrap-diff */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "unwrap-diff"; sourceTree = "<group>"; };
 		D617819616B85DF200FE3AC6 /* version.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
+		D617D1B816CE9B06000EC428 /* NSLogger-LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "NSLogger-LICENSE.txt"; path = "Logging/NSLogger-LICENSE.txt"; sourceTree = "<group>"; };
 		D61D796A16BD777C00F6FB18 /* version_check */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = version_check; sourceTree = BUILT_PRODUCTS_DIR; };
 		D61D796F16BD779600F6FB18 /* version_check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version_check.c; sourceTree = "<group>"; };
 		D61D798316BD77DA00F6FB18 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -2242,9 +2244,9 @@
 		D68307A316BEE9F900301AD1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D68307B416BEF28900301AD1 /* FFusion-installer.nsi */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = text; path = "FFusion-installer.nsi"; sourceTree = "<group>"; };
 		D6ACC46616BAC60E001EDE3F /* FFusionMacOSXResources.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = FFusionMacOSXResources.r; path = Resources/FFusionMacOSXResources.r; sourceTree = "<group>"; };
-		D6B9D84216C8189E00865BF4 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerCommon.h; path = "../NSLogger/Client Logger/iOS/LoggerCommon.h"; sourceTree = SOURCE_ROOT; };
-		D6B9D84316C8189E00865BF4 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoggerClient.m; path = "../NSLogger/Client Logger/iOS/LoggerClient.m"; sourceTree = SOURCE_ROOT; };
-		D6B9D84416C8189E00865BF4 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerClient.h; path = "../NSLogger/Client Logger/iOS/LoggerClient.h"; sourceTree = SOURCE_ROOT; };
+		D6B9D84216C8189E00865BF4 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerCommon.h; path = Logging/LoggerCommon.h; sourceTree = "<group>"; };
+		D6B9D84316C8189E00865BF4 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoggerClient.m; path = Logging/LoggerClient.m; sourceTree = "<group>"; };
+		D6B9D84416C8189E00865BF4 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerClient.h; path = Logging/LoggerClient.h; sourceTree = "<group>"; };
 		D6B9D87D16C81E7200865BF4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D6B9D8EB16C824D900865BF4 /* NSLoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSLoggerClient.h; path = Logging/NSLoggerClient.h; sourceTree = "<group>"; };
 		D6B9D8EC16C824D900865BF4 /* NSLoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSLoggerClient.m; path = Logging/NSLoggerClient.m; sourceTree = "<group>"; };
@@ -2298,6 +2300,7 @@
 			children = (
 				D620108316C57CF400DC6EE5 /* FFmpeg-LICENSE.txt */,
 				D620108416C57CF400DC6EE5 /* LICENSE-libopenjpeg1.txt */,
+				D617D1B816CE9B06000EC428 /* NSLogger-LICENSE.txt */,
 				08FB77ADFE841716C02AAC07 /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				D66D739A16BC36ED00BF1C5E /* win32 */,
@@ -5021,6 +5024,7 @@
 				D67BC4D816B1698400E26386 /* FFusionInfoPlist.strings in Resources */,
 				D620108516C57CF400DC6EE5 /* FFmpeg-LICENSE.txt in Resources */,
 				D620108616C57CF400DC6EE5 /* LICENSE-libopenjpeg1.txt in Resources */,
+				D617D1B916CE9B06000EC428 /* NSLogger-LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5282,7 +5286,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				EXPORTED_SYMBOLS_FILE = "";
-				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ALTIVEC_EXTENSIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5291,6 +5295,7 @@
 					DEBUG_BUILD,
 					FFUSION_CODEC_ONLY,
 				);
+				GCC_VERSION = org.macports.gcc.4.7.x;
 				HEADER_SEARCH_PATHS = (
 					"$(BUILT_PRODUCTS_DIR)/$(arch)",
 					libmatroska,
@@ -5311,6 +5316,8 @@
 					"$(SRCROOT)/FFmpeg/osx86/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-march=core2";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-read_only_relocs",
 					suppress,
@@ -5332,11 +5339,14 @@
 				GCC_ALTIVEC_EXTENSIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Prefix.h;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = FFUSION_CODEC_ONLY;
+				GCC_VERSION = org.macports.gcc.4.7.x;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"FFmpeg/osx86/include/**",
@@ -5355,11 +5365,19 @@
 					"$(SRCROOT)/FFmpeg/osx86/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-march=core2",
+					"-ftree-vectorizer-verbose=1",
+				);
+				OTHER_CFLAGS_i386 = "";
+				OTHER_CFLAGS_ppc = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-read_only_relocs",
 					suppress,
 				);
 				OTHER_REZFLAGS = "-rd -d ppc_$(ppc) -d i386_$(i386) -d TARGET_REZ_CARBON_MACHO=1 -i \"$(SRCROOT)\" -i \"$(DERIVED_FILE_DIR)\"";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = FFusion;
 				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -5373,7 +5391,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				EXPORTED_SYMBOLS_FILE = "";
-				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ALTIVEC_EXTENSIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_FORCE_CPU_SUBTYPE_ALL = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5382,6 +5400,7 @@
 					DEBUG_BUILD,
 					FFUSION_CODEC_ONLY,
 				);
+				GCC_VERSION = org.macports.gcc.4.7.x;
 				HEADER_SEARCH_PATHS = (
 					"\\\"$(BUILT_PRODUCTS_DIR)\\\"/$(arch)",
 					libmatroska,
@@ -5404,6 +5423,8 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/FFmpeg/osx86/lib\"",
 				);
+				OTHER_CFLAGS = "-march=core2";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-read_only_relocs",
 					suppress,

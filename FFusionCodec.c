@@ -394,7 +394,9 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
     }
     else
     {
+#if TARGET_OS_MAC
 		CFStringRef pathToLogFile = CopyPreferencesValueTyped(CFSTR("DebugLogFile"), CFStringGetTypeID());
+#endif
 		char path[1024];
         SetComponentInstanceStorage(self, (Handle)glob);
 
@@ -406,11 +408,15 @@ pascal ComponentResult FFusionCodecOpen(FFusionGlobals glob, ComponentInstance s
         glob->componentType = descout.componentSubType;
 		glob->data.frames = NULL;
 		glob->begin.parser = NULL;
+#if TARGET_OS_MAC
 		if (pathToLogFile) {
 			CFStringGetCString(pathToLogFile, path, sizeof(path), kCFStringEncodingUTF8);
 			CFRelease(pathToLogFile);
 			glob->fileLog = fopen(path, "a");
 		}
+#else
+		glob->fileLog = NULL;
+#endif
 
         // Open and target an instance of the base decompressor as we delegate
         // most of our calls to the base decompressor instance
@@ -499,8 +505,9 @@ pascal ComponentResult FFusionCodecClose(FFusionGlobals glob, ComponentInstance 
 
 		FFusionDataFree(&(glob->data));
 
-		if(glob->fileLog)
+		if(glob->fileLog && glob->fileLog != stderr ){
 			fclose(glob->fileLog);
+		}
 
         memset(glob, 0, sizeof(FFusionGlobalsRecord));
         DisposePtr((Ptr)glob);

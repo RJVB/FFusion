@@ -52,3 +52,5 @@ FFmpeg/osx86/include/libavutil/sha1.h
 FFmpeg/osx86/lib/pkgconfig
 build/osx86
 FFusion-v1.25-installer.exe
+version_check-osx86.exe.dSYM
+version_check-osx86.exe
