@@ -9,6 +9,8 @@
  *
  */
 
+#import <stdarg.h>
+#import <Foundation/Foundation.h>
 #import "NSLoggerClient.h"
 #import "LoggerClient.h"
 

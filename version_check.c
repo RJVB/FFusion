@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <math.h>
 #ifdef _MSC_VER
 #	define inline	__inline
 #	include <intrin.h>
@@ -57,8 +58,15 @@ static const size_t w32nt = _WIN32_WINNT;
 
 //Handles the last row for Y420 videos with an odd number of luma rows
 //FIXME: odd number of luma columns is not handled and they will be lost
+#if 1 && ((__GNUC__ >= 4 && __GNUC_MINOR__ >= 7) || __GNUC__ > 4)
+static void Y420toY422_lastrow(uint8_t *O, uint8_t *YC, uint8_t *UC, uint8_t *VC, int halfWidth)
+{
+	uint8_t *o = __builtin_assume_aligned(O,16),  *yc = __builtin_assume_aligned(YC,16),
+		*uc = __builtin_assume_aligned(UC,16), *vc = __builtin_assume_aligned(VC,16);
+#else
 static void Y420toY422_lastrow(uint8_t *o, uint8_t *yc, uint8_t *uc, uint8_t *vc, int halfWidth)
 {
+#endif
 	int x;
 	for(x=0; x < halfWidth; x++)
 	{
@@ -83,9 +91,14 @@ static void Y420toY422_lastrow(uint8_t *o, uint8_t *yc, uint8_t *uc, uint8_t *vc
 #	define FASTCALL
 #endif
 
-static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, int width, int height, unsigned long *N)
+static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *O, int outRB, int width, int height, unsigned long *N)
 {
-	uint8_t	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2];
+#if 1 && ((__GNUC__ >= 4 && __GNUC_MINOR__ >= 7) || __GNUC__ > 4)
+	uint8_t	*yc = __builtin_assume_aligned(picture->data[0],16), *uc = __builtin_assume_aligned(picture->data[1], 16),
+		*vc = __builtin_assume_aligned(picture->data[2],16), *o = __builtin_assume_aligned(O, 16);
+#else
+	uint8_t	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2], *o = O;
+#endif
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
 	int		y, x, halfwidth = width >> 1, halfheight = height >> 1;
 	int		vWidth = width >> 5;
@@ -192,9 +205,14 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *o, int outRB, 
 	*N += 1;
 }
 
-static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, uint8_t *o, int outRB, int width, int height, unsigned long *N)
+static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, uint8_t *O, int outRB, int width, int height, unsigned long *N)
 {
-	uint8_t	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2];
+#if 1 && ((__GNUC__ >= 4 && __GNUC_MINOR__ >= 7) || __GNUC__ > 4)
+	uint8_t	*yc = __builtin_assume_aligned(picture->data[0],16), *u = __builtin_assume_aligned(picture->data[1], 16),
+		*v = __builtin_assume_aligned(picture->data[2],16), *o = __builtin_assume_aligned(O, 16);
+#else
+	uint8_t	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2], *o = O;
+#endif
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
 	int		halfheight = height >> 1, halfwidth = width >> 1;
 	int		y, x;

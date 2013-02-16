@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$DLLTOOL" = "" ] ;then
-	DLLTOOL="i386-mingw32-dlltool"
+	DLLTOOL="/usr/local/mingw/32/bin/i686-w64-mingw32-dlltool"
 fi
 
 ARGS=""
