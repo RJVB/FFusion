@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include <math.h>
 #include "Codecprintf.h"
 #ifdef __MACH__
 #	include <QuickTime/QuickTime.h>
@@ -654,10 +655,15 @@ int ColorConversionFindFor(ColorConversionFuncs *funcs, enum CodecID codecID, en
 #else
 			//can't set this without the first real frame
 			if (ffPicture) {
+#if 0 && ((__GNUC__ >= 4 && __GNUC_MINOR__ >= 7) || __GNUC__ > 4)
+				// sorry, but gcc 4.7 does a better job at vectorising the scalar function than the hand-coded version!
+				funcs->convert = Y420toY422_x86_scalar;
+#else
 				if (ffPicture->linesize[0] & 15)
 					funcs->convert = Y420toY422_x86_scalar;
 				else
 					funcs->convert = Y420toY422_sse2;
+#endif
 			}
 #endif
 			break;

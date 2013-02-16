@@ -41,7 +41,7 @@
 #undef malloc
 #undef realloc
 
-#ifdef MALLOC_PREFIX
+#if defined(MALLOC_PREFIX) && MALLOC_PREFIX != _aligned_
 
 #define malloc         AV_JOIN(MALLOC_PREFIX, malloc)
 #define memalign       AV_JOIN(MALLOC_PREFIX, memalign)
@@ -111,7 +111,12 @@ void *av_malloc(FF_INTERNAL_MEM_TYPE size)
         BTW, malloc seems to do 8-byte alignment by default here.
      */
 #else
-    ptr = malloc(size);
+//RJVB
+#   if defined(_MSC_VER) || defined(__MINGW32__)
+    ptr = _mm_malloc(size, 16);
+#   else
+    ptr = malloc(size)
+#   endif
 #endif
     return ptr;
 }
@@ -132,7 +137,12 @@ void *av_realloc(void *ptr, FF_INTERNAL_MEM_TYPE size)
     diff= ((char*)ptr)[-1];
     return (char*)realloc((char*)ptr - diff, size + diff) + diff;
 #else
+// RJVB
+#   if defined(_MSC_VER) || defined(__MINGW32__)
+    return _aligned_realloc(ptr, size, 16);
+#   else
     return realloc(ptr, size);
+#   endif
 #endif
 }
 
@@ -143,7 +153,12 @@ void av_free(void *ptr)
 #if CONFIG_MEMALIGN_HACK
         free((char*)ptr - ((char*)ptr)[-1]);
 #else
-        free(ptr);
+// RJVB
+#   if defined(_MSC_VER) || defined(__MINGW32__)
+    _aligned_free(ptr);
+#   else
+   free(ptr);
+#   endif
 #endif
 }
 
