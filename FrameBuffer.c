@@ -30,7 +30,7 @@ void FFusionDataSetup(FFusionData *data, int dataSize, int bufferSize)
 {
 	int i, framesSize = sizeof(FrameData) * dataSize;
 	memset(data, 0, sizeof(FFusionData));
-	data->frames = malloc(framesSize);
+	data->frames = av_malloc(framesSize);
 	memset(data->frames, 0, framesSize);
 
 	for(i=0; i<dataSize; i++)
@@ -47,7 +47,7 @@ void FFusionDataSetup(FFusionData *data, int dataSize, int bufferSize)
 
 void FFusionDataFree(FFusionData *data)
 {
-	free(data->frames);
+	av_free(data->frames);
 	if(data->previousData != NULL)
 	{
 		FFusionDataFree(data->previousData);

@@ -27,7 +27,7 @@
 	<key>CSResourcesFileMapped</key>
 	<string>yes</string>
 	<key>DTCompiler</key>
-	<string></string>
+	<string>org.macports.gcc.4.7.x</string>
 	<key>DTPlatformBuild</key>
 	<string>10M2518</string>
 	<key>DTPlatformVersion</key>
