@@ -1262,16 +1262,26 @@ SwsFunc ff_getSwsFunc(SwsContext *c)
 
 #if ARCH_X86
     // ordered per speed fastest first
+    // RJVB: make code conditional!
+#if HAVE_MMX2
     if (flags & SWS_CPU_CAPS_MMX2) {
         sws_init_swScale_MMX2(c);
         return swScale_MMX2;
-    } else if (flags & SWS_CPU_CAPS_3DNOW) {
+    } else
+#endif
+#if HAVE_AMD3DNOW
+    if (flags & SWS_CPU_CAPS_3DNOW) {
         sws_init_swScale_3DNow(c);
         return swScale_3DNow;
-    } else if (flags & SWS_CPU_CAPS_MMX) {
+    } else
+#endif
+#if HAVE_MMX
+    if (flags & SWS_CPU_CAPS_MMX) {
         sws_init_swScale_MMX(c);
         return swScale_MMX;
-    } else {
+    } else
+#endif
+    {
         sws_init_swScale_C(c);
         return swScale_C;
     }

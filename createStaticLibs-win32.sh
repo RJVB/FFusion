@@ -37,7 +37,7 @@ CC="${MINGPREF}gcc"
 # arguments given in the failed command, and relaunch this script afterwards.
 
 configureflags="--disable-doc --enable-pthreads --disable-w32threads --enable-runtime-cpudetect \
-     --disable-encoders --disable-ffprobe --disable-ffserver --disable-muxers --disable-network --disable-avdevice \
+     --disable-encoders --disable-ffserver --disable-muxers --disable-network --disable-avdevice \
      --disable-swscale --enable-avfilter --target-os=mingw32 --disable-memalign-hack --arch=x86 --enable-libopenjpeg \
 	--enable-hwaccels --enable-dxva2 --malloc-prefix=_aligned_ \
 	--extra-cflags=-I${SRCROOT}/FFmpeg/win32/include/openjpeg-1.5 \
