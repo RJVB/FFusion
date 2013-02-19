@@ -24,10 +24,12 @@ int NSCodecvprintf( const char *fileName, int lineNumber, const char *functionNa
 		inited = 1;
 	}
 	if( doLog ){
+	  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		string = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:ap];
 		ret = [string length];
 		LogMessageF( fileName, lineNumber, functionName, @"FFusionCodec", level, string );
 		[string release];
+		[pool drain];
 	}
 	return ret;
 }
@@ -44,4 +46,24 @@ int NSCodecprintf( const char *fileName, int lineNumber, const char *functionNam
 void NSCodecFlushLog()
 {
 	LoggerFlush( NULL, NO );
+}
+
+@implementation NSString (NSLoggerClient)
+- (void) nsLog:(id)it
+{ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSLog(self);
+	[pool drain];
+}
+@end
+
+int SwitchCocoaToMultiThreadedMode()
+{
+	if( ![NSThread isMultiThreaded] ){
+	  NSString *dum = @"Cocoa is now in multi-threaded mode";
+		[NSThread detachNewThreadSelector:@selector(nsLog:) toTarget:dum withObject:nil];
+		return 1;
+	}
+	else{
+		return 0;
+	}
 }

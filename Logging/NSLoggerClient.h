@@ -15,5 +15,7 @@ extern int NSCodecprintf( const char *fileName, int lineNumber, const char *func
 
 extern void NSCodecFlushLog();
 
+extern int SwitchCocoaToMultiThreadedMode();
+
 #define _NSLOGGERCLIENT_H
 #endif
