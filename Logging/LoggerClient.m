@@ -458,7 +458,7 @@ static void LoggerDbg(CFStringRef format, ...)
 static void *LoggerWorkerThread(Logger *logger)
 {
 	LOGGERDBG(CFSTR("Start LoggerWorkerThread"));
-
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 #if !TARGET_OS_IPHONE
 	// Register thread with Garbage Collector on Mac OS X if we're running an OS version that has GC
     void (*registerThreadWithCollector_fn)(void);
@@ -485,6 +485,7 @@ static void *LoggerWorkerThread(Logger *logger)
 		NSLog(@"*** NSLogger: Worker thread failed creating runLoop source, switching to console logging.");
 		logger->options |= kLoggerOption_LogToConsole;
 		logger->workerThread = NULL;
+		[pool drain];
 		return NULL;
 	}
 	CFRunLoopAddSource(runLoop, logger->messagePushedSource, kCFRunLoopDefaultMode);
@@ -593,6 +594,7 @@ static void *LoggerWorkerThread(Logger *logger)
 	// go to console
 	logger->options |= kLoggerOption_LogToConsole;
 	logger->workerThread = NULL;
+	[pool drain];
 	return NULL;
 }
 
@@ -1003,7 +1005,16 @@ static void LoggerLogFromFile(int fd)
 
 static void * LoggerConsoleGrabThread(void * context)
 {
+	AUTORELEASE_POOL_BEGIN
 
+#if !TARGET_OS_IPHONE
+	// Register thread with Garbage Collector on Mac OS X if we're running an OS version that has GC
+    void (*registerThreadWithCollector_fn)(void);
+    registerThreadWithCollector_fn = (void(*)(void)) dlsym(RTLD_NEXT, "objc_registerThreadWithCollector");
+    if (registerThreadWithCollector_fn)
+        (*registerThreadWithCollector_fn)();
+#endif
+	
 	int fdout = sConsolePipes[ 0 ];
 	int flags = fcntl(fdout, F_GETFL, 0);
 	fcntl(fdout, F_SETFL, flags | O_NONBLOCK);
@@ -1037,7 +1048,7 @@ static void * LoggerConsoleGrabThread(void * context)
 		if (FD_ISSET(fderr, &set ))
 			LoggerLogFromFile(fderr);
 	}
-
+	AUTORELEASE_POOL_END
 	return NULL;
 }
 

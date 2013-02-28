@@ -22,6 +22,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include <pthread.h>
+#ifdef __DARWIN_UNIX03
+#	define _DARWIN_C_SOURCE
+#	include <dlfcn.h>
+#endif
 
 #include "avcodec.h"
 
@@ -53,7 +57,15 @@ static void* attribute_align_arg worker(void *v)
     int thread_count = avctx->thread_count;
     int self_id;
 
-    pthread_mutex_lock(&c->current_job_lock);
+#ifdef __DARWIN_UNIX03
+	// Register thread with Garbage Collector on Mac OS X if we're running an OS version that has GC
+	void (*registerThreadWithCollector_fn)(void);
+	registerThreadWithCollector_fn = (void(*)(void)) dlsym(RTLD_NEXT, "objc_registerThreadWithCollector");
+	if (registerThreadWithCollector_fn)
+		(*registerThreadWithCollector_fn)();
+#endif
+
+	pthread_mutex_lock(&c->current_job_lock);
     self_id = c->current_job++;
     for (;;){
         while (our_job >= c->job_count) {
