@@ -21,6 +21,7 @@
 
 #include "libavcodec/avcodec.h"
 #include "CommonUtils.h"
+#include "Codecprintf.h"
 //#import <Carbon/Carbon.h>
 #if TARGET_OS_MAC
 #	include <pthread.h>
@@ -338,6 +339,7 @@ static const CFStringRef defaultFrameDroppingList[] = {
 	CFSTR("Movist"),
 	CFSTR("NicePlayer"),
 	CFSTR("QTKitServer"),
+	CFSTR("QTVOD"),
 	CFSTR("QuickTime Player 7"),
 	CFSTR("QuickTime Player"),
 	CFSTR("Spiral")
@@ -392,8 +394,10 @@ static int isApplicationNameInList(CFStringRef prefOverride, const CFStringRef *
 	CFStringRef myProcessName;
 	int ret;
 
-	if (!processInformation)
+	if (!processInformation){
+		Codecprintf( stderr, "Cannot determine own process name\n" );
 		return FALSE;
+	}
 
 	myProcessName = getProcessName(processInformation);
 
@@ -432,6 +436,8 @@ const char *basename( const char *url )
 static const char *defaultFrameDroppingList[] = {
 	"QuickTimePlayer",
 	"QTVODM2",
+	"QTVOD",
+	"QTAmateur",
 };
 
 static const char *defaultForcedAppList[] = {

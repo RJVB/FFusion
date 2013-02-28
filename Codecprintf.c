@@ -109,16 +109,21 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl)
 //    if(level>av_log_get_level())
 //        return;
 
+#ifdef _NSLOGGERCLIENT_H
+	if( print_prefix ){
+		NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, avc->item_name(ptr), avc, level, fmt, vl );
+	}
+	else{
+		NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, NULL, NULL, level, fmt, vl );
+	}
+#else
     if(print_prefix && avc) {
 		Codecprintf(stderr, "[%s 0x%lx l=%d] ", avc->item_name(ptr), (unsigned long) avc, level);
 		print_header = 0;
     }
 
-    print_prefix= strstr(fmt, "\n") != NULL;
 
-#ifdef _NSLOGGERCLIENT_H
-	NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, level, fmt, vl );
-#else
 	Codecvprintf(stderr, fmt, vl, print_header);
 #endif
+    print_prefix= strstr(fmt, "\n") != NULL;
 }
