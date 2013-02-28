@@ -95,6 +95,7 @@
 		61D517710AE0402E00A671E1 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
 		61D517720AE0402E00A671E1 /* CommonUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CommonUtils.c; sourceTree = "<group>"; };
 		83D1D6F40B4C85AB00E09EC9 /* Perian_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Perian_icon.icns; path = Resources/Perian_icon.icns; sourceTree = "<group>"; };
+		D604CEC516DA3DC70066FD67 /* demux+code-bench.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "demux+code-bench.c"; sourceTree = "<group>"; };
 		D617791E16B85DEF00FE3AC6 /* COPYING.GPLv2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING.GPLv2; sourceTree = "<group>"; };
 		D617791F16B85DEF00FE3AC6 /* COPYING.GPLv3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING.GPLv3; sourceTree = "<group>"; };
 		D617792016B85DEF00FE3AC6 /* COPYING.LGPLv2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = COPYING.LGPLv2.1; sourceTree = "<group>"; };
@@ -2391,6 +2392,7 @@
 		D617791D16B85DEF00FE3AC6 /* ffmpeg sources */ = {
 			isa = PBXGroup;
 			children = (
+				D604CEC516DA3DC70066FD67 /* demux+code-bench.c */,
 				D617791E16B85DEF00FE3AC6 /* COPYING.GPLv2 */,
 				D617791F16B85DEF00FE3AC6 /* COPYING.GPLv3 */,
 				D617792016B85DEF00FE3AC6 /* COPYING.LGPLv2.1 */,
@@ -5224,6 +5226,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5248,6 +5251,7 @@
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				HEADER_SEARCH_PATHS = (
 					"FFmpeg/osx86/include/**",
 					"FFmpeg/source/**",
@@ -5271,6 +5275,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5295,7 +5300,7 @@
 					DEBUG_BUILD,
 					FFUSION_CODEC_ONLY,
 				);
-				GCC_VERSION = org.macports.gcc.4.7.x;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				HEADER_SEARCH_PATHS = (
 					"$(BUILT_PRODUCTS_DIR)/$(arch)",
 					libmatroska,
@@ -5346,7 +5351,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = FFUSION_CODEC_ONLY;
-				GCC_VERSION = org.macports.gcc.4.7.x;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"FFmpeg/osx86/include/**",
@@ -5400,7 +5405,7 @@
 					DEBUG_BUILD,
 					FFUSION_CODEC_ONLY,
 				);
-				GCC_VERSION = org.macports.gcc.4.7.x;
+				GCC_VERSION = org.macports.compilers.gcc.4.7;
 				HEADER_SEARCH_PATHS = (
 					"\\\"$(BUILT_PRODUCTS_DIR)\\\"/$(arch)",
 					libmatroska,
