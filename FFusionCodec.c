@@ -281,7 +281,7 @@ static void SetupMultithreadedDecoding(AVCodecContext *s, enum CodecID codecID)
 	size_t len = 4;
 
     // multithreading is only effective for mpeg1/2 and h.264 with slices
-    if (codecID != CODEC_ID_MPEG1VIDEO && codecID != CODEC_ID_MPEG2VIDEO && codecID != CODEC_ID_H264) return;
+//    if (codecID != CODEC_ID_MPEG1VIDEO && codecID != CODEC_ID_MPEG2VIDEO && codecID != CODEC_ID_H264) return;
 
 	// two threads on multicore, otherwise 1
 #if TARGET_OS_MAC
@@ -292,7 +292,7 @@ static void SetupMultithreadedDecoding(AVCodecContext *s, enum CodecID codecID)
 		nthreads = sysinfo.dwNumberOfProcessors;
 	}
 #endif
-	nthreads = FFMIN(nthreads, 2);
+//	nthreads = FFMIN(nthreads, 2);
 
 #if LIBAVCODEC_VERSION_MAJOR > 52
 	s->thread_count = nthreads;

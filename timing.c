@@ -5,7 +5,7 @@
  *
  */
 
-#include <stdio.h>
+//#include <stdio.h>
 
 #ifdef __MACH__
 #	include <mach/mach.h>

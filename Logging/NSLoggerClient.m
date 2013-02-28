@@ -15,7 +15,7 @@
 #import "LoggerClient.h"
 
 int NSCodecvprintf( const char *fileName, int lineNumber, const char *functionName, Boolean doLog,
-				   int level, const char *format, va_list ap )
+				   const char *item_name, void *avc, int level, const char *format, va_list ap )
 { NSString *string;
   int ret = 0;
   static char inited = 0;
@@ -25,7 +25,14 @@ int NSCodecvprintf( const char *fileName, int lineNumber, const char *functionNa
 	}
 	if( doLog ){
 	  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		string = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:ap];
+		if( avc ){
+			NSString *nfmt = [[NSString alloc] initWithFormat:@"[%s 0x%lx] %s", item_name, avc, format]; 
+			string = [[NSString alloc] initWithFormat:nfmt arguments:ap];
+			[nfmt release];
+		}
+		else{
+			string = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:ap];
+		}
 		ret = [string length];
 		LogMessageF( fileName, lineNumber, functionName, @"FFusionCodec", level, string );
 		[string release];
@@ -38,7 +45,7 @@ int NSCodecprintf( const char *fileName, int lineNumber, const char *functionNam
 { va_list ap;
   int ret = 0;
 	va_start(ap, format);
-	ret = NSCodecvprintf( fileName, lineNumber, functionName, doLog, 0, format, ap );
+	ret = NSCodecvprintf( fileName, lineNumber, functionName, doLog, NULL, NULL, 0, format, ap );
 	va_end(ap);
 	return ret;
 }
@@ -57,13 +64,16 @@ void NSCodecFlushLog()
 @end
 
 int SwitchCocoaToMultiThreadedMode()
-{
+{ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  int ret;
 	if( ![NSThread isMultiThreaded] ){
 	  NSString *dum = @"Cocoa is now in multi-threaded mode";
 		[NSThread detachNewThreadSelector:@selector(nsLog:) toTarget:dum withObject:nil];
-		return 1;
+		ret = 1;
 	}
 	else{
-		return 0;
+		ret = 0;
 	}
+	[pool drain];
+	return ret;
 }

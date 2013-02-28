@@ -54,3 +54,7 @@ build/osx86
 FFusion-v1.25-installer.exe
 version_check-osx86.exe.dSYM
 version_check-osx86.exe
+FFmpeg/win32.test
+FFmpeg/win32.test2
+createStaticLibs-win32-test2.sh
+createStaticLibs-win32-test.sh
