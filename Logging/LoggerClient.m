@@ -110,8 +110,8 @@
 	// Internal logging function prototype
 	static void LoggerDbg(CFStringRef format, ...);
 #else
-	#define LOGGERDBG(format, ...) do{}while(0)
-	#define LOGGERDBG2(format, ...) do{}while(0)
+	#define LOGGERDBG(format, ...) /**/
+	#define LOGGERDBG2(format, ...) /**/
 #endif
 
 // small set of macros for proper ARC/non-ARC compilation support
@@ -195,31 +195,56 @@ static pthread_mutex_t consoleGrabbersMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t consoleGrabThread;
 static int sConsolePipes[4] = { -1, -1, -1, -1 };
 
+//@interface NSThread (Specific)
+//- (void*) getSpecificForKey:(pthread_key_t) key;
+//@end
+//
+//@implementation NSThread (Specific)
+//- (void*) getSpecificForKey:(pthread_key_t) key
+//{
+//}
+//@end
+//
+
 // -----------------------------------------------------------------------------
 #pragma mark -
 #pragma mark Default logger
 // -----------------------------------------------------------------------------
-void LoggerSetDefaultLogger(Logger *defaultLogger)
+void LoggerSetDefaultLogger(Logger *defaultLogger, BOOL lock)
 {
-	pthread_mutex_lock(&sDefaultLoggerMutex);
+	if( lock ){
+		pthread_mutex_lock(&sDefaultLoggerMutex);
+	}
 	sDefaultLogger = defaultLogger;
-	pthread_mutex_unlock(&sDefaultLoggerMutex);
+	if( defaultLogger ){
+		[[[NSThread mainThread] threadDictionary] setValue:[NSValue valueWithPointer:defaultLogger] forKey:@"defaultNSLogger"];
+	}
+	else{
+		[[[NSThread mainThread] threadDictionary] removeObjectForKey:@"defaultNSLogger"];
+	}
+	if( lock ){
+		pthread_mutex_unlock(&sDefaultLoggerMutex);
+	}
 }
 
 Logger *LoggerGetDefaultLogger(void)
 {
-	if (sDefaultLogger == NULL)
-	{
+	pthread_mutex_lock(&sDefaultLoggerMutex);
+	sDefaultLogger = [[[[NSThread mainThread] threadDictionary] valueForKey:@"defaultNSLogger"] pointerValue];
+	pthread_mutex_unlock(&sDefaultLoggerMutex);
+	if( sDefaultLogger == NULL ){
+	  Logger *logger;
+		// this is rather weird logic, but sticks as close to the original code as possible
 		pthread_mutex_lock(&sDefaultLoggerMutex);
-		Logger *logger = LoggerInit();
-		if (sDefaultLogger == NULL)
-		{
-			sDefaultLogger = logger;
+		logger = LoggerInit();
+		if( !sDefaultLogger ){
+			LoggerSetDefaultLogger(logger, NO);
 			logger = NULL;
 		}
 		pthread_mutex_unlock(&sDefaultLoggerMutex);
-		if (logger != NULL)
+		if (logger != NULL){
 			LoggerStop(logger);
+		}
 	}
 	return sDefaultLogger;
 }
@@ -343,6 +368,7 @@ void LoggerSetBufferFile(Logger *logger, CFStringRef absolutePath)
 	}
 }
 
+#pragma mark Start the Logger
 Logger *LoggerStart(Logger *logger)
 {
 	// will do nothing if logger is already started
@@ -374,13 +400,11 @@ void LoggerStop(Logger *logger)
 {
 	LOGGERDBG(CFSTR("LoggerStop"));
 
-	pthread_mutex_lock(&sDefaultLoggerMutex);
 	if (logger == NULL || logger == sDefaultLogger)
 	{
 		logger = sDefaultLogger;
-		sDefaultLogger = NULL;
+		LoggerSetDefaultLogger(NULL, YES);
 	}
-	pthread_mutex_unlock(&sDefaultLoggerMutex);
 
 	if (logger != NULL)
 	{
@@ -409,6 +433,24 @@ void LoggerStop(Logger *logger)
 
 		free(logger);
 	}
+}
+
+// RJVB
+// function that returns YES if the given logger is valid and connected or otherwise set
+// to output/store log messages.
+static inline BOOL LoggerActive( Logger *logger )
+{ BOOL ret = NO;
+	if( logger ){
+		if( logger->connected ){
+			ret = YES;
+		}
+		else if( (logger->options & kLoggerOption_LogToConsole)
+			   || (logger->options & kLoggerOption_BufferLogsUntilConnection)
+		){
+			ret = YES;
+		}
+	}
+	return ret;
 }
 
 void LoggerFlush(Logger *logger, BOOL waitForConnection)
@@ -985,9 +1027,9 @@ static void LoggerLogFromFile(int fd)
 
 		CFStringRef messageString = CFStringCreateWithBytes( NULL, buf, bytes_read, kCFStringEncodingASCII, false );
 		if (messageString != NULL)
-		{
+		{ unsigned grabberIndex;
 			pthread_mutex_lock( &consoleGrabbersMutex );
-			for ( unsigned grabberIndex = 0; grabberIndex < consoleGrabbersListLength; grabberIndex++ )
+			for ( grabberIndex = 0; grabberIndex < consoleGrabbersListLength; grabberIndex++ )
 			{
 				if ( consoleGrabbersList[grabberIndex] != NULL )
 				{
@@ -1101,8 +1143,8 @@ static void LoggerStopGrabbingConsoleTo(Logger *logger)
 		consoleGrabbersList = NULL;
 	}
 	else
-	{
-		for (unsigned grabberIndex = 0; grabberIndex < consoleGrabbersListLength; grabberIndex++)
+	{ unsigned grabberIndex;
+		for ( grabberIndex = 0; grabberIndex < consoleGrabbersListLength; grabberIndex++)
 		{
 			if (consoleGrabbersList[grabberIndex] == logger)
 			{
@@ -1699,7 +1741,12 @@ static void LoggerWriteStreamCallback(CFWriteStreamRef ws, CFStreamEventType eve
 				LoggerCreateBufferReadStream(logger);
 			}
 			LoggerPushClientInfoToFrontOfQueue(logger);
+			if( !(logger->options & kLoggerOption_BufferLogsUntilConnection) ){
+//				LogMessageToF( logger, __FILE__, __LINE__, __FUNCTION__, @"Logger", 0, @"Logger output connected" );
+				LogMarkerTo( logger, @"Logger output connected" );
+			}
 			LoggerWriteMoreData(logger);
+			LoggerFlush( logger, NO );
 			break;
 			
 		case kCFStreamEventCanAcceptBytes:
@@ -1717,6 +1764,9 @@ static void LoggerWriteStreamCallback(CFWriteStreamRef ws, CFStreamEventType eve
 			if (logger->connected)
 			{
 				LOGGERDBG(CFSTR("Logger DISCONNECTED"));
+				if( !(logger->options & kLoggerOption_BufferLogsUntilConnection) ){
+					LogMarkerTo( logger, @"Logger output disconnected" );
+				}
 				logger->connected = NO;
 			}
 			CFWriteStreamSetClient(logger->logStream, 0, NULL, NULL);
@@ -1928,10 +1978,11 @@ static void LoggerMessageAddString(CFMutableDataRef data, CFStringRef aString, i
 		bytes = (uint8_t *)malloc((size_t)stringLength * 4 + 4);
 		CFStringGetBytes(aString, CFRangeMake(0, stringLength), kCFStringEncodingUTF8, '?', false, bytes, bytesLength, &bytesLength);
 		// RJVB: quick hack to suppress the trailing newline and thus redundant empty vspace in NSLogger
-		if( bytes[bytesLength-1] == '\n' ){
-			bytes[bytesLength-1] = '\0';
-			bytesLength -= 1;
-		}
+		// (now done in the NSLogger desktop app itself)
+//		if( bytes[bytesLength-1] == '\n' ){
+//			bytes[bytesLength-1] = '\0';
+//			bytesLength -= 1;
+//		}
 		partSize = htonl(bytesLength);
 	}
 	
@@ -2126,8 +2177,7 @@ static void LogMessageTo_internal(Logger *logger,
 								  va_list args)
 {
 	logger = LoggerStart(logger);	// start if needed
-    if (logger != NULL)
-	{
+    if( LoggerActive(logger) ){
         int32_t seq = OSAtomicIncrement32Barrier(&logger->messageSeq);
         LOGGERDBG2(CFSTR("%ld LogMessage"), seq);
 
@@ -2186,8 +2236,7 @@ static void LogImageTo_internal(Logger *logger,
 								NSData *data)
 {
 	logger = LoggerStart(logger);		// start if needed
-	if (logger != NULL)
-	{
+	if( LoggerActive(logger) ){
 		int32_t seq = OSAtomicIncrement32Barrier(&logger->messageSeq);
 		LOGGERDBG2(CFSTR("%ld LogImage"), seq);
 
@@ -2451,8 +2500,7 @@ void LogEndBlock(void)
 void LogMarkerTo(Logger *logger, NSString *text)
 {
 	logger = LoggerStart(logger);		// start if needed
-	if (logger != NULL)
-	{
+	if( LoggerActive(logger) ){
 		int32_t seq = OSAtomicIncrement32Barrier(&logger->messageSeq);
 		LOGGERDBG2(CFSTR("%ld LogMarker"), seq);
 
