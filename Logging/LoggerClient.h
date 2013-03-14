@@ -132,7 +132,7 @@ extern "C" {
 #endif
 
 // Functions to set and get the default logger
-extern void LoggerSetDefaultLogger(Logger *aLogger);
+extern void LoggerSetDefaultLogger(Logger *aLogger, BOOL lock);
 extern Logger *LoggerGetDefaultLogger(void);
 
 // Initialize a new logger, set as default logger if this is the first one
