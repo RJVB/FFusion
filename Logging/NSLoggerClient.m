@@ -20,7 +20,7 @@ int NSCodecvprintf( const char *fileName, int lineNumber, const char *functionNa
   int ret = 0;
   static char inited = 0;
 	if( !inited ){
-		LoggerSetOptions( NULL, kLoggerOption_BufferLogsUntilConnection|kLoggerOption_BrowseBonjour|kLoggerOption_CaptureSystemConsole );
+		LoggerSetOptions( NULL, /*kLoggerOption_BufferLogsUntilConnection|*/kLoggerOption_BrowseBonjour|kLoggerOption_CaptureSystemConsole );
 		inited = 1;
 	}
 	if( doLog ){
