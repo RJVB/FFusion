@@ -58,3 +58,5 @@ FFmpeg/win32.test
 FFmpeg/win32.test2
 createStaticLibs-win32-test2.sh
 createStaticLibs-win32-test.sh
+build/Deployment/FFusion.component
+ffprobe
