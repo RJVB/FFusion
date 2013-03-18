@@ -62,3 +62,4 @@ build/Deployment/FFusion.component
 FFmpeg/osx86/bin/ffprobe
 FFmpeg/*/lib
 FFmpeg/*/bin*
+FFmpeg.zip
