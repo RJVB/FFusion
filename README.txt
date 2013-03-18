@@ -15,4 +15,4 @@ Those who already cloned the repository may run into conflicts. I did on my seco
 After a checkout and in order to build the project you will have to fetch the prebuilt ffmpeg libraries from sourceforge.net :
 http://sourceforge.net/projects/ffusion/files/FFmpeg.zip/download
 This zip archive contains a win32 directory with the files required for building on MS Windows, and an osx86 directory for building on Mac OS X (10.6+). It also includes the ffmpeg sources (which are already present among your checked out files). 
-You’ll only need to extract the bin and lib directories from either the win32 and/or the osx86 directories in the archive.
+You'll only need to extract the bin and lib directories from either the win32 and/or the osx86 directories in the archive.
