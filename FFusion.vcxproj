@@ -110,7 +110,7 @@
       <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/FFusion.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;$(ProgramFiles)\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -179,7 +179,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;SS_Log.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Develop/FFusion.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>FFmpeg\win32\bin;c:\Libs\SS_Log_Bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;c:\Libs\SS_Log_Bin;$(ProgramFiles)\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -240,7 +240,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/FFusion.dll</OutputFile>
       <SuppressStartupBanner>false</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>FFmpeg\win32\bin;C:\Program Files\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;$(ProgramFiles)\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmt;libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -264,7 +264,8 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="Resources\FFusionWin32Resources.r">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i . -o "$(TargetDir)$(TargetName).qtr" &lt;  "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">@echo on
+Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(TargetDir)$(TargetName).qtr" &lt;  "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(TargetDir)$(TargetName).qtr;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">@echo on
