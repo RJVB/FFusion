@@ -1545,7 +1545,6 @@
 		D6177EE916B85DF100FE3AC6 /* ffserver.regression.ref */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ffserver.regression.ref; sourceTree = "<group>"; };
 		D6177EEA16B85DF100FE3AC6 /* lavf-regression.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "lavf-regression.sh"; sourceTree = "<group>"; };
 		D6177EEB16B85DF100FE3AC6 /* lavfi-regression.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "lavfi-regression.sh"; sourceTree = "<group>"; };
-		D6177EEC16B85DF100FE3AC6 /* lena.pnm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lena.pnm; sourceTree = "<group>"; };
 		D6177EED16B85DF100FE3AC6 /* md5.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = md5.sh; sourceTree = "<group>"; };
 		D6177EF016B85DF100FE3AC6 /* ac3_fixed */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac3_fixed; sourceTree = "<group>"; };
 		D6177EF116B85DF100FE3AC6 /* adpcm_ima_qt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = adpcm_ima_qt; sourceTree = "<group>"; };
@@ -4126,7 +4125,6 @@
 				D6177EE916B85DF100FE3AC6 /* ffserver.regression.ref */,
 				D6177EEA16B85DF100FE3AC6 /* lavf-regression.sh */,
 				D6177EEB16B85DF100FE3AC6 /* lavfi-regression.sh */,
-				D6177EEC16B85DF100FE3AC6 /* lena.pnm */,
 				D6177EED16B85DF100FE3AC6 /* md5.sh */,
 				D6177EEE16B85DF100FE3AC6 /* ref */,
 				D617818416B85DF200FE3AC6 /* regression-funcs.sh */,
@@ -5375,6 +5373,7 @@
 				OTHER_CFLAGS = (
 					"-march=core2",
 					"-ftree-vectorizer-verbose=1",
+					"-flto",
 				);
 				OTHER_CFLAGS_i386 = "";
 				OTHER_CFLAGS_ppc = "";
@@ -5382,6 +5381,7 @@
 				OTHER_LDFLAGS = (
 					"-read_only_relocs",
 					suppress,
+					"-flto",
 				);
 				OTHER_REZFLAGS = "-rd -d ppc_$(ppc) -d i386_$(i386) -d TARGET_REZ_CARBON_MACHO=1 -i \"$(SRCROOT)\" -i \"$(DERIVED_FILE_DIR)\"";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
