@@ -64,3 +64,4 @@ FFmpeg/*/lib
 FFmpeg/*/bin*
 FFmpeg.zip
 *.sdf
+ipch/

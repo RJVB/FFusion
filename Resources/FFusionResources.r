@@ -369,7 +369,7 @@ resource 'dlle' (kDivX1CodecInfoResID) {
 #define kCodecInfoResID kTSCCCodecInfoResID
 #define kCodecName "Techsmith Screen Capture (FFusion)"
 
-#define kCodecDescription "FFusion decompresses video stored in Techsmith Screen Capture format."
+#define kCodecDescription "FFusion decompresses video in Techsmith Screen Capture format."
 #define kCodecSubType 'tscc'
 #include "Resources/FFusionResourceInc.r"  
 
