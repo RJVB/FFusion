@@ -159,7 +159,7 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, uint8_t *O, int outRB, 
 			);
 #else
 		for (x = 0; x < vWidth; x++) {
-			int x2 = x*2, x4 = x*4;
+			int x2 = x<<1, x4 = x<<2;
 
 			__m128i	tmp_y = yv[x2], tmp_y3 = yv[x2+1],
 					tmp_y2 = yv2[x2], tmp_y4 = yv2[x2+1],

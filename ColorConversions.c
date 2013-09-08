@@ -487,7 +487,9 @@ static FASTCALL void RGB16toRGB16Swap(AVPicture *picture, UInt8 *baseAddr, int r
 	
 	for (y = 0; y < height; y++) {
 		UInt16 *oRow = (UInt16 *)baseAddr, *iRow = (UInt16 *)srcPtr;
-		for (x = 0; x < width; x++) oRow[x] = EndianU16_LtoB(iRow[x]);
+		for (x = 0; x < width; x++){
+			oRow[x] = EndianU16_LtoB(iRow[x]);
+		}
 		
 		baseAddr += rowBytes;
 		srcPtr += srcRB;
@@ -504,9 +506,9 @@ static FASTCALL void Y422toY422(AVPicture *picture, UInt8 *o, int outRB, int wid
 		for (x = 0; x < halfwidth; x++) {
 			int x2 = x * 2, x4 = x * 4;
 			o[x4] = u[x];
-			o[x4 + 1] = yc[x2];
-			o[x4 + 2] = v[x];
-			o[x4 + 3] = yc[x2 + 1];
+			o[++x4] = yc[x2];
+			o[++x4] = v[x];
+			o[++x4] = yc[x2 + 1];
 		}
 		
 		o  += outRB;
@@ -582,9 +584,9 @@ static FASTCALL void ClearV408(UInt8 *baseAddr, int rowBytes, int width, int hei
 		{
 			int x4 = x * 4;
 			baseAddr[x4]   = 0x80; //zero chroma
-			baseAddr[x4+1] = 0x10; //black
-			baseAddr[x4+2] = 0x80; 
-			baseAddr[x4+3] = 0xEB; //opaque
+			baseAddr[++x4] = 0x10; //black
+			baseAddr[++x4] = 0x80; 
+			baseAddr[++x4] = 0xEB; //opaque
 		}
 		baseAddr += rowBytes;
 	}
