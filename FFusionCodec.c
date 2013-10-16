@@ -1514,6 +1514,10 @@ OSErr FFusionDecompress(FFusionGlobals glob, AVCodecContext *context, UInt8 *dat
 	pkt.data = dataPtr;
 	pkt.size = length;
 	len = avcodec_decode_video2(context, picture, &got_picture, &pkt);
+	if( !got_picture ){
+		// RJVB 20131016
+		memset( picture, 0, sizeof(*picture) );
+	}
 
 	if (len < 0)
 	{
