@@ -65,3 +65,4 @@ FFmpeg/*/bin*
 FFmpeg.zip
 *.sdf
 ipch/
+FFusion-RJVB.xcodeproj/bertin.pbxuser
