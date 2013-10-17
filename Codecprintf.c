@@ -66,9 +66,10 @@ static int Codecvprintf(FILE *fileLog, const char *format, va_list va, int print
 	return ret;
 }
 
-int ffCodecprintf(FILE *fileLog, const char *format, ...)
+int _ffCodecprintf(const char *fileName, int lineNr, FILE *fileLog, const char *format, ...)
 {int ret;
 	va_list va;
+	cLogStoreFileLine( fileName, lineNr );
 	va_start(va, format);
 	ret = Codecvprintf(fileLog, format, va, !fileLog);
 	va_end(va);
@@ -117,11 +118,19 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl)
 		NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, NULL, NULL, level, fmt, vl );
 	}
 #else
-    if(print_prefix && avc) {
-		Codecprintf(stderr, "[%s 0x%lx l=%d] ", avc->item_name(ptr), (unsigned long) avc, level);
+    if( print_prefix && avc ){
+	  char buf[256];
+#ifdef _MSC_VER
+		_snprintf( buf, sizeof(buf), ":%s 0x%lx lvl:", avc->item_name(ptr), (unsigned long) avc );
+#else
+		snprintf( buf, sizeof(buf), ":%s 0x%lx lvl:", avc->item_name(ptr), (unsigned long) avc );
+#endif
+		cLogStoreFileLine( buf, level );
 		print_header = 0;
     }
-
+	else{
+		cLogStoreFileLine( "[AVLog]", level );
+	}
 
 	Codecvprintf(stderr, fmt, vl, print_header);
 #endif

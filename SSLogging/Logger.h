@@ -25,11 +25,17 @@
 
 #endif
 
-extern SS_Log *Initialise_Log(char *title, char *progName);
-extern void vcWriteLog(SS_Log *pLog, char* pMsg, va_list ap);
-extern void cWriteLog(SS_Log *pLog, char* pMsg, ...);
-extern void cLogStoreFileLine(char* szFile, int nLine);
-
+#ifdef _SS_LOG_ACTIVE
+	extern SS_Log *Initialise_Log(char *title, char *progName);
+	extern void vcWriteLog(SS_Log *pLog, char* pMsg, va_list ap);
+	extern void cWriteLog(SS_Log *pLog, char* pMsg, ...);
+	extern void cLogStoreFileLine(char* szFile, int nLine);
+#else
+#	define Initialise_Log(title,progName)	/**/
+#	define vcWriteLog(pLog,pMsg,ap)		/**/
+#	define cWriteLog(pLog,pMsg,...)		/**/
+#	define cLogStoreFileLine(szFile,nLine)	/**/
+#endif
 
 #ifdef __cplusplus
 }

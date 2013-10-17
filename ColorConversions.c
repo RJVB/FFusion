@@ -179,11 +179,15 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 	int		y, x, halfwidth = width >> 1, halfheight = height >> 1;
 	int		vWidth = width >> 5;
 
-//	Codecprintf( stderr, "Y420toY422_sse2(%p,%p,%d,%d,%d,%d,%d)\n", picture, o, outRB, width, height, rY, rUV );
+	Codecprintf( stderr, "Y420toY422_sse2(%p,%p,outRB=%d,w=%d,h=%d,rY=%d,rUV=%d,hw=%d,hh=%d,vw=%d)\n",
+		picture, o, outRB, width, height, rY, rUV, halfwidth, halfheight, vWidth );
 	for (y = 0; y < halfheight; y++) {
 		UInt8   *o2 = o + outRB,   *yc2 = yc + rY;
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
 		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
+		if( y == 0 ){
+			Codecprintf( stderr, "ov2[0,1,2,3]={%p,%p,%p,%p}", &ov2[0], &ov2[1], &ov2[2], &ov2[3] );
+		}
 // RJVB
 // 20130203: nothing to fix here. Processing speed differences between the GCC-style inline assembly and
 // SSE2 intrinsics are minimal (using GCC); there is no reason to assume that this would be different with MSVC.

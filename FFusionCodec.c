@@ -233,13 +233,13 @@ static void DumpFrameDropStats(FFusionGlobals glob)
 	if (!glob->fileLog || glob->decode.lastFrame == 0) return;
 
 	Codecprintf( glob->fileLog,
-				"%p '%s' frame drop stats\nType\t| BeginBands\t| DecodeBands\t| DrawBands\t| # before decode\t| # before draw\n",
+				"%p '%s' frame drop stats\nType    | BeginBands    | DecodeBands    | DrawBands    | # before decode    | # before draw\n",
 				glob, FourCCString(glob->componentType) );
 
 	for (i = 0; i < 4; i++) {
 		struct per_frame_decode_stats *f = &glob->stats.type[i];
 
-		Codecprintf(glob->fileLog, "%c\t| %d\t\t| %d\t\t| %d\t\t| %d/%g%%\t\t| %d/%g%%\n", types[i], f->begin_calls, f->decode_calls, f->draw_calls,
+		Codecprintf(glob->fileLog, "%c    | %d        | %d        | %d        | %d/%g%%        | %d/%g%%\n", types[i], f->begin_calls, f->decode_calls, f->draw_calls,
 					f->begin_calls - f->decode_calls,(f->begin_calls > f->decode_calls) ? ((float)(f->begin_calls - f->decode_calls)/(float)f->begin_calls) * 100. : 0.,
 					f->decode_calls - f->draw_calls,(f->decode_calls > f->draw_calls) ? ((float)(f->decode_calls - f->draw_calls)/(float)f->decode_calls) * 100. : 0.);
 	}
@@ -253,26 +253,32 @@ static enum PixelFormat FindPixFmtFromVideo(AVCodec *codec, AVCodecContext *avct
 	enum PixelFormat pix_fmt;
 	AVPacket pkt;
 
-    avcodec_get_context_defaults2(&tmpContext, CODEC_TYPE_VIDEO);
+	avcodec_get_context_defaults2(&tmpContext, CODEC_TYPE_VIDEO);
 	avcodec_get_frame_defaults(&tmpFrame);
-    tmpContext.width = avctx->width;
-    tmpContext.height = avctx->height;
+	tmpContext.width = avctx->width;
+	tmpContext.height = avctx->height;
 	tmpContext.flags = avctx->flags;
 	tmpContext.bits_per_coded_sample = avctx->bits_per_coded_sample;
-    tmpContext.codec_tag = avctx->codec_tag;
+	tmpContext.codec_tag = avctx->codec_tag;
 	tmpContext.codec_id  = avctx->codec_id;
 	tmpContext.extradata = avctx->extradata;
 	tmpContext.extradata_size = avctx->extradata_size;
 
-    avcodec_open(&tmpContext, codec);
+	avcodec_open(&tmpContext, codec);
 	av_init_packet(&pkt);
 	pkt.data = (UInt8*)data;
 	pkt.size = bufferSize;
-    avcodec_decode_video2(&tmpContext, &tmpFrame, &got_picture, &pkt);
-    pix_fmt = tmpContext.pix_fmt;
-    avcodec_close(&tmpContext);
+	avcodec_decode_video2(&tmpContext, &tmpFrame, &got_picture, &pkt);
+	pix_fmt = tmpContext.pix_fmt;
+	avcodec_close(&tmpContext);
+	if( got_picture ){
+		ffCodecprintf( stderr, "Found picture number %d, fmt=%d", tmpFrame.display_picture_number, pix_fmt );
+	}
+	else{
+		ffCodecprintf( stderr, "Found no picture, fmt=%d", pix_fmt );
+	}
 
-    return pix_fmt;
+	return pix_fmt;
 }
 
 static void SetupMultithreadedDecoding(AVCodecContext *s, enum CodecID codecID)
@@ -977,7 +983,7 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 
 	if( p->frameNumber <= 1 ){
 		FFusionDebugPrint2("FFusionCodecBeginBand(%p) for %dx%d '%s' with %d bytes of extradata;\n"
-						   "\tframe dropping %senabled; using %d threads\n",
+						   "    frame dropping %senabled; using %d threads\n",
 						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
 						   FourCCString(glob->componentType), glob->avContext->extradata_size,
 						   not(glob->isFrameDroppingEnabled), glob->avContext->thread_count );
@@ -1163,7 +1169,7 @@ pascal ComponentResult FFusionCodecDecodeBand(FFusionGlobals glob, ImageSubCodec
 
 	glob->stats.type[drp->frameType].decode_calls++;
 	RecomputeMaxCounts(glob);
-//	FFusionDebugPrint2("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
+	FFusionDebugPrint2("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
 
 	// QuickTime will drop H.264 frames when necessary if a sample dependency table exists
 	// we don't want to flush buffers in that case.
@@ -1324,7 +1330,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 
 	glob->stats.type[drp->frameType].draw_calls++;
 	RecomputeMaxCounts(glob);
-//	FFusionDebugPrint2("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
+	FFusionDebugPrint2("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
 
 	if(!myDrp->decoded) {
 		err = FFusionCodecDecodeBand(glob, drp, 0);
@@ -1335,8 +1341,10 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 	if (myDrp->buffer && myDrp->buffer->picture.data[0]) {
 		picture = &myDrp->buffer->picture;
 		glob->lastDisplayedPicture = picture;
+		FFusionDebugPrint2( "picture=myDrp->buffer->picture" );
 	} else if (glob->lastDisplayedPicture && glob->lastDisplayedPicture->data[0]) {
 		picture = glob->lastDisplayedPicture;
+		FFusionDebugPrint2( "picture=glob->lastDisplayedPicture" );
 	} else {
 		//Display black (no frame decoded yet)
 
@@ -1346,6 +1354,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 		}
 
 		glob->colorConv.clear((UInt8*)drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height);
+		FFusionDebugPrint2( "picture=empty/black frame" );
 		return noErr;
 	}
 
@@ -1357,6 +1366,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 	glob->colorConv.convert(picture, (UInt8*)drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height);
 
 err:
+	FFusionDebugPrint2( "Returning err=%d", err );
     return err;
 }
 
@@ -1508,7 +1518,7 @@ OSErr FFusionDecompress(FFusionGlobals glob, AVCodecContext *context, UInt8 *dat
 	AVPacket pkt;
 
 	FFusionDebugPrint("%p Decompress %d bytes.\n", glob, length);
-    avcodec_get_frame_defaults(picture);
+	avcodec_get_frame_defaults(picture);
 
 	av_init_packet(&pkt);
 	pkt.data = dataPtr;
@@ -1517,11 +1527,15 @@ OSErr FFusionDecompress(FFusionGlobals glob, AVCodecContext *context, UInt8 *dat
 	if( !got_picture ){
 		// RJVB 20131016
 		memset( picture, 0, sizeof(*picture) );
+		FFusionDebugPrint2( "Found no picture, len=%d", len );
 	}
 
 	if (len < 0)
 	{
 		Codecprintf(glob->fileLog, "Error while decoding frame\n");
+	}
+	else{
+		FFusionDebugPrint2( "Found picture number %d, len=%d", picture->display_picture_number, len );
 	}
 
 	return err;

@@ -127,7 +127,7 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release/FFusion.bsc</OutputFile>
+      <OutputFile>$(OutDir)FFusion.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
@@ -196,7 +196,7 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release/FFusion.bsc</OutputFile>
+      <OutputFile>$(OutDir)FFusion.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
@@ -219,8 +219,8 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_DEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;SSLogging;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FFUSION_CODEC_ONLY;_SS_LOG_ACTIVE;_CRT_SECURE_NO_WARNINGS;_DEBUG;WIN32;_WINDOWS;_USRDLL;inline=__inline;FLAC__NO_DLL;QT_IA32__VBR_BROKEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -243,10 +243,10 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
       <Culture>0x0809</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>avcodec-52.lib;avutil-50.lib;avcore-0.lib;qtmlClient.lib;qtsClient.lib;qtvr.lib;cvClient.lib;SS_Log.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/FFusion.dll</OutputFile>
       <SuppressStartupBanner>false</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>FFmpeg\win32\bin;$(ProgramFiles)\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>FFmpeg\win32\bin;c:\Libs\SS_Log_Bin;$(ProgramFiles)\QuickTime SDK\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>.\Resources\FFusion.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -259,12 +259,13 @@ RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug/FFusion.bsc</OutputFile>
+      <OutputFile>$(OutDir)FFusion.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
       <Message>qtx-ing</Message>
-      <Command>if exist "$(IntDir)$(TargetName).qtx" Attrib -R "$(IntDir)$(TargetName).qtx"
-RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$(IntDir)$(TargetName).qtx"
+      <Command>@echo on
+if exist "$(IntDir)$(TargetName)-debug.qtx" Attrib -R "$(IntDir)$(TargetName)-debug.qtx"
+RezWack -f -d "$(IntDir)$(TargetName).dll" -r "$(IntDir)$(TargetName).qtr" -o "$(IntDir)$(TargetName)-debug.qtx"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -316,7 +317,9 @@ Rez.exe -p -i "$(ProgramFiles)\QuickTime SDK\RIncludes" -i ..\Resources -o "$(Ta
   <ItemGroup>
     <ClCompile Include="bitstream_info.c" />
     <ClCompile Include="codecID.c" />
-    <ClCompile Include="Codecprintf.c" />
+    <ClCompile Include="Codecprintf.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">FFmpeg\win32\include;FFmpeg\win32\include\MSVC;FFmpeg\source;SSLogging;$(ProgramFiles)\QuickTime SDK\CIncludes;$(ProgramFiles)\QuickTime SDK\ComponentIncludes;C:\Libs\SS_Log_bin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="ColorConversions.c" />
     <ClCompile Include="CommonUtils.c" />
     <ClCompile Include="FFmpegUtils.c" />

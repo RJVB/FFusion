@@ -43,10 +43,11 @@ extern "C" {
 
 #undef printf
 #ifdef _MSC_VER
-	extern int ffCodecprintf(FILE *, const char *format, ...);
+	extern int _ffCodecprintf(const char *fileName, int lineNr, FILE *, const char *format, ...);
 #else
-	int ffCodecprintf(FILE *, const char *format, ...) __attribute__((format (printf, 2, 3)));
+	int _ffCodecprintf(const char *fileName, int lineNr, FILE *, const char *format, ...) __attribute__((format (printf, 4, 5)));
 #endif
+
 void FourCCprintf(const char *string, FourCharCode a);
 const char *FourCCString(FourCharCode c);
 
@@ -54,8 +55,10 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl);
 
 #ifdef _NSLOGGERCLIENT_H
 #	define Codecprintf(file,form,...)	NSCodecprintf(__FILE__,__LINE__,__FUNCTION__,((file)!=NULL),(form),##__VA_ARGS__)
+#	define ffCodecprintf(file,form,...)	NSCodecprintf(__FILE__,__LINE__,__FUNCTION__,((file)!=NULL),(form),##__VA_ARGS__)
 #else
-#	define Codecprintf	ffCodecprintf
+#	define Codecprintf(fp,fmt,...)	_ffCodecprintf(__FILE__,__LINE__,(fp),(fmt),##__VA_ARGS__)
+#	define ffCodecprintf(fp,fmt,...)	_ffCodecprintf(__FILE__,__LINE__,(fp),(fmt),##__VA_ARGS__)
 #endif
 
 #ifdef __cplusplus
