@@ -185,9 +185,6 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, long outRB, i
 		UInt8   *o2 = o + outRB,   *yc2 = yc + rY;
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
 		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
-// 		if( y == 0 ){
-// 			Codecprintf( stderr, "ov2[0,1,2,3]={%p,%p,%p,%p}", &ov2[0], &ov2[1], &ov2[2], &ov2[3] );
-// 		}
 // RJVB
 // 20130203: nothing to fix here. Processing speed differences between the GCC-style inline assembly and
 // SSE2 intrinsics are minimal (using GCC); there is no reason to assume that this would be different with MSVC.
@@ -666,12 +663,15 @@ int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, e
 				// sorry, but gcc 4.7 does a better job at vectorising the scalar function than the hand-coded version!
 				funcs->convert = Y420toY422_x86_scalar;
 #else
-				if( rowBytes <= 2 * width ){
+#	if !defined(__i386__) || defined(_MSC_VER)
+				if( codecID == CODEC_ID_H264 && rowBytes <= 2 * width ){
 					funcs->convert = Y420toY422_x86_scalar;
-					Codecprintf( stderr, "ColorConversionFindFor(): image width %d*2 >= rowBytes=%ld; using scalar Y420toY422 conversion for safety",
+					Codecprintf( stderr, "ColorConversionFindFor(): H.264 image width %d*2 >= rowBytes=%ld; using scalar Y420toY422 conversion for safety",
 								width, rowBytes );
 				}
-				else if (ffPicture->linesize[0] & 15){
+				else
+#	endif
+				if (ffPicture->linesize[0] & 15){
 					funcs->convert = Y420toY422_x86_scalar;
 				}
 				else{
