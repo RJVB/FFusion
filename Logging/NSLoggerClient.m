@@ -21,6 +21,7 @@ int NSCodecvprintf( const char *fileName, int lineNumber, const char *functionNa
   static char inited = 0;
 	if( !inited ){
 		LoggerSetOptions( NULL, /*kLoggerOption_BufferLogsUntilConnection|*/kLoggerOption_BrowseBonjour|kLoggerOption_CaptureSystemConsole );
+		LoggerStart(NULL);
 		inited = 1;
 	}
 	if( doLog ){

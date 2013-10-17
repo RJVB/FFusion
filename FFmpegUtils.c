@@ -209,7 +209,7 @@ void FFInitFFmpeg()
 #else
 		avcodec_register_all();
 #endif
-		
+
 		Codecprintf( stderr, "FFusion decoder using libavcodec, version %d.%d.%d (%u) / \"%s\"\n",
 					LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
 					avcodec_version(), avcodec_configuration() );

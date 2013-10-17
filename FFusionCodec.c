@@ -272,7 +272,7 @@ static enum PixelFormat FindPixFmtFromVideo(AVCodec *codec, AVCodecContext *avct
 	pix_fmt = tmpContext.pix_fmt;
 	avcodec_close(&tmpContext);
 	if( got_picture ){
-		ffCodecprintf( stderr, "Found picture number %d, fmt=%d", tmpFrame.display_picture_number, pix_fmt );
+// 		ffCodecprintf( stderr, "Found picture number %d, fmt=%d", tmpFrame.display_picture_number, pix_fmt );
 	}
 	else{
 		ffCodecprintf( stderr, "Found no picture, fmt=%d", pix_fmt );
@@ -585,7 +585,7 @@ pascal ComponentResult FFusionCodecInitialize(FFusionGlobals glob, ImageSubCodec
 	Boolean doExperimentalFlags = FALSE;
 #endif
 
-    // Secifies the size of the ImageSubCodecDecompressRecord structure
+    // Specifies the size of the ImageSubCodecDecompressRecord structure
     // and say we can support asyncronous decompression
     // With the help of the base image decompressor, any image decompressor
     // that uses only interrupt-safe calls for decompression operations can
@@ -983,10 +983,11 @@ pascal ComponentResult FFusionCodecBeginBand(FFusionGlobals glob, CodecDecompres
 
 	if( p->frameNumber <= 1 ){
 		FFusionDebugPrint2("FFusionCodecBeginBand(%p) for %dx%d '%s' with %d bytes of extradata;\n"
-						   "    frame dropping %senabled; using %d threads\n",
+						   "    frame dropping %senabled; using %d threads; QT rowBytes=%d\n",
 						   glob, (**p->imageDescription).width, (**p->imageDescription).height,
 						   FourCCString(glob->componentType), glob->avContext->extradata_size,
-						   not(glob->isFrameDroppingEnabled), glob->avContext->thread_count );
+						   not(glob->isFrameDroppingEnabled), glob->avContext->thread_count,
+						   drp->rowBytes );
 	}
 
 	if(glob->packedType != PACKED_QUICKTIME_KNOWS_ORDER && p->frameNumber != glob->begin.lastFrame + 1)
@@ -1169,7 +1170,7 @@ pascal ComponentResult FFusionCodecDecodeBand(FFusionGlobals glob, ImageSubCodec
 
 	glob->stats.type[drp->frameType].decode_calls++;
 	RecomputeMaxCounts(glob);
-	FFusionDebugPrint2("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
+// 	FFusionDebugPrint2("%p DecodeBand #%d qtType %d. (packed %d)\n", glob, myDrp->frameNumber, drp->frameType, glob->packedType);
 
 	// QuickTime will drop H.264 frames when necessary if a sample dependency table exists
 	// we don't want to flush buffers in that case.
@@ -1330,7 +1331,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 
 	glob->stats.type[drp->frameType].draw_calls++;
 	RecomputeMaxCounts(glob);
-	FFusionDebugPrint2("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
+// 	FFusionDebugPrint2("%p DrawBand #%d. (%sdecoded)\n", glob, myDrp->frameNumber, not(myDrp->decoded));
 
 	if(!myDrp->decoded) {
 		err = FFusionCodecDecodeBand(glob, drp, 0);
@@ -1341,32 +1342,30 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 	if (myDrp->buffer && myDrp->buffer->picture.data[0]) {
 		picture = &myDrp->buffer->picture;
 		glob->lastDisplayedPicture = picture;
-		FFusionDebugPrint2( "picture=myDrp->buffer->picture" );
 	} else if (glob->lastDisplayedPicture && glob->lastDisplayedPicture->data[0]) {
 		picture = glob->lastDisplayedPicture;
-		FFusionDebugPrint2( "picture=glob->lastDisplayedPicture" );
 	} else {
 		//Display black (no frame decoded yet)
 
 		if (!glob->colorConv.clear) {
-			err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt, NULL, myDrp->pixelFormat);
+			err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt,
+										 NULL, myDrp->pixelFormat, drp->rowBytes, myDrp->width, myDrp->height );
 			if (err) goto err;
 		}
 
 		glob->colorConv.clear((UInt8*)drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height);
-		FFusionDebugPrint2( "picture=empty/black frame" );
 		return noErr;
 	}
 
 	if (!glob->colorConv.convert) {
-		err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt, picture, myDrp->pixelFormat);
+		err = ColorConversionFindFor( &glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt,
+									 picture, myDrp->pixelFormat, drp->rowBytes, myDrp->width, myDrp->height );
 		if (err) goto err;
 	}
 
 	glob->colorConv.convert(picture, (UInt8*)drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height);
 
 err:
-	FFusionDebugPrint2( "Returning err=%d", err );
     return err;
 }
 
@@ -1534,9 +1533,9 @@ OSErr FFusionDecompress(FFusionGlobals glob, AVCodecContext *context, UInt8 *dat
 	{
 		Codecprintf(glob->fileLog, "Error while decoding frame\n");
 	}
-	else{
-		FFusionDebugPrint2( "Found picture number %d, len=%d", picture->display_picture_number, len );
-	}
+// 	else{
+// 		FFusionDebugPrint2( "Found picture number %d, len=%d", picture->display_picture_number, len );
+// 	}
 
 	return err;
 }

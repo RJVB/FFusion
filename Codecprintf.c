@@ -66,10 +66,27 @@ static int Codecvprintf(FILE *fileLog, const char *format, va_list va, int print
 	return ret;
 }
 
+#if defined(_MSC_VER) && defined(_SS_LOG_ACTIVE)
+static const char *basename( const char *url )
+{ const char *c = NULL;
+	if( url ){
+		if( (c =  strrchr( url, '\\' )) ){
+			c++;
+		}
+		else{
+			c = url;
+		}
+	}
+	return c;
+}
+#endif
+
 int _ffCodecprintf(const char *fileName, int lineNr, FILE *fileLog, const char *format, ...)
 {int ret;
 	va_list va;
-	cLogStoreFileLine( fileName, lineNr );
+#ifdef _SS_LOG_ACTIVE
+	cLogStoreFileLine( basename(fileName), lineNr );
+#endif
 	va_start(va, format);
 	ret = Codecvprintf(fileLog, format, va, !fileLog);
 	va_end(va);

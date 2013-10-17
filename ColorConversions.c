@@ -73,7 +73,7 @@ static void Y420toY422_lastrow(UInt8 *o, UInt8 *yc, UInt8 *uc, UInt8 *vc, int ha
 #ifdef __ppc__
 //hand-unrolled code is a bad idea on modern CPUs. luckily, this does not run on modern CPUs, only G3s.
 
-static FASTCALL void Y420toY422_ppc_scalar(AVPicture *picture, UInt8 *baseAddr, int outRB, int width, int height)
+static FASTCALL void Y420toY422_ppc_scalar(AVPicture *picture, UInt8 *baseAddr, long outRB, int width, int height)
 {
 	int	y = height >> 1, halfWidth = width >> 1, halfHalfWidth = width >> 2;
 	UInt8 *inY = picture->data[0], *inU = picture->data[1], *inV = picture->data[2];
@@ -118,7 +118,7 @@ static FASTCALL void Y420toY422_ppc_scalar(AVPicture *picture, UInt8 *baseAddr, 
 	HandleLastRow(baseAddr, inY, inU, inV, halfWidth, height);
 }
 
-static FASTCALL void Y420toY422_ppc_altivec(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void Y420toY422_ppc_altivec(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
@@ -172,22 +172,22 @@ static FASTCALL void Y420toY422_ppc_altivec(AVPicture *picture, UInt8 *o, int ou
 #else
 #include <emmintrin.h>
 
-static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *uc = picture->data[1], *vc = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
 	int		y, x, halfwidth = width >> 1, halfheight = height >> 1;
 	int		vWidth = width >> 5;
 
-	Codecprintf( stderr, "Y420toY422_sse2(%p,%p,outRB=%d,w=%d,h=%d,rY=%d,rUV=%d,hw=%d,hh=%d,vw=%d)\n",
-		picture, o, outRB, width, height, rY, rUV, halfwidth, halfheight, vWidth );
+// 	Codecprintf( stderr, "Y420toY422_sse2(%p,%p,outRB=%d,w=%d,h=%d,rY=%d,rUV=%d,hw=%d,hh=%d,vw=%d)\n",
+// 		picture, o, outRB, width, height, rY, rUV, halfwidth, halfheight, vWidth );
 	for (y = 0; y < halfheight; y++) {
 		UInt8   *o2 = o + outRB,   *yc2 = yc + rY;
 		__m128i *ov = (__m128i*)o, *ov2 = (__m128i*)o2, *yv = (__m128i*)yc, *yv2 = (__m128i*)yc2;
 		__m128i *uv = (__m128i*)uc,*vv  = (__m128i*)vc;
-		if( y == 0 ){
-			Codecprintf( stderr, "ov2[0,1,2,3]={%p,%p,%p,%p}", &ov2[0], &ov2[1], &ov2[2], &ov2[3] );
-		}
+// 		if( y == 0 ){
+// 			Codecprintf( stderr, "ov2[0,1,2,3]={%p,%p,%p,%p}", &ov2[0], &ov2[1], &ov2[2], &ov2[3] );
+// 		}
 // RJVB
 // 20130203: nothing to fix here. Processing speed differences between the GCC-style inline assembly and
 // SSE2 intrinsics are minimal (using GCC); there is no reason to assume that this would be different with MSVC.
@@ -290,7 +290,7 @@ static FASTCALL void Y420toY422_sse2(AVPicture *picture, UInt8 *o, int outRB, in
 	HandleLastRow(o, yc, uc, vc, halfwidth, height);
 }
 
-static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
@@ -328,7 +328,7 @@ static FASTCALL void Y420toY422_x86_scalar(AVPicture *picture, UInt8 *o, int out
 
 //Y420+Alpha Planar to V408 (YUV 4:4:4+Alpha 32-bit packed)
 //Could be fully unrolled to avoid x/2
-static FASTCALL void YA420toV408(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void YA420toV408(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2], *a = picture->data[3];
 	int		rYA = picture->linesize[0], rUV = picture->linesize[1];
@@ -353,7 +353,7 @@ static FASTCALL void YA420toV408(AVPicture *picture, UInt8 *o, int outRB, int wi
 	}
 }
 
-static FASTCALL void BGR24toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void BGR24toRGB24(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	UInt8 *srcPtr = picture->data[0];
 	int srcRB = picture->linesize[0];
@@ -373,7 +373,7 @@ static FASTCALL void BGR24toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBy
 	}
 }
 
-static FASTCALL void RGBtoRGB(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height, int bytesPerPixel)
+static FASTCALL void RGBtoRGB(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height, int bytesPerPixel)
 {
 	UInt8 *srcPtr = picture->data[0];
 	int srcRB = picture->linesize[0];
@@ -387,7 +387,7 @@ static FASTCALL void RGBtoRGB(AVPicture *picture, UInt8 *baseAddr, int rowBytes,
 	}
 }
 
-static FASTCALL void RGBtoRGBXOR(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height, int bytesPerPixel)
+static FASTCALL void RGBtoRGBXOR(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height, int bytesPerPixel)
 {
 	UInt8 *srcPtr = picture->data[0], *bA = baseAddr;
 	int srcRB = picture->linesize[0];
@@ -406,13 +406,13 @@ static FASTCALL void RGBtoRGBXOR(AVPicture *picture, UInt8 *baseAddr, int rowByt
 }
 
 //Big-endian XRGB32 to big-endian XRGB32
-static FASTCALL void RGB32toRGB32Copy(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void RGB32toRGB32Copy(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 4);
 }
 
 // RJVB
-static FASTCALL void RGB32toARGB( AVPicture *picture, register UInt8 *baseAddr, int rowBytes, register int width, register int height )
+static FASTCALL void RGB32toARGB( AVPicture *picture, register UInt8 *baseAddr, long rowBytes, register int width, register int height )
 { register UInt8 *srcPtr = picture->data[0];
   register int x, y;
   int srcRB;
@@ -429,28 +429,28 @@ static FASTCALL void RGB32toARGB( AVPicture *picture, register UInt8 *baseAddr, 
 	}
 }
 
-static FASTCALL void RGB24toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void RGB24toRGB24(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 3);
 }
 
-static FASTCALL void RGB16toRGB16(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void RGB16toRGB16(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 2);
 }
 
-static FASTCALL void GRAY8toGRAY8(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void GRAY8toGRAY8(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	RGBtoRGB(picture, baseAddr, rowBytes, width, height, 1);
 }
 
-static FASTCALL void GRAY8toGRAY8XOR(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void GRAY8toGRAY8XOR(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	RGBtoRGBXOR(picture, baseAddr, rowBytes, width, height, 1);
 }
 
 //RJVB
-static FASTCALL void GRAY8toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void GRAY8toRGB24(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 { UInt8 *srcPtr = picture->data[0];
   int x, y, srcRB;
 
@@ -468,7 +468,7 @@ static FASTCALL void GRAY8toRGB24(AVPicture *picture, UInt8 *baseAddr, int rowBy
 }
 
 //Little-endian XRGB32 to big-endian XRGB32
-static FASTCALL void RGB32toRGB32Swap(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void RGB32toRGB32Swap(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	UInt8 *srcPtr = picture->data[0];
 	int srcRB = picture->linesize[0];
@@ -483,7 +483,7 @@ static FASTCALL void RGB32toRGB32Swap(AVPicture *picture, UInt8 *baseAddr, int r
 	}
 }
 
-static FASTCALL void RGB16toRGB16Swap(AVPicture *picture, UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void RGB16toRGB16Swap(AVPicture *picture, UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	UInt8 *srcPtr = picture->data[0];
 	int srcRB = picture->linesize[0];
@@ -500,7 +500,7 @@ static FASTCALL void RGB16toRGB16Swap(AVPicture *picture, UInt8 *baseAddr, int r
 	}
 }
 
-static FASTCALL void Y422toY422(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void Y422toY422(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
@@ -522,7 +522,7 @@ static FASTCALL void Y422toY422(AVPicture *picture, UInt8 *o, int outRB, int wid
 	}
 }
 
-static FASTCALL void Y410toY422(AVPicture *picture, UInt8 *o, int outRB, int width, int height)
+static FASTCALL void Y410toY422(AVPicture *picture, UInt8 *o, long outRB, int width, int height)
 {
 	UInt8	*yc = picture->data[0], *u = picture->data[1], *v = picture->data[2];
 	int		rY = picture->linesize[0], rUV = picture->linesize[1];
@@ -547,7 +547,7 @@ static FASTCALL void Y410toY422(AVPicture *picture, UInt8 *o, int outRB, int wid
 	}
 }
 
-static void ClearRGB(UInt8 *baseAddr, int rowBytes, int width, int height, int bytesPerPixel)
+static void ClearRGB(UInt8 *baseAddr, long rowBytes, int width, int height, int bytesPerPixel)
 {
 	int y;
 	
@@ -558,27 +558,27 @@ static void ClearRGB(UInt8 *baseAddr, int rowBytes, int width, int height, int b
 	}
 }
 
-static FASTCALL void ClearRGB32(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearRGB32(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	ClearRGB(baseAddr, rowBytes, width, height, 4);
 }
 
-static FASTCALL void ClearRGB24(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearRGB24(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	ClearRGB(baseAddr, rowBytes, width, height, 3);
 }
 
-static FASTCALL void ClearRGB16(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearRGB16(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	ClearRGB(baseAddr, rowBytes, width, height, 2);
 }
 
-static FASTCALL void ClearGRAY8(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearGRAY8(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	ClearRGB(baseAddr, rowBytes, width, height, 1);
 }
 
-static FASTCALL void ClearV408(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearV408(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	int x, y;
 	
@@ -596,7 +596,7 @@ static FASTCALL void ClearV408(UInt8 *baseAddr, int rowBytes, int width, int hei
 	}
 }
 
-static FASTCALL void ClearY422(UInt8 *baseAddr, int rowBytes, int width, int height)
+static FASTCALL void ClearY422(UInt8 *baseAddr, long rowBytes, int width, int height)
 {
 	int x, y;
 	
@@ -646,7 +646,8 @@ OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixF
 	}
 }
 
-int ColorConversionFindFor(ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt, AVPicture *ffPicture, OSType qtPixFmt)
+int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt,
+						   AVPicture *ffPicture, OSType qtPixFmt, long rowBytes, int width, int height )
 {
 	switch (ffPixFmt) {
 		case PIX_FMT_YUVJ420P:
@@ -665,10 +666,17 @@ int ColorConversionFindFor(ColorConversionFuncs *funcs, enum CodecID codecID, en
 				// sorry, but gcc 4.7 does a better job at vectorising the scalar function than the hand-coded version!
 				funcs->convert = Y420toY422_x86_scalar;
 #else
-				if (ffPicture->linesize[0] & 15)
+				if( rowBytes <= 2 * width ){
 					funcs->convert = Y420toY422_x86_scalar;
-				else
+					Codecprintf( stderr, "ColorConversionFindFor(): image width %d*2 >= rowBytes=%ld; using scalar Y420toY422 conversion for safety",
+								width, rowBytes );
+				}
+				else if (ffPicture->linesize[0] & 15){
+					funcs->convert = Y420toY422_x86_scalar;
+				}
+				else{
 					funcs->convert = Y420toY422_sse2;
+				}
 #endif
 			}
 #endif
