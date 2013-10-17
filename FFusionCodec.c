@@ -249,7 +249,7 @@ static enum PixelFormat FindPixFmtFromVideo(AVCodec *codec, AVCodecContext *avct
 {
 	AVCodecContext tmpContext;
 	AVFrame tmpFrame;
-	int got_picture;
+	int got_picture = 0;
 	enum PixelFormat pix_fmt;
 	AVPacket pkt;
 
