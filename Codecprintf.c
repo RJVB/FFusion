@@ -134,7 +134,7 @@ void FFMpegCodecprintf(void* ptr, int level, const char* fmt, va_list vl)
 	else{
 		NSCodecvprintf( __FILE__, __LINE__, __FUNCTION__, 1, NULL, NULL, level, fmt, vl );
 	}
-#else
+#elif defined(_SS_LOG_ACTIVE)
     if( print_prefix && avc ){
 	  char buf[256];
 #ifdef _MSC_VER
