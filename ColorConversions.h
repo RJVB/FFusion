@@ -48,6 +48,6 @@ typedef struct ColorConversionFuncs {
 
 extern OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixFmt);
 extern int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt,
-								  AVPicture *ffPicture, OSType qtPixFmt, long rowBytes, int width, int height );
+								  AVPicture *ffPicture, OSType qtPixFmt, UInt8 *baseAddr, long rowBytes, int width, int height );
 
 #endif

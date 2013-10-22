@@ -1349,7 +1349,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 
 		if (!glob->colorConv.clear) {
 			err = ColorConversionFindFor(&glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt,
-										 NULL, myDrp->pixelFormat, drp->rowBytes, myDrp->width, myDrp->height );
+										 NULL, myDrp->pixelFormat, drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height );
 			if (err) goto err;
 		}
 
@@ -1359,7 +1359,7 @@ pascal ComponentResult FFusionCodecDrawBand(FFusionGlobals glob, ImageSubCodecDe
 
 	if (!glob->colorConv.convert) {
 		err = ColorConversionFindFor( &glob->colorConv, glob->avCodec->id, glob->avContext->pix_fmt,
-									 picture, myDrp->pixelFormat, drp->rowBytes, myDrp->width, myDrp->height );
+									 picture, myDrp->pixelFormat, drp->baseAddr, drp->rowBytes, myDrp->width, myDrp->height );
 		if (err) goto err;
 	}
 

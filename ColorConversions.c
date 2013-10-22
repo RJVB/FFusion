@@ -644,7 +644,7 @@ OSType ColorConversionDstForPixFmt(enum CodecID codecID, enum PixelFormat ffPixF
 }
 
 int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, enum PixelFormat ffPixFmt,
-						   AVPicture *ffPicture, OSType qtPixFmt, long rowBytes, int width, int height )
+						   AVPicture *ffPicture, OSType qtPixFmt, UInt8 *baseAddr, long rowBytes, int width, int height )
 {
 	switch (ffPixFmt) {
 		case PIX_FMT_YUVJ420P:
@@ -664,10 +664,17 @@ int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, e
 				funcs->convert = Y420toY422_x86_scalar;
 #else
 #	if !defined(__i386__) || defined(_MSC_VER)
-				if( codecID == CODEC_ID_H264 && rowBytes <= 2 * width ){
+// 				if( codecID == CODEC_ID_H264 && rowBytes <= 2 * width ){
+// 					funcs->convert = Y420toY422_x86_scalar;
+// 					Codecprintf( stderr, "ColorConversionFindFor(): H.264 image width %d*2 >= rowBytes=%ld; using scalar Y420toY422 conversion for safety",
+// 								width, rowBytes );
+// 				}
+				if( (((size_t)baseAddr) % 16) || (rowBytes % 16) ){
 					funcs->convert = Y420toY422_x86_scalar;
-					Codecprintf( stderr, "ColorConversionFindFor(): H.264 image width %d*2 >= rowBytes=%ld; using scalar Y420toY422 conversion for safety",
-								width, rowBytes );
+					Codecprintf( stderr,
+								"ColorConversionFindFor(): bitmap destination address=%p and/or rowBytes=%ld not aligned to 16 bits;"
+								" using scalar Y420toY422 conversion for safety",
+								baseAddr, rowBytes );
 				}
 				else
 #	endif
@@ -676,6 +683,7 @@ int ColorConversionFindFor( ColorConversionFuncs *funcs, enum CodecID codecID, e
 				}
 				else{
 					funcs->convert = Y420toY422_sse2;
+					Codecprintf( stderr, "ColorConversionFindFor(): using SSE accelerated Y420 to Y422 conversion" );
 				}
 #endif
 			}
