@@ -2225,6 +2225,7 @@
 		D620104C16C5506400DC6EE5 /* libopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjpeg.a; path = FFmpeg/osx86/lib/libopenjpeg.a; sourceTree = "<group>"; };
 		D620108316C57CF400DC6EE5 /* FFmpeg-LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FFmpeg-LICENSE.txt"; path = "FFmpeg/source/FFmpeg-LICENSE.txt"; sourceTree = "<group>"; };
 		D620108416C57CF400DC6EE5 /* LICENSE-libopenjpeg1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE-libopenjpeg1.txt"; sourceTree = "<group>"; };
+		D63462381819632700EF94F9 /* FFusionVersion.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rc; name = FFusionVersion.rc; path = Resources/FFusionVersion.rc; sourceTree = "<group>"; };
 		D66D737F16BC337200BF1C5E /* FFusion.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.modula2.def; name = FFusion.def; path = Resources/FFusion.def; sourceTree = "<group>"; };
 		D66D739B16BC371800BF1C5E /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; name = Logging.h; path = SSLogging/Logging.h; sourceTree = "<group>"; };
 		D66D739C16BC371800BF1C5E /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = SSLogging/Logger.h; sourceTree = "<group>"; };
@@ -4889,6 +4890,7 @@
 		D66D739A16BC36ED00BF1C5E /* win32 */ = {
 			isa = PBXGroup;
 			children = (
+				D63462381819632700EF94F9 /* FFusionVersion.rc */,
 				D68307B416BEF28900301AD1 /* FFusion-installer.nsi */,
 				D66D745C16BC503700BF1C5E /* FFusionWin32Resources.r */,
 				D66D739B16BC371800BF1C5E /* Logging.h */,

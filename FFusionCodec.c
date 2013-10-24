@@ -233,8 +233,8 @@ static void DumpFrameDropStats(FFusionGlobals glob)
 	if (!glob->fileLog || glob->decode.lastFrame == 0) return;
 
 	Codecprintf( glob->fileLog,
-				"%p '%s' frame drop stats\nType    | BeginBands    | DecodeBands    | DrawBands    | # before decode    | # before draw\n",
-				glob, FourCCString(glob->componentType) );
+				"'%s' frame drop stats\nType    | BeginBands    | DecodeBands    | DrawBands    | # before decode    | # before draw\n",
+				FourCCString(glob->componentType) );
 
 	for (i = 0; i < 4; i++) {
 		struct per_frame_decode_stats *f = &glob->stats.type[i];

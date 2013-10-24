@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>FFusion</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.2.5, copyright 2011 the Perian team, 2013 RJVB</string>
+	<string>1.2.6, copyright 2011 the Perian team, 2013 RJVB</string>
 	<key>CFBundleIconFile</key>
 	<string>Perian_icon</string>
 	<key>CFBundleIdentifier</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>thng</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.5</string>
+	<string>1.2.6</string>
 	<key>CFBundleSignature</key>
 	<string>Peri</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.5</string>
+	<string>1.2.6</string>
 	<key>CSResourcesFileMapped</key>
 	<string>yes</string>
 	<key>DTCompiler</key>

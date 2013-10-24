@@ -8,8 +8,8 @@
 #include <winver.h>
 
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION    1,25
-  PRODUCTVERSION 1,25
+  FILEVERSION    1,2,6
+  PRODUCTVERSION 1,2,6
   FILEFLAGSMASK  VS_FFI_FILEFLAGSMASK
   FILEFLAGS      0
   FILEOS         VOS__WINDOWS32
@@ -20,8 +20,8 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "FFusion codec collection bringing ffmpeg-based decoding to QuickTime for Windows\0"
-            VALUE "ProductVersion", "1.25\0"
-            VALUE "FileVersion", "1.25\0"
+            VALUE "ProductVersion", "1.2.6\0"
+            VALUE "FileVersion", "1.2.6\0"
             VALUE "InternalName", "FFusion Codec Component\0"
             VALUE "OriginalFilename", "FFusion\0"
             VALUE "CompanyName", "RJVB\0"
